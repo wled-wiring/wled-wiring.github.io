@@ -1,4 +1,4 @@
-Contributor License Agreement
+# Contributor License Agreement
 
 Thank you for your interest in contributing to Wladislaw Waag's WLED-WIRING TOOL ("We" or "Us").
 
