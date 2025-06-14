@@ -1,3 +1,12 @@
 {
-   "signedContributors": []
+  "signedContributors": [
+    {
+      "name": "wled-develop",
+      "id": 198498282,
+      "comment_id": 2973032925,
+      "created_at": "2025-06-14T19:25:24Z",
+      "repoId": 981562220,
+      "pullRequestNo": 1
+    }
+  ]
 }
