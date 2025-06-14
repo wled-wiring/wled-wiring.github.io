@@ -21,7 +21,7 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
 Here is a short description of how to do a PR:
 
 ## Preconditions:
-1)	To authenticate on Github, you will need to install [github cli]( https://docs.github.com/de/get-started/git-basics/caching-your-github-credentials-in-git) and run `gh auth login`.
+1)	To authenticate on GitHub, you will need to install [github cli]( https://docs.github.com/de/get-started/git-basics/caching-your-github-credentials-in-git) and run `gh auth login`.
 2)	Install git (for example [git for windows](https://github.com/git-for-windows/git/releases/tag/v2.49.0.windows.1))
 
 ## PR process
@@ -33,7 +33,7 @@ Here is a short description of how to do a PR:
 * Ensure you are on the branch you created via `git checkout <pr_branch>` (replacing <pr_branch> with the name you want to use for your temporary branch)
 * Set the upstream branch via `git push --set-upstream origin <pr_branch>` (replacing <pr_branch> with the name you used before)
 * Work on your local version. Test everything.
-* Before doing any commits, ensure that email address and name configured in git are the same as your Github account name and email address used for this account.  Otherwise you won’t be able to sign CLA and your PR cannot be merged. For that check the output of `git config --global user.name` and `git config --global user.email`. You can change them using `git config --global user.name “YourGithubName”` and `git config --global user.email “YourEmailUsedForGithubAccount”`
+* Before doing any commits, ensure that email address and name configured in git are the same as your GitHub account name and email address used for this account.  Otherwise you won’t be able to sign CLA and your PR cannot be merged. For that check the output of `git config --global user.name` and `git config --global user.email`. You can change them using `git config --global user.name “YourGitHubUserName”` and `git config --global user.email “YourEmailUsedForGitHubAccount”`
 * Use command like `git add -all`, then `git commit` and then `git push` to push the changes. After git push, the changes are uploaded to github in your fork/your branch.
 * Go to Github to your fork and your branch, then use “Contribute” menu and there “Open pull request” button.
 
