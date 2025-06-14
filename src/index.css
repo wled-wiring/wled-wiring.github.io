@@ -1,0 +1,173 @@
+
+html, body {
+  background: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+#app_container {
+  display: flex;
+  flex-direction: column;
+}
+
+#headerRow {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#mainRow {
+  flex: 1 0 300px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#reactflowDiv {
+  flex: 3 0 299px;
+}
+
+#sidebarDiv {
+  min-width: 300px;
+}
+
+@media (max-width: 600px) {
+  #reactflowDiv {
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    min-height: 500px;
+  }
+  #sidebarDiv {
+    flex: 1 0 auto;
+    width: 100%;
+  }
+  #sidebarEditorDiv {
+    flex: 1 0 auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 600.001px) {
+  #app_container {
+    height: 100vh;
+  }
+
+  #reactflowDiv {
+    border-right-style: solid;
+    border-right-width: 1px;
+  }
+
+  #mainRow {
+    min-height: 0;
+    max-height: 100%;
+  }
+  #sidebarDiv {
+    flex: 0 0 300px;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  #sidebarEditorDiv {
+    flex: 0 0 600px;
+    max-height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+  } 
+
+}
+
+#footerRow {
+  border-top-style: solid;
+  border-top-width: 1px;
+  flex: 0 0 content;
+}
+
+.react-flow__panel {
+  text-align: center;
+}
+
+.react-flow__node {
+  z-index: -1 !important;
+  display: inline-block;
+}
+
+.react-flow__node:has(> .node-type_background) {
+  z-index: -100 !important;
+}
+
+.react-flow__node:has(> .node-type_solderjoint) {
+  z-index: 200 !important;
+}
+
+.node-type_solderjoint {
+  border-radius: 50%;
+}
+
+.node-type_solderjoint:hover {
+  box-shadow: 0 0 1px 1px currentColor;
+}
+
+.react-flow__edgelabel-renderer { 
+  z-index: 100;
+}
+
+.react-flow__handle {
+  display: inline-flex;
+  transition: box-shadow 0.2s ease;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-flow__handle:hover {
+  box-shadow: 0 0 2px 5px currentColor;
+}
+
+.react-flow__handle .tooltiptext {
+  background-color: #333;
+  border-radius: 4px;
+  /*top: calc( 100% + 0.6em + 4px );*/
+  box-shadow: 0px 2px 4px #07172258;
+  color: #fff;
+  font-size: 0.68rem;
+  justify-content: center;
+  line-height: 1.35em;
+  padding: 0.5em 0.7em;
+  position: absolute;
+  text-align: center;
+  min-width: 7rem;
+  display: flex;
+  opacity: 0;
+  transition: all 0.2s ease-in;
+  visibility: hidden;
+  white-space:nowrap;
+}
+
+.react-flow__handle:hover .tooltiptext {
+  opacity: 1;
+  visibility: visible;
+}
+
+.react-flow__handle:hover .tooltiptext::before {
+  border-width: 0.6em 0.8em 0;
+  border-color: transparent;
+  border-top-color: #333;
+  content: "";
+  display: block;
+  border-style: solid;
+  position: absolute;
+  top: 100%;
+}
+
+/* row data */
+.ant-table-tbody > tr > td {
+  height: 4px;
+  padding: 2px;
+  font-size: 10px;
+}
+.ant-table-thead > tr > th {
+  height: 4px;
+  padding: 2px;
+  font-size: 10px;
+}
