@@ -18,5 +18,5 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
 
 
 # Copyright
-(c) Wladislaw Waag, info@myhome-control.de 
+(c) Wladislaw Waag, info@myhome-control.de
 
