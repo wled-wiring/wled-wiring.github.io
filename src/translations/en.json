@@ -1,0 +1,409 @@
+{
+    "title": "Welcome to WLED wiring designer!",
+    "dragComponents": "Start by dragging components onto the workspace or load one of example diagramms",
+    "componentGroupTypes": {
+      "controller": "Controller",
+      "led": "LEDs",
+      "psu": "Power sources",
+      "levelshifter": "Level shifter",
+      "electronics": "Electronics/Parts",
+      "others": "Other components"
+    },
+    "buttons": {
+      "rotate": "rotate",
+      "longer": "larger",
+      "shorter": "smaller"
+    },
+    "tooltip": {
+      "deleteWire": "Delete this connection",
+      "selectColor": "Select color",
+      "selectWireLength": "Select wire length (physically)",
+      "selectWireCrossSection": "Select wire cross section (physically)",
+      "selectWireWidth": "Select wire width (for drawing)",
+      "putWireInfoNode": "Add cable info box",
+      "startConnection": "Start connection",
+      "closeConnection": "Finish connectionn",
+      "rotateLeft": "Rotate left",
+      "rotateRight": "Rotate right",
+      "delete": "Delete",
+      "copy": "Copy",
+      "enlarge": "Enlarge",
+      "shorten": "Shorten",
+      "switchFilled": "Filled / border only",
+      "increaseTextSize": "Increase text size",
+      "decreaseTextSize": "Decrease text size",
+      "selectMulti" : "multiple select",
+      "deleteSelected": "delete selected",
+      "switchConnLineType": "change connection type",
+      "switchConnLineTypeHINT": "TIP: change connection type"
+    },
+    "popover":{
+      "selectWireLength": "Select wire length (physically):",
+      "selectWireCrossSection": "Select wire cross section (physically):",
+      "selectWireWidth": "Select wire width (for drawing):",
+      "startConnection": "Please select the pin/connector to start from:",
+      "closeConnection": "Please select the pin/connector to finish:"
+    },
+    "select":{
+      "startConnection": "Select pin / connector",
+      "closeConnection": "Select pin / connector"
+    },
+    "message":{
+      "startPinSelected": "Source pin/connector is selected. Now please select the target pin/connector.",
+      "closePinSelected": "The connection is ready.",
+      "startPinFirst": "Please first select starting pin/connector!",
+      "theSamePin": "Starting pin/connector is the same as end pin/connector!",
+      "compAddSuccess" : "Added to the diagramm!",
+      "loadModelSuccess" : "The WLED wiring model is successfully loaded!",
+      "loadModelSuccessShort" : "Success",
+      "loadingModel" : "Loading wiring model from file link ...",
+      "loadModelError" : "The WLED wiring model cannot be loaded. Eventually this link is not valid any more.",
+      "loadModelErrorShort" : "Error",
+      "loadModelWrongLink": "The link is wrong! Please check it."
+    },
+    "sidebar": {
+      "components": {
+        "title": "Components",
+        "popoverTitle": "Component info",
+        "addButtonText": "Add to diagramm",
+        "popoverContent": {
+          "whereToBuy": "Where to buy?",
+          "listOfConnections": "List of pins/terminals",
+          "listOfConnectionsHeading1": "Pin / Terminal",
+          "listOfConnectionsHeading2": "Description"
+        }
+      },
+      "check" : {
+        "title": "Check wiring diagramm",
+        "comingSoon": "Rule-based check will be implemented in next months. Stay tuned!"
+      },
+      "simulation" : {
+        "title": "Simulate current flow",
+        "comingSoon": "Simulation of power distribution will be implemented in future. Stay tuned!"
+      },
+      "export": {
+        "title": "Save / export / examples",
+        "buttonSave": "Save model as JSON file",
+        "buttonExportPNG": "Export model to PNG file",
+        "buttonExportJPEG": "Export model to JPEG file",
+        "buttonExportSVG": "Export model to SVG file",
+        "buttonOpen": "Load model from JSON file",
+        "buttonShare": "Generate public link to the model",
+        "dividerExport": "Export",
+        "dividerSaveOpen": "Save / Open",
+        "dividerShare": "Share",
+        "dividerExamples":"Load examples",
+        "share" : {
+          "modalTitle": "Share model - generate link",
+          "modalLinkText": "Link:",
+          "modalLinkBeingGenerated": "... generating ... please wait ...",
+          "modalButtonOK": "OK",
+          "modalButtonClose": "Close",
+          "modalButtonCancel": "Cancel",
+          "modalAttentionText": "When you click \"OK\" your model, along with all the entered data, will be transferred to a public server (https://github.com) and saved there. For this purpose, your model data and your IP address will also be transferred to https://wled-api.myhome-control.de/. You will then be shown a link that you can use to share the model with others.",
+          "modalLinkError": "An error occurred! Please try again if necessary.",
+          "tooltipCopyLink": "Copy link to clipboard",
+          "messageLinkCopied": "Link copied to clipboard!"
+        },
+        "selectExample": "Select example ..."
+      }
+    },
+    "footRow": {
+      "legalNotice": {
+        "title": "Legal notice",
+        "responsible": "Responsible: Wladislaw Waag",
+        "address": "Address: Wasserburger Landstr. 29, 81825 Munich, Germany",
+        "contact": "Contact: +49 (0) 176 47 11 5206, info@myhome-control.de",
+        "disputeText": "EU dispute settlement: The European Commission provides a platform for online dispute resolution (ODR):",
+        "disputeSettlmentText": "Consumer dispute settlement / universal arbitration board: We are neither willing nor obliged to participate in dispute settlement proceedings before a consumer arbitration board."
+
+      },
+      "dataPrivacy": {
+        "title": "Data privacy",
+        "text1": "This page is hosted and operated as part of 'Github Pages'. It is possible and probable that Github collects and processes personal data, which then also affects visitors of the wled-compile.github.io web page. We have, however, no influence on it. Please read the Github privacy statement:",
+        "text2": "In addition, as soon as you use 'Share' functionality, your IP address, the model you created and all the data you entered forwarded to https://myhome-control.de and to https://github.com/wled-development/wled-wiring-store. This is absolutely necessary for this functionality. The data protection declaration for https://myhome-control.de can be found at",
+        "text3" : "Our website contains links to external websites over which we have no control. We cannot accept any liability for this third-party content. The respective provider or operator of the pages is always responsible for the content of the linked pages. The linked pages were checked for possible legal violations at the time of linking. Illegal content was not recognizable at that time. If we become aware of any legal violations, we will remove the relevant link immediately."
+      },
+      "links" : {
+        "title": "Useful links",
+        "link1Text" : "Official WLED documentation:",
+        "link2Text" : "WLED FAQ:",
+        "link3Text" : "WLED Calculator:",
+        "link4Text" : "Extended WLED Online Installer:",
+        "link5Text" : "Compile your own WELD SW online:",
+        "link6Text" : "Buy WLED Controller (Germany):",
+        "link7Text" : "Buy WLED Controller (worldwide):"
+      },
+      "contribute" : {
+        "title": "Contribute?",
+        "text" : "If you'd like to contribute, the best way to do so right now is to test the features of this website and send your comments, suggestions for improvement, etc. to info@myhome-control.de. Thank you! Later, after a cleanup, the source code will likely be published, and you can then also contribute by programming."
+      }
+    },
+    "examples": {
+      "example1": "Example 1",
+      "example2": "Example 2",
+      "example3": "Example 3"
+    },
+    "compData": {
+    "Router": {
+      "name": "WAN/LAN Router",
+      "description": "A generic WLAN/LAN router.",
+      "descriptionShort": "generic"
+    },
+    "Button": {
+      "name": "Push Button",
+      "description": "A generic push button. When pressed and held, the contact is closed. The contact opens as soon as the button is released. Not to be confused with a switch.",
+      "descriptionShort": "generic"
+    },
+    "DC_JACK_FEMALE": {
+      "name": "DC Connector",
+      "description": "Used to split a power supply with a DC connector into a + and - wire.",
+      "descriptionShort": "for up to 3A"
+    },
+    "Elko": {
+      "name": "Electrolytic Capacitor",
+      "description": "An electrolytic capacitor with selectable capacitance. Pay attention to polarity! Often used to stabilize the power supply for LEDs or other components.",
+      "descriptionShort": "selectable capacitance"
+    },
+    "ESP32_30P": {
+      "name": "ESP32 uC 30 Pins",
+      "description": "ESP32 controller, version with 30 pins. Also known as NodeMCU.",
+      "descriptionShort": "controller"
+    },
+    "ESP32_38P": {
+      "name": "ESP32 uC 38 Pins",
+      "description": "ESP32 controller, version with 38 pins. Also known as NodeMCU.",
+      "descriptionShort": "controller"
+    },
+    "ESP32C3D1mini": {
+      "name": "ESP32-C3 D1 mini",
+      "description": "ESP32-C3 controller in D1 mini format. WLED can run on this controller type with limitations.",
+      "descriptionShort": "controller"
+    },
+    "ESP32C3_supermini": {
+			"name": "ESP32-C3 supermini",
+			"description": "ESP32-C3 controller, supermini. WLED can run on this controller type with limitations.",
+      "descriptionShort": "Controller"
+		},
+    "ESP32D1mini": {
+      "name": "ESP32 D1 mini",
+      "description": "ESP32 controller in D1 mini format.",
+      "descriptionShort": "controller"
+    },
+    "ESP32S3D1mini": {
+      "name": "ESP32-S3 D1 mini",
+      "description": "ESP32-S3 controller in D1 mini format. WLED can run on this controller type with limitations.",
+      "descriptionShort": "controller"
+    },
+    "ESP8266D1mini": {
+      "name": "ESP8266 D1 mini",
+      "description": "ESP8266 controller in D1 mini format. No longer recommended for new WLED projects (too weak).",
+      "descriptionShort": "controller"
+    },
+    "InfoNode": {
+      "name": "Text",
+      "description": "A text element to add labels or notes to the diagram.",
+      "descriptionShort": "for notes etc."
+    },
+    "INMP441": {
+      "name": "INMP441 microphone",
+      "description": "INMP441 microphone. It is a digital microphone supported by WLED for sound-reactive effects and delivers high quality.",
+      "descriptionShort": "digital"
+    },
+    "IR_KY022": {
+      "name": "KY022 IR receiver",
+      "description": "KY-022 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
+      "descriptionShort": "infrared"
+    },
+    "IR_TSOP38238": {
+      "name": "TSOP38238 IR Receiver",
+      "description": "TSOP38238 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
+      "descriptionShort": "infrared"
+    },
+    "Kerko": {
+      "name": "Ceramic Capacitor",
+      "description": "Ceramic capacitor with selectable capacitance. Commonly used at the input of switching electronic circuits (between power and ground) to suppress noise. Should be connected using the shortest possible leads/traces.",
+      "descriptionShort": "selectable capacitance"
+    },
+    "LineBoxNode": {
+      "name": "Rectangle",
+      "description": "An element to draw a rectangle (filled or empty).",
+      "descriptionShort": "drawing element"
+    },
+    "miniOTOFuse": {
+      "name": "Melting Fuse",
+      "description": "A fuse from the automotive sector. Ideal for voltages up to 32V. Only buy from specialized dealers, as many cheap copies on marketplaces do not function properly. WLED calculator (www.wled-calculator.github.io) can be used for dimensioning.",
+      "descriptionShort": "selectable 4-30A"
+    },
+    "FUSE_Board": {
+			"name": "Fuse board",
+			"description": "For power distribution and fusing.",
+      "descriptionShort": "4 channels"
+		},
+    "PIR_HCSR501": {
+      "name": "HC-SR501 PIR Sensor",
+      "description": "PIR motion sensor of type HCSR501. Can be used with WLED.",
+      "descriptionShort": "motion detector"
+    },
+    "PLUG_LNPE": {
+      "name": "Power Plug",
+      "description": "Plug for 230V power outlets. Warning: Risk of death! Only use if you have appropriate knowledge.",
+      "descriptionShort": "for 230V AC"
+    },
+    "PSU_HP": {
+      "name": "Power supply",
+      "description": "Power supply with selectable voltage/current (power). These are typically high-performance supplies used for larger setups. Power plug must be connected separately.",
+      "descriptionShort": "selectable V/I"
+    },
+    "PSU_USB": {
+      "name": "USB Power Supply",
+      "description": "USB power supply with 5V output voltage and selectable current up to 5A.",
+      "descriptionShort": "5V, selectable I"
+    },
+    "Resistor": {
+      "name": "Resistor",
+      "description": "Electrical resistor of selectable value.",
+      "descriptionShort": "selectable value"
+    },
+    "SN74AHCT125N": {
+      "name": "Level Shifter",
+      "description": "A level shifter type recommended for WLED. A level shifter is necessary to convert the microcontroller's control signal (3.3V) to the LED data input (5V) level for addressable LEDs. Without a level shifter, flickering often occurs (almost always with 12V and 24V LEDs).",
+      "descriptionShort": "SN74AHCT125N"
+    },
+    "SolderJoint": {
+      "name": "Solder Joint",
+      "description": "Representation of a solder joint, e.g., to connect wires together.",
+      "descriptionShort": "for wires etc."
+    },
+    "WAGO_2X": {
+      "name": "WAGO Connector 2x",
+      "description": "Widely used spring clamp connector, two-way.",
+      "descriptionShort": "spring clamp"
+    },
+    "WAGO_3X": {
+      "name": "WAGO Connector 3x",
+      "description": "Widely used spring clamp connector, three-way.",
+      "descriptionShort": "spring clamp"
+    },
+    "WireInfoNode": {
+      "name": "Wire Info",
+      "description": "Information about the wire.",
+      "descriptionShort": " "
+    },
+    "WS2812B_5V_30LPM": {
+      "name": "WS2812B RGB",
+      "description": "WS2812 RGB LED strip, 5V, 30 LEDs per meter, individually addressable LEDs.",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "MHC_V43": {
+      "name": "WLED V43 Controller",
+      "description": "A professional WLED controller for 5V, 12V or 24V addressable LEDs. Includes ESP32 microcontroller, SN74AHCT level shifter, fuse, capacitor, EMI filter. Optional accessories include Ethernet adapter, INMP441 microphone, line-in adapter, and USB adapter.",
+      "descriptionShort": "ESP32 based"
+    },
+    "MHC_V63": {
+      "name": "WLED V63 Shield",
+      "description": "A professional WLED shield for 5V or 12V addressable LEDs. Includes SN74AHCT level shifter, fuse, capacitor. Optional accessories include INMP441 microphone, line-in adapter, and USB adapter. Can be used with ESP8266, ESP32, ESP32-C3, or ESP32-S3 in D1 mini format.",
+      "descriptionShort": "for ESP32-xx, ESP8266"
+    },
+    "MHC_Relay5V": {
+      "name": "5V Relay Board",
+      "description": "A professional relay board for use with 5V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 5V LEDs"
+    },
+    "MHC_Relay12V": {
+      "name": "12V Relay Board",
+      "description": "A professional relay board for use with 12V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 12V LEDs"
+    },
+    "MHC_Relay24V": {
+      "name": "24V Relay Board",
+      "description": "A professional relay board for use with 24V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 24V LEDs"
+    },
+    "AUDIO_SOURCE": {
+      "name": "Audio Source",
+      "description": "A generic audio signal source.",
+      "descriptionShort": "Line-out"
+    },
+    "LM2596_PCB": {
+      "name": "LM2596 DC/DC",
+      "description": "DC/DC (step-down) converter with adjustable output voltage.",
+      "descriptionShort": "adjustable output"
+    },
+    "IRLZ44N": {
+      "name": "IRLZ44N",
+      "description": "MOSFET. This type is recommended for use with WLED and can be used to control analog LED strips.",
+      "descriptionShort": "N-Ch MOSFET"
+    },
+    "DCDC_mini": {
+      "name": "DC/DC Mini",
+      "description": "DC/DC (step-down) converter with adjustable output voltage.",
+      "descriptionShort": "adjustable output"
+    },
+    "WS2814_24V_60LPM": {
+			"name": "WS2814 RGBW",
+			"description": "RGBW LED strip, individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "24V, 60 LEDs/m"
+		},
+    "WS2813_5V_60LPM": {
+			"name": "WS2813 RGB",
+			"description": "RGB LED strip with backup-line.",
+      "descriptionShort": "5V, 60 LEDs/m"
+		},
+    "WS2815_12V_30LPM": {
+			"name": "WS2815 RGB",
+			"description": "RGB LED strip with backup-line.",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "WS2814_12V_30LPM": {
+			"name": "WS2814 RGBW",
+			"description": "RGBW LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "WS2818_12V_30LPM": {
+			"name": "WS2818 RGB",
+			"description": "RGB LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "FCOB_12V_720LPM": {
+			"name": "FCOB RGB",
+			"description": "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
+      "descriptionShort": "12V, 720 LEDs/m"
+		},
+    "FCOB_24V_720LPM": {
+			"name": "FCOB RGB",
+			"description": "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
+      "descriptionShort": "24V, 720 LEDs/m"
+		},
+    "FCOB_24V_784LPM": {
+			"name": "FCOB RGBW",
+			"description": "FCOB RGBW LED strip, 784 LEDs/m (196 LEDs each color per meter, 14 logical LEDs/m)",
+      "descriptionShort": "24V, 784 LEDs/m"
+		},
+		"APA102_5V_30LPM": {
+			"name": "APA102 RGB",
+			"description": "APA102 LED strip with clock signal, 5V, 30 LEDs/Meter, individually addressable LEDs.",
+      "descriptionShort": "5V, 30 LEDs/m"
+		},
+    "AN_WHITE_24V_240LPM" :{
+      "name": "Analogue white",
+			"description": "Analogues LED strip (white 2835 LEDs), 24V, 240 LEDs/m, 2.5 cm segments (6 LEDs)",
+      "descriptionShort": "24V, 240 white LEDs/m"
+    },
+    "AN_RGB_CCT_48V_90LPM" :{
+      "name": "Anal. RGB CCT",
+			"description": "Analogues RGB CCT LED strip (5050 LEDs), 48V, 90 LEDs/m, segemnts of 16.65 cm (15 LEDs)",
+      "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "WS2805_24V_60LPM": {
+			"name": "WS2805 RGBW CCT",
+			"description": "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "24V, 60 LEDs/m"
+		},
+    "WS2805_12V_60LPM": {
+			"name": "WS2805 RGBW CCT",
+			"description": "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "12V, 60 LEDs/m"
+		}
+  }
+}

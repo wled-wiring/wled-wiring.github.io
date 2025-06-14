@@ -1,0 +1,48 @@
+{
+  "name": "wled-wiring",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/colors": "^7.2.0",
+    "@ant-design/icons": "^5.6.1",
+    "@xyflow/react": "^12.6.1",
+    "antd": "^5.24.1",
+    "html-to-image": "1.11.11",
+    "i18next": "^24.2.2",
+    "i18next-browser-languagedetector": "^8.0.3",
+    "i18next-http-backend": "^3.0.2",
+    "install": "^0.13.0",
+    "npm": "^11.1.0",
+    "rdndmb-html5-to-touch": "^9.0.0",
+    "react": "^19.0.0",
+    "react-bootstrap-sidebar-menu": "^2.0.3",
+    "react-country-flag": "^3.1.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dnd-multi-backend": "^9.0.0",
+    "react-dnd-touch-backend": "^16.0.1",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "zustand": "^5.0.5"
+  },
+  "license": "NO",
+  "devDependencies": {
+    "@types/react": "^18.2.53",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.20.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.14"
+  }
+}

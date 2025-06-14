@@ -1,0 +1,101 @@
+import {type Node} from '@xyflow/react';
+import {ComponentDataType, ImageDataType, HandleDataType} from '../../types';
+
+export const IRLZ44N: Node = {
+    id: '',
+    type: 'general-component-type',
+    position: { x: 0, y: 0 },
+
+    data: { 
+        image: {url:"./IRLZ44N.jpg", width: 40, height: 115} as ImageDataType,
+        technicalID: "IRLZ44N",
+        name: "compData.IRLZ44N.name",
+        description: "compData.IRLZ44N.descriptionShort",
+        popover: {
+            description: "compData.IRLZ44N.description",
+        },
+        technicalVersion: 1,
+        group: "electronics",
+        rotation: 0,
+        borderWidth: 2,
+        resizableX: false,
+        rotatable: true,
+        handles: [
+            {
+                borderColor: "green",
+                borderLineWidth: 0.8,
+                borderRadius: "20%",
+                borderType: "dotted",
+                description: "Gate",
+                functions: [
+                    "an_common"
+                ],
+                height: 10,
+                hid: "G",
+                name: "Gate",
+                position: "left",
+                postype: "bottom",
+                tolVmax: 16,
+                tolVmin: 0,
+                type: "source",
+                Vout: 0,
+                width: 6,
+                x: 9,
+                xalign: "start",
+                y: 110,
+                yalign: "start",
+                prefferedLineWidth: 1,
+            } as HandleDataType,
+            {
+                borderColor: "green",
+                borderLineWidth: 0.8,
+                borderRadius: "20%",
+                borderType: "dotted",
+                description: "Drain",
+                functions: [
+                    "an_common"
+                ],
+                height: 10,
+                hid: "D",
+                name: "Drain",
+                position: "left",
+                postype: "bottom",
+                tolVmax: 55,
+                tolVmin: 0,
+                type: "source",
+                Vout: 0,
+                width: 6,
+                x: 20,
+                xalign: "start",
+                y: 110,
+                yalign: "start",
+                prefferedLineWidth: 1,
+            } as HandleDataType,
+            {
+                borderColor: "green",
+                borderLineWidth: 0.8,
+                borderRadius: "20%",
+                borderType: "dotted",
+                description: "Source",
+                functions: [
+                    "an_common"
+                ],
+                height: 10,
+                hid: "S",
+                name: "Source",
+                position: "left",
+                postype: "bottom",
+                tolVmax: 0,
+                tolVmin: 0,
+                type: "source",
+                Vout: 0,
+                width: 6,
+                x: 31,
+                xalign: "start",
+                y: 110,
+                yalign: "start",
+                prefferedLineWidth: 1,
+            } as HandleDataType,
+        ]
+    } as ComponentDataType,
+}
