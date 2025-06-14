@@ -34,8 +34,8 @@ Here is a short description of how to do a PR:
 * Set the upstream branch via `git push --set-upstream origin <pr_branch>` (replacing <pr_branch> with the name you used before)
 * Work on your local version. Test everything.
 * Before doing any commits, ensure that email address and name configured in git are the same as your GitHub account name and email address used for this account.  Otherwise you won’t be able to sign CLA and your PR cannot be merged. For that check the output of `git config --global user.name` and `git config --global user.email`. You can change them using `git config --global user.name “YourGitHubUserName”` and `git config --global user.email “YourEmailUsedForGitHubAccount”`
-* Use command like `git add -all`, then `git commit` and then `git push` to push the changes. After git push, the changes are uploaded to github in your fork/your branch.
-* Go to Github to your fork and your branch, then use “Contribute” menu and there “Open pull request” button.
+* Use command like `git add -all`, then `git commit` and then `git push` to push the changes. After git push, the changes are uploaded to github in your fork/your branch
+* Go to Github to your fork and your branch, then use “Contribute” menu and there “Open pull request” button
 
 # Copyright
 (c) Wladislaw Waag, info@myhome-control.de
