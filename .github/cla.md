@@ -12,19 +12,25 @@ By making a contribution to this project, You certify that:
 If You are an employee and have created the Contribution as part of your employment, You need to have Your employer approve this Agreement or sign the Entity version of this document. If You do not own the Copyright in the entire work of authorship, any other author of the Contribution should also sign this – in any event, please contact Us at info@myhome-control.de before contributing.
 ## 1. Definitions
 "You" means the individual Copyright owner who Submits a Contribution to Us.
+
 "Contribution" means any original work of authorship, including any original modifications or additions to an existing work of authorship, Submitted by You to Us, in which You own the Copyright.
+
 "Copyright" means all rights protecting works of authorship, including copyright, moral and neighboring rights, as appropriate, for the full term of their existence.
+
 "Material" means the software or documentation made available by Us to third parties. When this Agreement covers more than one software project, the Material means the software or documentation to which the Contribution was Submitted. After You Submit the Contribution, it may be included in the Material.
+
 "Submit" means any act by which a Contribution is transferred to Us by You by means of tangible or intangible media, including but not limited to electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, Us, but excluding any transfer that is conspicuously marked or otherwise designated in writing by You as "Not a Contribution."
+
 "Documentation" means any non-software portion of a Contribution.
+
 ## 2. License grant
 ### 2.1 Copyright license to Us
 Subject to the terms and conditions of this Agreement, You hereby grant to Us a worldwide, royalty-free, NON-exclusive, perpetual and irrevocable (except as stated in Section 8.2) license, with the right to transfer an unlimited number of non-exclusive licenses or to grant sublicenses to third parties, under the Copyright covering the Contribution to use the Contribution by all means, including, but not limited to: 
-•	publish the Contribution,
-•	modify the Contribution,
-•	prepare derivative works based upon or containing the Contribution and/or to combine the Contribution with other Materials,
-•	reproduce the Contribution in original or modified form,
-•	distribute, to make the Contribution available to the public, display and publicly perform the Contribution in original or modified form.
+* publish the Contribution,
+*	modify the Contribution,
+*	prepare derivative works based upon or containing the Contribution and/or to combine the Contribution with other Materials,
+*	reproduce the Contribution in original or modified form,
+*	distribute, to make the Contribution available to the public, display and publicly perform the Contribution in original or modified form.
 ### 2.2 Moral rights
 Moral Rights remain unaffected to the extent they are recognized and not waivable by applicable law. Notwithstanding, You may add your name to the attribution mechanism customary used in the Materials you Contribute to, such as the header of the source code files of Your Contribution, and We will respect this attribution when using Your Contribution.
 ## 3. Patents
@@ -39,12 +45,19 @@ TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU OR WE BE
 ## 6. Approximation of disclaimer and damage waiver
 IF THE DISCLAIMER AND DAMAGE WAIVER MENTIONED IN SECTION 4. AND SECTION 5. CANNOT BE GIVEN LEGAL EFFECT UNDER APPLICABLE LOCAL LAW, REVIEWING COURTS SHALL APPLY LOCAL LAW THAT MOST CLOSELY APPROXIMATES AN ABSOLUTE WAIVER OF ALL CIVIL OR CONTRACTUAL LIABILITY IN CONNECTION WITH THE CONTRIBUTION.
 ## 7. Term
-### 7.1 This Agreement shall come into effect upon Your acceptance of the terms and conditions. After providing Us Your Submit, You will be asked to confirm Your acceptance of the terms and conditions by leaving “I have read the CLA Document and I hereby sign the CLA” comment or by writing Us an email with this comment.
-### 7.3 In the event of a termination of this Agreement Sections 4, 5, 6, 7 and 8 shall survive such termination and shall remain in full force thereafter. For the avoidance of doubt, all (sub)licenses that have already been granted for Contributions at the date of the termination shall remain in full force after the termination of this Agreement.
+
+7.1 This Agreement shall come into effect upon Your acceptance of the terms and conditions. After providing Us Your Submit, You will be asked to confirm Your acceptance of the terms and conditions by leaving “I have read the CLA Document and I hereby sign the CLA” comment or by writing Us an email with this comment.
+
+7.2 In the event of a termination of this Agreement Sections 4, 5, 6, 7 and 8 shall survive such termination and shall remain in full force thereafter. For the avoidance of doubt, all (sub)licenses that have already been granted for Contributions at the date of the termination shall remain in full force after the termination of this Agreement.
+
 ## 8 Miscellaneous
-### 8.1 This Agreement and all disputes, claims, actions, suits or other proceedings arising out of this agreement or relating in any way to it shall be governed by the laws of Germany excluding its private international law provisions.
-### 8.2 This Agreement sets out the entire agreement between You and Us for Your Contributions to Us and overrides all other agreements or understandings.
-### 8.3 In case of Your death, this agreement shall continue with Your heirs. In case of more than one heir, all heirs must exercise their rights through a commonly authorized person.
-### 8.4 If any provision of this Agreement is found void and unenforceable, such provision will be replaced to the extent possible with a provision that comes closest to the meaning of the original provision and that is enforceable. The terms and conditions set forth in this Agreement shall apply notwithstanding any failure of essential purpose of this Agreement or any limited remedy to the maximum extent possible under law.
-### 8.5 You agree to notify Us of any facts or circumstances of which you become aware that would make this Agreement inaccurate in any respect.
+8.1 This Agreement and all disputes, claims, actions, suits or other proceedings arising out of this agreement or relating in any way to it shall be governed by the laws of Germany excluding its private international law provisions.
+
+8.2 This Agreement sets out the entire agreement between You and Us for Your Contributions to Us and overrides all other agreements or understandings.
+
+8.3 In case of Your death, this agreement shall continue with Your heirs. In case of more than one heir, all heirs must exercise their rights through a commonly authorized person.
+
+8.4 If any provision of this Agreement is found void and unenforceable, such provision will be replaced to the extent possible with a provision that comes closest to the meaning of the original provision and that is enforceable. The terms and conditions set forth in this Agreement shall apply notwithstanding any failure of essential purpose of this Agreement or any limited remedy to the maximum extent possible under law.
+
+8.5 You agree to notify Us of any facts or circumstances of which you become aware that would make this Agreement inaccurate in any respect.
 
