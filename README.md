@@ -15,6 +15,7 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
    * Test all changes locally
    * Commit a PR
    * Please do **not** use "force-push" while your PR is open!
+- I am not a professional WEB SW developer, this is also the first time at all I used Typescript, React etc. Therefore you will find the code little bit "wild". Feel free to improve! If you want to make substantial structural changes, maybe first discuss it with me. Thanks!
 
 # How to make a PR using git
 
