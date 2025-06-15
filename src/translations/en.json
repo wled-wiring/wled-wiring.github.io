@@ -135,8 +135,8 @@
         "link7Text" : "Buy WLED Controller (worldwide):"
       },
       "contribute" : {
-        "title": "Contribute?",
-        "text" : "If you'd like to contribute, the best way to do so right now is to test the features of this website and send your comments, suggestions for improvement, etc. to info@myhome-control.de. Thank you! Later, after a cleanup, the source code will likely be published, and you can then also contribute by programming."
+        "title": "Contribute/GitHub",
+        "text" : "Contributions are highly appreciated! If you'd like to contribute, please follow the project's GitHub link:"
       }
     },
     "examples": {

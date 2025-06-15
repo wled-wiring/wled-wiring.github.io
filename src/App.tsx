@@ -708,6 +708,8 @@ const FlowApp = () => {
             }}
           >
           {t('footRow.contribute.text')}
+          <br/>
+          <a href="https://github.com/wled-wiring/wled-wiring.github.io" target="_blank" rel="noopener noreferrer">GitHub Link</a>
           </div>
         </div>
       </Modal>

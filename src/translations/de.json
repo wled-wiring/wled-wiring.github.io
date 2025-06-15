@@ -135,8 +135,8 @@
         "link7Text" : "WLED Controller kaufen (Weltweit):"
       },
       "contribute" : {
-        "title": "Mitentwickeln?",
-        "text" : "Wenn Sie beitragen möchten, können Sie aktuell es am besten tun, indem Sie die Funktionen dieser Webseite testen und Ihre Anmerkungen, Verbesserungsvorschläge etc. an info@myhome-control.de senden. Danke! Später nach einer Aufräumaktion wird die Quellcode voraussichtlich veröffentlicht und Sie können dann auch durch Programmieren beitragen."
+        "title": "Mitentwickeln/GitHub",
+        "text" : "Beiträge sind Willkommen! Wenn Sie beitragen möchten, folgen Sie bitte dem GitHub link:"
       }
     },
   
