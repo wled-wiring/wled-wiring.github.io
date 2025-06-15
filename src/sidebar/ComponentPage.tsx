@@ -100,7 +100,7 @@ export const ComponentPage = () => {
                                 <u>{t('sidebar.components.popoverContent.whereToBuy')}</u><ul>
                                 {compData.popover.buyLinks.map((link, index) => {
                                   return <li key={index}>
-                                    <a href={link.url} target="_blank" rel="noopener noreferrer">{link.text}</a>
+                                    <a href={link.url} target="_blank">{link.text}</a>
                                   </li>;
                                 })}
                                 </ul>
