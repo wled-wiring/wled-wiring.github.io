@@ -46,7 +46,6 @@ Here is a short description of how to do a PR:
 * Make a new branch in Github (click on “main” branch, then “View all branches”, then use “New Branch” button). Call it as you want. Later we refer to it as <pr_branch>
 * Clone your repository locally via `git clone https://github.com/<github_user>/wled-wiring.github.io.git` (replacing <github_user> with your GitHub Username)
 * Go to cloned repo (in Windows via `cd wled-wiring.github.io`)
-* Add the upstream repository via `git remote add upstream https://github.com/wled-wiring/wled-wiring.github.io.git`
 * Ensure you are on the branch you created via `git checkout <pr_branch>` (replacing <pr_branch> with the name you want to use for your temporary branch)
 * Set the upstream branch via `git push --set-upstream origin <pr_branch>` (replacing <pr_branch> with the name you used before)
 * Work on your local version. Test everything.
