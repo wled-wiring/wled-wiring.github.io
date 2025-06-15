@@ -17,6 +17,22 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
    * Please do **not** use "force-push" while your PR is open!
 - I am not a professional WEB SW developer, this is also the first time at all I used Typescript, React etc. Therefore you will find the code little bit "wild". Feel free to improve! If you want to make substantial structural changes, maybe first discuss it with me. Thanks!
 
+# Notes on implementation
+*	We call ractflow nodes “components” in wled-wiring tool
+*	We call reactflow edges “wires” in wled-wiring tool
+*	First take a look at type definitions in src\types.ts
+*	Each component type is described by its .ts file (data structure) in src\components\ComponentTypes
+*	All component types must be listed in ComponentList.ts to appear on the side bar
+*	Each component is based on a picture (jpeg, png)
+*	We want to keep the number of “official” component types small (because later we want to introduce the rule based check and simulation for “official” components that will be hard to support for lots of them). To add support for more controllers etc., the idea is to make a customizable user-edited component type and the possibility for users to store and share customized types on https://github.com/wled-development/wled-wiring-store and we would integrate in wled-wiring a “custom component” section.
+*	All components implemented by a single src\components\GeneralComponent.tsx
+*	We use only our custom edge implemented in src\wires\EditableWire.tsx
+*	In reactflow edges have handles to connect nodes to each other. Components (except InfoNode etc.) have handles defined in the component type definition file (src\components\ComponentTypes), in data
+*	In reactflow handles have a position property. We had to modify usage of handles significantly (to implement proper node rotation etc.).  “position” property must be always Position.Left. We use our own property postype ("centered" | "top" | "bottom" | "left" | "right")
+*	 Reactflow does not support proper rotation of the node. The usage of “transform” as given in reactflow example breaks a lot. Therefore, we implemented it differently. The rotation can be only 0, 90, 280 or 270 deg.
+*	We use i18n package for translations, the translations are stored in src\translations.
+*	editor.html and src\editor are just for development purposes now
+
 # How to make a PR using git
 
 Here is a short description of how to do a PR:
