@@ -9,7 +9,7 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
 - This web page uses Typescript, [React](https://react.dev/), [ReactFlow](https://reactflow.dev/) and [ant  design](https://ant.design/). You would need to know these frameworks.
 - Feel free to make a pull request (PR). Please make all PRs against the `main` branch.
 - Please make possibly small pull request and describe them properly. It makes it easier to review.
-- For development we recommend using Visual Studio Code (VSC) with ESLint plugin. In VSC you would need to run `npm run dev` for development.
+- For development we recommend using Visual Studio Code (VSC) with ESLint plugin. In VSC you would need once run `npm install vite`. Then run `npm run dev` for development.
 - When you make a PR:
    * Clone repository, make a **separate branch** for each PR
    * Test all changes locally
