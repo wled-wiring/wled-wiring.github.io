@@ -1,0 +1,15 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+    <filter id="double">
+      <feMorphology in="SourceGraphic" result="a" operator="dilate" radius="1" />
+      <feComposite in="SourceGraphic" in2="a" result="xx" operator="xor" />
+    </filter>
+    
+    <filter id="triple">
+      <feMorphology in="SourceGraphic" result="a" operator="dilate" radius="3" />
+      <feMorphology in="SourceGraphic" result="b" operator="dilate" radius="2" />
+      <feComposite in="SourceGraphic" in2="a" result="aa" operator="xor" />
+      <feComposite in="aa" in2="b" operator="xor" />
+    </filter>
+    </defs>
+</svg>
