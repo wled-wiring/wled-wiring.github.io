@@ -1,8 +1,8 @@
 
 This is the source code of the WLED-WIRING TOOL.
 
-Live web page: [https://wled-wiring.github.io](https://wled-wiring.github.io)
-Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.github.io/tree/gh-pages)
+* Live web page: [https://wled-wiring.github.io](https://wled-wiring.github.io)
+* Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.github.io/tree/gh-pages)
 
 # Guide for contributors:
 - Before contributing please read [CLA (Contributor License Agreement)](https://github.com/wled-wiring/wled-wiring.github.io/blob/main/.cla/cla.md)
@@ -18,8 +18,8 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
 - I am not a professional WEB SW developer, this is also the first time at all I used Typescript, React etc. Therefore you will find the code little bit "wild". Feel free to improve! If you want to make substantial structural changes, maybe first discuss it with me. Thanks!
 
 # Notes on implementation
-*	We call ractflow nodes “components” in wled-wiring tool
-*	We call reactflow edges “wires” in wled-wiring tool
+*	We call ractflow's nodes “components” in wled-wiring tool
+*	We call reactflow's edges “wires” in wled-wiring tool
 *	First take a look at type definitions in src\types.ts
 *	Each component type is described by its .ts file (data structure) in src\components\ComponentTypes
 *	All component types must be listed in ComponentList.ts to appear on the side bar
@@ -32,6 +32,7 @@ Web page data: [gh-pages branch](https://github.com/wled-wiring/wled-wiring.gith
 *	 Reactflow does not support proper rotation of the node. The usage of “transform” as given in reactflow example breaks a lot. Therefore, we implemented it differently. The rotation can be only 0, 90, 280 or 270 deg.
 *	We use i18n package for translations, the translations are stored in src\translations.
 *	editor.html and src\editor are just for development purposes now
+*	We want that the wled-wiring designer tool can be used on devices with mouse (mainly), but also support basic usage on touch devices. Be sure you test your changes on both types.
 
 # How to make a PR using git
 
