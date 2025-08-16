@@ -45,6 +45,20 @@ export const miniOTOFuse: Node = {
             color: "white",
             options: [
                 {
+                    value: 2,
+                    label: "2 A",
+                    img: {url:"./miniOTO_2A.jpg", width: 60, height: 89} as ImageDataType,
+                    x: 0,
+                    y:0,
+                },
+				{
+                    value: 3,
+                    label: "3 A",
+                    img: {url:"./miniOTO_3A.jpg", width: 60, height: 89} as ImageDataType,
+                    x: 0,
+                    y:0,
+                },
+				{
                     value: 4,
                     label: "4 A",
                     img: {url:"./miniOTO_4A.jpg", width: 60, height: 89} as ImageDataType,
