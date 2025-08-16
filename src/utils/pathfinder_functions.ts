@@ -71,6 +71,7 @@ export function getMatrixIndexForNodeHandle(nodeDim: {x:number, y:number, w:numb
     // special case: if (x,y) is left from x0 (left node border), then the handle is outside of node (probably special case of selectedField with image outside of node)
     // then take next matrix on the left of x, otherwise on the left of x0
     matrix_index_x = findLastIndex(x_arr, (element)=>element<=Math.min(x0,x))-1;
+    if(matrix_index_x<0) matrix_index_x=0;
     matrix_index_y = findLastIndex(y_arr, (element)=>element<=y);
     while(matrix[matrix_index_x][matrix_index_y]==0) {
       matrix_index_x=matrix_index_x-1;
@@ -79,6 +80,9 @@ export function getMatrixIndexForNodeHandle(nodeDim: {x:number, y:number, w:numb
     // right is smallest distance
     matrix_index_x = x_arr.findIndex((element)=>element>Math.max(x,x1));
     matrix_index_y = findLastIndex(y_arr, (element)=>element<=y);
+    if(matrix_index_x>=matrix.length) matrix_index_x=matrix.length-1;
+    //console.log("matrix_index_x, matrix_index_y:", matrix_index_x, matrix_index_y);
+    //console.log(matrix.length, matrix[0].length);
     while(matrix[matrix_index_x][matrix_index_y]==0) {
       matrix_index_x=matrix_index_x+1;
     }
@@ -194,6 +198,15 @@ export function createMatrix(nodes:Node[]):{x_arr: number[], y_arr:number[], mat
     }
 
   })
+  // additionally consider solder joints if they outside the grid, add grid lines
+  nodes.forEach((node)=>{
+    if(node.data?.technicalID=="SolderJoint") {
+      const x0=Math.round((node.position.x-MARGIN)*32)/32;
+      const y0=Math.round((node.position.y-MARGIN)*32)/32;
+      if(x0>Math.max(...x_arr_1) || x0<Math.min(...x_arr_1)) x_arr_1.push(x0);
+      if(y0>Math.max(...y_arr_1) || y0<Math.min(...y_arr_1)) y_arr_1.push(y0);
+    }
+  })
   x_arr=x_arr_1.sort((a,b)=>a-b);
   //console.log("xarr", x_arr);
   y_arr=y_arr_1.sort((a,b)=>a-b);
@@ -206,7 +219,7 @@ export function createMatrix(nodes:Node[]):{x_arr: number[], y_arr:number[], mat
   y_arr.push(y_arr[y_arr.length-1]+ADDSPACE);
 
   matrix=Array(x_arr.length-1).fill(null).map(() => Array(y_arr.length-1).fill(1));
-  // define overlaps
+  // define overlaps (matrix elements where there is a node or part of the node)
   const MARGIN1=MARGIN-1; // must be smaller
   nodes.forEach((node)=>{
     if(node.data?.technicalID!="SolderJoint" && node.data?.technicalID!="InfoNode" && node.data?.technicalID!="WireInfoNode") {
