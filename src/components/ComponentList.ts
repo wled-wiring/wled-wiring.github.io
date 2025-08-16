@@ -50,6 +50,7 @@ import {ESP32C3_supermini} from "./ComponentTypes/ESP32C3_supermini.ts";
 import {WS2815_12V_30LPM} from "./ComponentTypes/WS2815_12V_30LPM.ts";
 import {WS2805_24V_60LPM} from "./ComponentTypes/WS2805_24V_60LPM.ts";
 import {WS2805_12V_60LPM} from "./ComponentTypes/WS2805_12V_60LPM.ts";
+import {MHC_SwitchBoard} from "./ComponentTypes/MHC_SwitchBoard.ts";
 
 
 export const ComponentList = [
@@ -86,6 +87,7 @@ export const ComponentList = [
     Router,
     AUDIO_SOURCE,
     MHC_V63,
+    MHC_SwitchBoard,
     MHC_Relay12V,
     MHC_Relay5V,
     MHC_Relay24V,
