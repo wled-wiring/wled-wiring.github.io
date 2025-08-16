@@ -305,6 +305,11 @@
       "description": "A professional WLED shield for 5V or 12V addressable LEDs. Includes SN74AHCT level shifter, fuse, capacitor. Optional accessories include INMP441 microphone, line-in adapter, and USB adapter. Can be used with ESP8266, ESP32, ESP32-C3, or ESP32-S3 in D1 mini format.",
       "descriptionShort": "for ESP32-xx, ESP8266"
     },
+    "MHC_SwitchBoard": {
+			"name": "WLED switch board",
+			"description": "A better/modern alternative to relais board for switching LEDs completely off.",
+      "descriptionShort": "universal for 5-24V"
+		},
     "MHC_Relay5V": {
       "name": "5V Relay Board",
       "description": "A professional relay board for use with 5V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",

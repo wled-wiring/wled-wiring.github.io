@@ -307,6 +307,11 @@
 			"description": "Ein professionelles WLED-Shield für 5V oder 12V adressierbare LEDs. Beinhaltet SN74AHCT Level Shifter, Sicherung, Kondensator. Als optionales Zubehör können INMP441 Mikrofon, Line-In Adapter sowie USB Adapter angeschlossen werden. Kann mit ESP8266, ESP32, ESP32-C3 oder EPS32-S3 in D1 mini Format betrieben werden.",
       "descriptionShort": "für ESP32-xx, ESP8266"
 		},
+    "MHC_SwitchBoard": {
+			"name": "WLED Switch Board",
+			"description": "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten.",
+      "descriptionShort": "universell für 5-24V"
+		},
 		"MHC_Relay5V": {
 			"name": "5V Relais Board",
 			"description": "Ein professionelles Relais-Board für die Verwendung in Kombination mit 5V adressierbaren LEDs. Es erlaubt die 5V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
