@@ -226,7 +226,7 @@ const FlowApp = () => {
       const targetNode=reactFlow.getNode(params.target);
       const targetNodeData=targetNode?.data as ComponentDataType;
       // set color of the target handle if it has property changeColorAutomatically (for example SolderJoint)
-      if(targetNodeData.handles) {
+      if(targetNodeData && targetNodeData.handles && targetNodeData.handles.length>0) {
         if(targetNodeData.handles[0].changeColorAutomatically) {
           const newHandles=structuredClone(targetNodeData.handles);
           newHandles[0].borderColor=color;
