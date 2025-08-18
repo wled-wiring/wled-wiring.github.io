@@ -86,7 +86,7 @@ export const MHC_V43: Node = {
             },
             {
             technicalID: "LineInMic",
-            name: "LineIn/Mic: ",
+            name: "Adapter/mic: ",
             displayName: false,
             selectedValue: 0,
             unit: "",
@@ -115,6 +115,13 @@ export const MHC_V43: Node = {
                     label: "Line-In",
                     img: {url:"./MHC_LineInToI2S.png", width: 166, height: 102} as ImageDataType,
                     x: -112,
+                    y: 82,
+                },
+                {
+                    value: 3,
+                    label: "RS-485/DMX",
+                    img: {url:"./MHC_RS485DMX.png", width: 166, height: 102} as ImageDataType,
+                    x: -126,
                     y: 82,
                 },
             ],
@@ -398,7 +405,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 88,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "green",
@@ -423,7 +430,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 99,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "green",
@@ -448,7 +455,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 110,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "red",
@@ -473,7 +480,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 88,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "black",
@@ -498,7 +505,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 99,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "green",
@@ -523,7 +530,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 110,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "black",
@@ -548,7 +555,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 88,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "red",
@@ -573,7 +580,7 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 99,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "green",
@@ -598,14 +605,14 @@ export const MHC_V43: Node = {
                 "xalign": "start",
                 "y": 110,
                 "yalign": "start",
-                hideConditions: [{selectHID: "LineInMic", values: [1, 2]}]
+                hideConditions: [{selectHID: "LineInMic", values: [1, 2, 3]}]
             },
             {
                 "borderColor": "green",
                 "borderLineWidth": 0.8,
                 "borderRadius": "20%",
                 "borderType": "dotted",
-                "description": "Digital In/Out (be crafeul: strapping pin, enters serial bootloader when pulled LOW during reset)",
+                "description": "Digital In/Out (be careful: strapping pin, enters serial bootloader when pulled LOW during reset)",
                 "functions": [
                     "dig_in", "dig_out"
                 ],
@@ -938,7 +945,7 @@ export const MHC_V43: Node = {
                 "hid": "DAT_1",
                 "name": "Data out (GPIO 16)",
                 "position": "left",
-                "postype": "right",
+                "postype": "centered",
                 "tolVmax": 0,
                 "tolVmin": 0,
                 "type": "source",
@@ -1274,7 +1281,7 @@ export const MHC_V43: Node = {
                 "y": 157,
                 "yalign": "start",
                 prefferedLineWidth: 3,
-                hideConditions: [{selectHID: "LineInMic", values: [0, 1]}]
+                hideConditions: [{selectHID: "LineInMic", values: [0, 1, 3]}]
             },
             {
             "borderColor": "#8c8c8c",
@@ -1327,6 +1334,162 @@ export const MHC_V43: Node = {
             "yalign": "start",
             prefferedLineWidth: 5,
             hideConditions: [{selectHID: "Ethernet", values: [0]}]
+        },
+        {
+            "borderColor": "green",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 1, B",
+            "functions": [
+                "rs485_B"
+            ],
+            "height": 12,
+            "hid": "RS485CH1B",
+            "name": "Channel 1, B",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 12,
+            "tolVmin": -7,
+            "type": "source",
+            "Vout": 5,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 112,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
+        },
+        {
+            "borderColor": "black",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 1, GND",
+            "functions": [
+                "gnd"
+            ],
+            "height": 12,
+            "hid": "RS485CH1GND",
+            "name": "Channel 1, GND",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 0,
+            "tolVmin": 0,
+            "type": "source",
+            "Vout": 0,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 124,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
+        },
+        {
+            "borderColor": "green",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 1, A",
+            "functions": [
+                "rs485_A"
+            ],
+            "height": 12,
+            "hid": "RS485CH1A",
+            "name": "Channel 1, A",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 12,
+            "tolVmin": -7,
+            "type": "source",
+            "Vout": 5,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 137,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
+        },
+        {
+            "borderColor": "green",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 2, B",
+            "functions": [
+                "rs485_B"
+            ],
+            "height": 12,
+            "hid": "RS485CH2B",
+            "name": "Channel 2, B",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 12,
+            "tolVmin": -7,
+            "type": "source",
+            "Vout": 5,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 150,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
+        },
+        {
+            "borderColor": "black",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 2, GND",
+            "functions": [
+                "gnd"
+            ],
+            "height": 12,
+            "hid": "RS485CH2GND",
+            "name": "Channel 2, GND",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 0,
+            "tolVmin": 0,
+            "type": "source",
+            "Vout": 0,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 162,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
+        },
+        {
+            "borderColor": "green",
+            "borderLineWidth": 1,
+            "borderRadius": "20%",
+            "borderType": "dotted",
+            "description": "Channel 2, A",
+            "functions": [
+                "rs485_A"
+            ],
+            "height": 12,
+            "hid": "RS485CH2A",
+            "name": "Channel 2, A",
+            "position": "left",
+            "postype": "left",
+            "tolVmax": 12,
+            "tolVmin": -7,
+            "type": "source",
+            "Vout": 5,
+            "width": 25,
+            "x": -113,
+            "xalign": "start",
+            "y": 175,
+            "yalign": "start",
+            prefferedLineWidth: 2,
+            hideConditions: [{selectHID: "LineInMic", values: [0, 1, 2]}]
         },
         ]
     } as ComponentDataType,
