@@ -141,9 +141,10 @@
     },
   
   "examples": {
-    "example1": "Beispiel 1",
-    "example2": "Beispiel 2",
-    "example3": "Beispiel 3"
+    "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
+      "example2": "ABC! WLED Controller + 24V LED Strip",
+      "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
+      "example4": "ABC! WLED Controller + Long Range Extension"
   },
   
   "compData": {
@@ -262,6 +263,11 @@
 			"description": "USB Netzteil mit 5V Ausgangsspannung und wählbarem Strom bis zu 5A.",
       "descriptionShort": "5V, wählbarerer I"
 		},
+    "PSU_USB_WIRES": {
+			"name": "USB Netzteil",
+			"description": "USB Netzteil mit 5V Ausgangsspannung, wählbarem Strom bis zu 5A und separaten +/- Leitungen",
+      "descriptionShort": "5V, separate +/- Leitungen"
+		},
 		"Resistor": {
 			"name": "Widerstand",
 			"description": "Elektrischer Widerstand wählbarer Größe.",
@@ -311,6 +317,11 @@
 			"name": "WLED Switch Board",
 			"description": "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten.",
       "descriptionShort": "universell für 5-24V"
+		},
+    "MHC_RS485_R": {
+			"name": "RS-485 Empfänger",
+			"description": "RS-485 Empfänger für die Verwendung als Range Extender Empfänger mit dem RS-485 Adapter.",
+      "descriptionShort": "RS-485 Empfänger"
 		},
 		"MHC_Relay5V": {
 			"name": "5V Relais Board",

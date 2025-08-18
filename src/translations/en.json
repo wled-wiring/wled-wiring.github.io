@@ -140,9 +140,10 @@
       }
     },
     "examples": {
-      "example1": "Example 1",
-      "example2": "Example 2",
-      "example3": "Example 3"
+      "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
+      "example2": "ABC! WLED Controller + 24V LED Strip",
+      "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
+      "example4": "ABC! WLED Controller + Long Range Extension"
     },
     "compData": {
     "Router": {
@@ -260,6 +261,11 @@
       "description": "USB power supply with 5V output voltage and selectable current up to 5A.",
       "descriptionShort": "5V, selectable I"
     },
+    "PSU_USB_WIRES": {
+			"name": "USB Power Supply",
+			"description": "USB power supply with 5V output voltage, selectable current up to 5A, and separate +/- wires.",
+      "descriptionShort": "5V, separate +/- wires"
+		},
     "Resistor": {
       "name": "Resistor",
       "description": "Electrical resistor of selectable value.",
@@ -309,6 +315,11 @@
 			"name": "WLED switch board",
 			"description": "A better/modern alternative to relais board for switching LEDs completely off.",
       "descriptionShort": "universal for 5-24V"
+		},
+    "MHC_RS485_R": {
+			"name": "RS-485 receiver",
+			"description": "RS-485 receiver for use as a range extender receiver with the RS-485 adapter.",
+      "descriptionShort": "RS-485 receiver"
 		},
     "MHC_Relay5V": {
       "name": "5V Relay Board",
