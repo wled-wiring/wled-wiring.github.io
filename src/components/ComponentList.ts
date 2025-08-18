@@ -6,6 +6,7 @@ import { ESP32C3D1mini } from "./ComponentTypes/ESP32C3D1mini.ts";
 import { ESP32S3D1mini } from "./ComponentTypes/ESP32S3D1mini.ts";
 import { miniOTOFuse } from "./ComponentTypes/miniOTOFuse.ts";
 import { PSU_USB } from "./ComponentTypes/PSU_USB";
+import { PSU_USB_WIRES } from "./ComponentTypes/PSU_USB_WIRES";
 import { SolderJoint } from "./ComponentTypes/SolderJoint";
 import { InfoNode } from "./ComponentTypes/InfoNode";
 import { LineBoxNode } from "./ComponentTypes/LineBoxNode";
@@ -51,7 +52,7 @@ import {WS2815_12V_30LPM} from "./ComponentTypes/WS2815_12V_30LPM.ts";
 import {WS2805_24V_60LPM} from "./ComponentTypes/WS2805_24V_60LPM.ts";
 import {WS2805_12V_60LPM} from "./ComponentTypes/WS2805_12V_60LPM.ts";
 import {MHC_SwitchBoard} from "./ComponentTypes/MHC_SwitchBoard.ts";
-
+import {MHC_RS485_R} from "./ComponentTypes/MHC_RS485_R.ts";
 
 export const ComponentList = [
     ESP32D1mini,
@@ -64,6 +65,7 @@ export const ComponentList = [
     miniOTOFuse,
     FUSE_Board,
     PSU_USB,
+    PSU_USB_WIRES,
     PSU_HP,
     PLUG_LNPE,
     SN74AHCT125N,
@@ -91,6 +93,7 @@ export const ComponentList = [
     MHC_Relay12V,
     MHC_Relay5V,
     MHC_Relay24V,
+    MHC_RS485_R,
     WS2812B_5V_30LPM,
     WS2813_5V_60LPM,
     WS2814_12V_30LPM,
