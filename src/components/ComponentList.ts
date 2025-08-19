@@ -53,6 +53,8 @@ import {WS2805_24V_60LPM} from "./ComponentTypes/WS2805_24V_60LPM.ts";
 import {WS2805_12V_60LPM} from "./ComponentTypes/WS2805_12V_60LPM.ts";
 import {MHC_SwitchBoard} from "./ComponentTypes/MHC_SwitchBoard.ts";
 import {MHC_RS485_R} from "./ComponentTypes/MHC_RS485_R.ts";
+import {MHC_PWMBoard} from "./ComponentTypes/MHC_PWMBoard.ts";
+import {AN_RGB_24V_120LPM} from "./ComponentTypes/AN_RGB_24V_120LPM.ts";
 
 export const ComponentList = [
     ESP32D1mini,
@@ -90,6 +92,7 @@ export const ComponentList = [
     AUDIO_SOURCE,
     MHC_V63,
     MHC_SwitchBoard,
+    MHC_PWMBoard,
     MHC_Relay12V,
     MHC_Relay5V,
     MHC_Relay24V,
@@ -107,6 +110,7 @@ export const ComponentList = [
     FCOB_24V_784LPM,
     APA102_5V_30LPM,
     AN_WHITE_24V_240LPM,
+    AN_RGB_24V_120LPM,
     AN_RGB_CCT_48V_90LPM,
     ESP32C3_supermini,
 ] as const;
