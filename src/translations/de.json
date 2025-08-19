@@ -114,7 +114,7 @@
         "responsible": "Verantwortlicher: Wladislaw Waag",
         "address": "Adresse: Wasserburger Landstr. 29, 81825 München, Deutschland",
         "contact": "Kontakt: +49 (0) 176 47 11 5206, info@myhome-control.de",
-        "disputeText": "EU-Streitschlichtung: Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:",
+        "disputeText": "",
         "disputeSettlmentText": "Verbraucherstreitbeilegung/Universalschlichtungsstelle: Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
 
       },
@@ -142,9 +142,10 @@
   
   "examples": {
     "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
-      "example2": "ABC! WLED Controller + 24V LED Strip",
-      "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
-      "example4": "ABC! WLED Controller + Long Range Extension"
+    "example2": "ABC! WLED Controller + 24V LED Strip",
+    "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
+    "example4": "ABC! WLED Controller + Long Range Extension",
+    "example5": "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
   },
   
   "compData": {
@@ -315,8 +316,13 @@
 		},
     "MHC_SwitchBoard": {
 			"name": "WLED Switch Board",
-			"description": "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten.",
+			"description": "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten. Beinhaltet Überstrom-, Übertemperatur-, Kurzschluss- und Verpolschutz.",
       "descriptionShort": "universell für 5-24V"
+		},
+    "MHC_PWMBoard": {
+			"name": "WLED PWM Board",
+			"description": "Das Board verwendet MOSFETs um mit PWM Signal analoge LED Streifen anzusteuern. 3 Kanäle je max. 5A. Überstrom- , Übertemperatur-, Kurzschluss- und Verpolschutz.",
+      "descriptionShort": "universell für 12-48V"
 		},
     "MHC_RS485_R": {
 			"name": "RS-485 Empfänger",
@@ -412,6 +418,11 @@
       "name": "Anal. RGB CCT",
 			"description": "Analoges RGB CCT LED Streifen (5050 LEDs), 48V, 90 LEDs/Meter, teilbar in 16.65 cm (15 LEDs)",
       "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM" :{
+      "name": "Anal. RGB ",
+			"description": "Analoges RGB LED Streifen (2835 LEDs), 24V, 120 LEDs/Meter, teilbar in 5 cm (6 LEDs)",
+      "descriptionShort": "24V, 120 LEDs/m"
     },
     "WS2805_24V_60LPM": {
 			"name": "WS2805 RGBW CCT",

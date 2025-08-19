@@ -114,7 +114,7 @@
         "responsible": "Responsible: Wladislaw Waag",
         "address": "Address: Wasserburger Landstr. 29, 81825 Munich, Germany",
         "contact": "Contact: +49 (0) 176 47 11 5206, info@myhome-control.de",
-        "disputeText": "EU dispute settlement: The European Commission provides a platform for online dispute resolution (ODR):",
+        "disputeText": "",
         "disputeSettlmentText": "Consumer dispute settlement / universal arbitration board: We are neither willing nor obliged to participate in dispute settlement proceedings before a consumer arbitration board."
 
       },
@@ -143,7 +143,8 @@
       "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
       "example2": "ABC! WLED Controller + 24V LED Strip",
       "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
-      "example4": "ABC! WLED Controller + Long Range Extension"
+      "example4": "ABC! WLED Controller + Long Range Extension",
+      "example5": "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
     },
     "compData": {
     "Router": {
@@ -313,8 +314,13 @@
     },
     "MHC_SwitchBoard": {
 			"name": "WLED switch board",
-			"description": "A better/modern alternative to relais board for switching LEDs completely off.",
+			"description": "A better/modern alternative to relais board for switching LEDs completely off. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
       "descriptionShort": "universal for 5-24V"
+		},
+    "MHC_PWMBoard": {
+			"name": "WLED PWM board",
+			"description": "The board uses MOSFETs to control analog LED strips with PWM signals. 3 channels, each max. 5A. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
+      "descriptionShort": "universal for 12-48V"
 		},
     "MHC_RS485_R": {
 			"name": "RS-485 receiver",
@@ -410,6 +416,11 @@
       "name": "Anal. RGB CCT",
 			"description": "Analogues RGB CCT LED strip (5050 LEDs), 48V, 90 LEDs/m, segemnts of 16.65 cm (15 LEDs)",
       "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM" :{
+      "name": "Anal. RGB ",
+			"description": "Analogues RGB LED strip (2835 LEDs), 24V, 120 LEDs/m, segments of 5 cm (6 LEDs)",
+      "descriptionShort": "24V, 120 LEDs/m"
     },
     "WS2805_24V_60LPM": {
 			"name": "WS2805 RGBW CCT",
