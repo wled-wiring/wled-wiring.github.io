@@ -658,7 +658,6 @@ const FlowApp = () => {
           {t('footRow.legalNotice.responsible')}<br/>
           {t('footRow.legalNotice.address')}<br/>
           {t('footRow.legalNotice.contact')}<br/><br/>
-          {t('footRow.legalNotice.disputeText')}&nbsp;<a target="_blank" rel="noopener noreferrer" href='https://ec.europa.eu/consumers/odr/'>https://ec.europa.eu/consumers/odr/</a><br/><br/>
           {t('footRow.legalNotice.disputeSettlmentText')}
           </div>
         </div>
