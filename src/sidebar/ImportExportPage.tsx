@@ -256,6 +256,7 @@ export const ImportExportPage = () => {
           {label: t('examples.example2'), value: "examples/example2"},
           {label: t('examples.example3'), value: "examples/example3"},
           {label: t('examples.example4'), value: "examples/example4"},
+          {label: t('examples.example5'), value: "examples/example5"},
         ]}
         onSelect={(value,_) => {
           window.open(getCurrentURL()+'?link='+value, '_blank')?.focus();
