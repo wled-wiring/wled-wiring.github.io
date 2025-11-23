@@ -8,6 +8,11 @@ import { Select } from 'antd';
 // see guide here
 // https://phrase.com/blog/posts/localizing-react-apps-with-i18next/
 
+const languageToCountryCode: Record<string, string> = {
+  en: "GB",
+  de: "DE",
+  zh: "CN",
+};
 
 export default function LocaleSwitcher() {
   const { i18n } = useTranslation();
@@ -27,7 +32,7 @@ export default function LocaleSwitcher() {
           value: code,
           label: <span>
                   <ReactCountryFlag
-                      countryCode={code=="de"?"DE":"GB"}
+                      countryCode={languageToCountryCode[code] || "GB"}
                       svg
                       style={{
                           width: '1.5em',

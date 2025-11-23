@@ -6,6 +6,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 //Import translation files
 import translationEnglish from "./translations/en.json";
 import translationGerman from "./translations/de.json";
+import translationChinese from "./translations/zh.json"
 
 const resources = {
     en: {
@@ -14,11 +15,15 @@ const resources = {
     de: {
         main: translationGerman,
     },
+    zh: {
+        main: translationChinese,
+    },
 }
 
 export const supportedLngs = {
   en: "English",
   de: "Deutsch",
+  zh: "简体中文",
 };
 
 i18next

@@ -1,0 +1,436 @@
+{
+    "title": "欢迎来到 WLED 布线设计器！",
+    "dragComponents": "将组件拖到工作区以开始设计，或加载示例图纸",
+    "componentGroupTypes": {
+      "controller": "控制器",
+      "led": "LED",
+      "psu": "电源",
+      "levelshifter": "电平转换器",
+      "electronics": "电子元件/零件",
+      "others": "其他组件"
+    },
+    "buttons": {
+      "rotate": "旋转",
+      "longer": "放大",
+      "shorter": "缩小"
+    },
+    "tooltip": {
+      "deleteWire": "删除此连接",
+      "selectColor": "选择颜色",
+      "selectWireLength": "选择导线长度（物理尺寸）",
+      "selectWireCrossSection": "选择导线横截面积（物理尺寸）",
+      "selectWireWidth": "选择导线宽度（用于绘制）",
+      "putWireInfoNode": "添加导线信息框",
+      "startConnection": "开始连接",
+      "closeConnection": "完成连接",
+      "rotateLeft": "向左旋转",
+      "rotateRight": "向右旋转",
+      "delete": "删除",
+      "copy": "复制",
+      "enlarge": "延长",
+      "shorten": "缩短",
+      "switchFilled": "填充 / 仅边框",
+      "increaseTextSize": "增大文本大小",
+      "decreaseTextSize": "减小文本大小",
+      "selectMulti" : "多选",
+      "deleteSelected": "删除选中项",
+      "switchConnLineType": "更改连接类型",
+      "switchConnLineTypeHINT": "提示：更改连接类型"
+    },
+    "popover":{
+      "selectWireLength": "选择导线长度（物理尺寸）：",
+      "selectWireCrossSection": "选择导线横截面积（物理尺寸）：",
+      "selectWireWidth": "选择导线宽度（用于绘制）：",
+      "startConnection": "请选择起始引脚/端子：",
+      "closeConnection": "请选择结束引脚/端子："
+    },
+    "select":{
+      "startConnection": "选择引脚 / 端子",
+      "closeConnection": "选择引脚 / 端子"
+    },
+    "message":{
+      "startPinSelected": "起始引脚/端子已选择。现在请选择目标引脚/端子。",
+      "closePinSelected": "连接已就绪。",
+      "startPinFirst": "请先选择起始引脚/端子！",
+      "theSamePin": "起始引脚/端子与结束引脚/端子相同！",
+      "compAddSuccess" : "已添加到图纸！",
+      "loadModelSuccess" : "WLED 布线模型已成功加载！",
+      "loadModelSuccessShort" : "成功",
+      "loadingModel" : "正在从文件链接加载布线模型...",
+      "loadModelError" : "无法加载 WLED 布线模型。此链接可能已失效。",
+      "loadModelErrorShort" : "错误",
+      "loadModelWrongLink": "链接错误！请检查。"
+    },
+    "sidebar": {
+      "components": {
+        "title": "组件",
+        "popoverTitle": "组件信息",
+        "addButtonText": "添加到图纸",
+        "popoverContent": {
+          "whereToBuy": "在哪里购买？",
+          "listOfConnections": "引脚/端子列表",
+          "listOfConnectionsHeading1": "引脚 / 端子",
+          "listOfConnectionsHeading2": "描述"
+        }
+      },
+      "check" : {
+        "title": "检查布线图",
+        "comingSoon": "基于规则的检查将在未来几个月内实现。敬请期待！"
+      },
+      "simulation" : {
+        "title": "电流模拟",
+        "comingSoon": "电源分配模拟将在未来实现。敬请期待！"
+      },
+      "export": {
+        "title": "保存 / 导出 / 示例",
+        "buttonSave": "将模型保存为 JSON 文件",
+        "buttonExportPNG": "将模型导出为 PNG 文件",
+        "buttonExportJPEG": "将模型导出为 JPEG 文件",
+        "buttonExportSVG": "将模型导出为 SVG 文件",
+        "buttonOpen": "从 JSON 文件加载模型",
+        "buttonShare": "生成模型的公开链接",
+        "dividerExport": "导出",
+        "dividerSaveOpen": "保存 / 打开",
+        "dividerShare": "分享",
+        "dividerExamples":"加载示例",
+        "share" : {
+          "modalTitle": "分享模型 - 生成链接",
+          "modalLinkText": "链接：",
+          "modalLinkBeingGenerated": "... 正在生成 ... 请稍候 ...",
+          "modalButtonOK": "确定",
+          "modalButtonClose": "关闭",
+          "modalButtonCancel": "取消",
+          "modalAttentionText": "当您点击\"确定\"时，您的模型以及所有输入的数据将被传输到公共服务器（https://github.com）并保存在那里。为此，您的模型数据和 IP 地址也将被传输到 https://wled-api.myhome-control.de/。然后您将看到一个链接，可用于与他人分享模型。",
+          "modalLinkError": "发生错误！如有必要，请重试。",
+          "tooltipCopyLink": "复制链接到剪贴板",
+          "messageLinkCopied": "已复制到剪贴板！"
+        },
+        "selectExample": "选择示例 ..."
+      }
+    },
+    "footRow": {
+      "legalNotice": {
+        "title": "法律声明",
+        "responsible": "负责人：Wladislaw Waag",
+        "address": "地址：Wasserburger Landstr. 29, 81825 Munich, Germany",
+        "contact": "联系方式：+49 (0) 176 47 11 5206, info@myhome-control.de",
+        "disputeText": "",
+        "disputeSettlmentText": "消费者争议解决 / 通用仲裁委员会：我们既不愿意也没有义务参与消费者仲裁委员会面前的争议解决程序。"
+
+      },
+      "dataPrivacy": {
+        "title": "数据隐私",
+        "text1": "此页面作为 'Github Pages' 的一部分托管和运营。Github 可能收集和处理个人数据，这也可能影响 wled-compile.github.io 网页的访问者。但是，我们对此没有影响。请阅读 Github 隐私声明：",
+        "text2": "此外，一旦您使用'分享'功能，您的 IP 地址、您创建的模型以及您输入的所有数据将被转发到 https://myhome-control.de 和 https://github.com/wled-development/wled-wiring-store。这对于此功能是绝对必要的。https://myhome-control.de 的数据保护声明可在以下位置找到",
+        "text3" : "我们的网站包含指向我们无法控制的外部网站的链接。我们不能对此第三方内容承担任何责任。相应页面的提供者或运营商始终对链接页面的内容负责。链接页面在链接时已检查可能的法律违规行为。当时无法识别非法内容。如果我们发现任何法律违规行为，我们将立即删除相关链接。"
+      },
+      "links" : {
+        "title": "有用的链接",
+        "link1Text" : "官方 WLED 文档：",
+        "link2Text" : "WLED 常见问题：",
+        "link3Text" : "WLED 计算器：",
+        "link4Text" : "扩展 WLED 在线安装程序：",
+        "link5Text" : "在线编译您自己的 WLED 软件：",
+        "link6Text" : "购买 WLED 控制器（德国）：",
+        "link7Text" : "购买 WLED 控制器（全球）："
+      },
+      "contribute" : {
+        "title": "贡献/GitHub",
+        "text" : "非常感谢您的贡献！如果您想贡献，请访问项目的 GitHub 链接："
+      }
+    },
+    "examples": {
+      "example1": "ESP32 微控制器 + 电平转换器 + DC/DC + 24V LED 灯带",
+      "example2": "ABC! WLED 控制器 + 24V LED 灯带",
+      "example3": "ABC! WLED 控制器 + 长 24V LED 灯带 + 线路输入 + 以太网",
+      "example4": "ABC! WLED 控制器 + 长距离扩展",
+      "example5": "ABC! WLED 控制器 + 模拟 24V LED 灯带 + PWM 板"
+    },
+    "compData": {
+    "Router": {
+      "name": "WAN/LAN 路由器",
+      "description": "通用 WLAN/LAN 路由器。",
+      "descriptionShort": "通用"
+    },
+    "Button": {
+      "name": "按钮",
+      "description": "通用按钮。按下并保持时，触点闭合。释放按钮时，触点立即打开。不要与开关混淆。",
+      "descriptionShort": "通用"
+    },
+    "DC_JACK_FEMALE": {
+      "name": "DC 端子",
+      "description": "用于将带 DC 端子的电源分离出正极（+）和负极（-）导线。",
+      "descriptionShort": "最高 3A"
+    },
+    "Elko": {
+      "name": "电解电容",
+      "description": "具有可选电容的电解电容。注意极性！通常用于稳定 LED 或其他组件的电源。",
+      "descriptionShort": "可选电容"
+    },
+    "ESP32_30P": {
+      "name": "ESP32 微控制器 30 引脚",
+      "description": "ESP32 控制器，30 引脚版本。也称为 NodeMCU。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32_38P": {
+      "name": "ESP32 微控制器 38 引脚",
+      "description": "ESP32 控制器，38 引脚版本。也称为 NodeMCU。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32C3D1mini": {
+      "name": "ESP32-C3 D1 mini",
+      "description": "D1 mini 格式的 ESP32-C3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32C3_supermini": {
+			"name": "ESP32-C3 supermini",
+			"description": "ESP32-C3 控制器，supermini 版本。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+		},
+    "ESP32D1mini": {
+      "name": "ESP32 D1 mini",
+      "description": "D1 mini 型号的 ESP32 控制器。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32S3D1mini": {
+      "name": "ESP32-S3 D1 mini",
+      "description": "D1 mini 型号的 ESP32-S3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+    },
+    "ESP8266D1mini": {
+      "name": "ESP8266 D1 mini",
+      "description": "D1 mini 型号的 ESP8266 控制器。不再推荐用于新的 WLED 项目（性能太弱）。",
+      "descriptionShort": "控制器"
+    },
+    "InfoNode": {
+      "name": "文本",
+      "description": "用于在图纸中添加标签或注释的文本元素。",
+      "descriptionShort": "用于注释等"
+    },
+    "INMP441": {
+      "name": "INMP441 麦克风",
+      "description": "INMP441 麦克风。它是 WLED 支持的数字麦克风，用于声音反应效果，提供高质量。",
+      "descriptionShort": "数字"
+    },
+    "IR_KY022": {
+      "name": "KY022 红外接收器",
+      "description": "KY-022 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
+      "descriptionShort": "红外"
+    },
+    "IR_TSOP38238": {
+      "name": "TSOP38238 红外接收器",
+      "description": "TSOP38238 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
+      "descriptionShort": "红外"
+    },
+    "Kerko": {
+      "name": "陶瓷电容",
+      "description": "具有可选电容的陶瓷电容。通常用于开关电子电路的输入端（电源和地之间）以抑制噪声。应使用尽可能短的引线/走线连接。",
+      "descriptionShort": "可选电容"
+    },
+    "LineBoxNode": {
+      "name": "矩形",
+      "description": "用于绘制矩形（填充或框）的元素。",
+      "descriptionShort": "绘图元素"
+    },
+    "miniOTOFuse": {
+      "name": "保险丝",
+      "description": "来自汽车的保险丝。适用于最高 32V 的电压。仅从专业经销商处购买，因为市场上许多廉价仿制品无法正常工作。WLED 计算器（www.wled-calculator.github.io）可用于选型。",
+      "descriptionShort": "可选 4-30A"
+    },
+    "FUSE_Board": {
+			"name": "保险丝板",
+			"description": "用于电源分配和熔断保护。",
+      "descriptionShort": "4 通道"
+		},
+    "PIR_HCSR501": {
+      "name": "HC-SR501 PIR 传感器",
+      "description": "HCSR501 型 PIR 运动传感器。可与 WLED 一起使用。",
+      "descriptionShort": "运动检测器"
+    },
+    "PLUG_LNPE": {
+      "name": "电源插头",
+      "description": "用于 230V 电源插座的插头。警告：有生命危险！仅在您具备相应知识时使用。",
+      "descriptionShort": "用于 230V 交流电"
+    },
+    "PSU_HP": {
+      "name": "电源",
+      "description": "具有可调电压/电流（功率）的电源。这些通常用于大型设置的高性能电源。电源插头必须单独连接。",
+      "descriptionShort": "可调 V/I"
+    },
+    "PSU_USB": {
+      "name": "USB 电源",
+      "description": "USB 电源，输出电压 5V，可调电流最高 5A。",
+      "descriptionShort": "5V，可调 I"
+    },
+    "PSU_USB_WIRES": {
+			"name": "USB 电源",
+			"description": "USB 电源，输出电压 5V，可调电流最高 5A，带独立 +/- 线。",
+      "descriptionShort": "5V，独立 +/- 线"
+		},
+    "Resistor": {
+      "name": "电阻器",
+      "description": "具有可调阻值的电阻器。",
+      "descriptionShort": "可调电阻"
+    },
+    "SN74AHCT125N": {
+      "name": "电平转换器",
+      "description": "WLED 推荐的电平转换器类型。电平转换器是将微控制器的控制信号（3.3V）转换为可寻址 LED 的 LED 数据输入（5V）电平所必需的。没有电平转换器，经常会出现闪烁（12V 和 24V LED 几乎总是如此）。",
+      "descriptionShort": "SN74AHCT125N"
+    },
+    "SolderJoint": {
+      "name": "焊点",
+      "description": "表示焊点，例如用于将线连接在一起。",
+      "descriptionShort": "用于导线等"
+    },
+    "WAGO_2X": {
+      "name": "WAGO 端子 2x",
+      "description": "广泛使用的弹簧夹端子，双向。",
+      "descriptionShort": "弹簧夹"
+    },
+    "WAGO_3X": {
+      "name": "WAGO 端子 3x",
+      "description": "广泛使用的弹簧夹端子，三向。",
+      "descriptionShort": "弹簧夹"
+    },
+    "WireInfoNode": {
+      "name": "导线信息",
+      "description": "关于导线的信息。",
+      "descriptionShort": " "
+    },
+    "WS2812B_5V_30LPM": {
+      "name": "WS2812B RGB",
+      "description": "WS2812 RGB LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "MHC_V43": {
+      "name": "WLED V43 控制器",
+      "description": "用于 5V、12V 或 24V 可寻址 LED 的专业 WLED 控制器。包括 ESP32 微控制器、SN74AHCT 电平转换器、保险丝、电容、EMI 滤波器。可选配件包括以太网适配器、INMP441 麦克风、线路输入适配器和 USB 适配器。",
+      "descriptionShort": "基于 ESP32"
+    },
+    "MHC_V63": {
+      "name": "WLED V63 扩展板",
+      "description": "用于 5V 或 12V 可寻址 LED 的专业 WLED 扩展板。包括 SN74AHCT 电平转换器、保险丝、电容。可选配件包括 INMP441 麦克风、线路输入适配器和 USB 适配器。可与 D1 mini 格式的 ESP8266、ESP32、ESP32-C3 或 ESP32-S3 一起使用。",
+      "descriptionShort": "适用于 ESP32-xx, ESP8266"
+    },
+    "MHC_SwitchBoard": {
+			"name": "WLED 开关板",
+			"description": "继电器板的更好/现代替代品，用于完全关闭 LED。具有过流、过温、短路和反接保护。",
+      "descriptionShort": "通用 5-24V"
+		},
+    "MHC_PWMBoard": {
+			"name": "WLED PWM 板",
+			"description": "该板使用 MOSFET 通过 PWM 信号控制模拟 LED 灯带。3 个通道，每个最大 5A。具有过流、过温、短路和反接保护。",
+      "descriptionShort": "通用 12-48V"
+		},
+    "MHC_RS485_R": {
+			"name": "RS-485 接收器",
+			"description": "RS-485 接收器，用作 RS-485 适配器的范围扩展器接收器。",
+      "descriptionShort": "RS-485 接收器"
+		},
+    "MHC_Relay5V": {
+      "name": "5V 继电器板",
+      "description": "用于 5V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 5V LED"
+    },
+    "MHC_Relay12V": {
+      "name": "12V 继电器板",
+      "description": "用于 12V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 12V LED"
+    },
+    "MHC_Relay24V": {
+      "name": "24V 继电器板",
+      "description": "用于 24V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 24V LED"
+    },
+    "AUDIO_SOURCE": {
+      "name": "音频源",
+      "description": "通用音频信号源。",
+      "descriptionShort": "线路输出"
+    },
+    "LM2596_PCB": {
+      "name": "LM2596 DC/DC",
+      "description": "具有可调输出电压的 DC/DC（降压）转换器。",
+      "descriptionShort": "可调输出"
+    },
+    "IRLZ44N": {
+      "name": "IRLZ44N",
+      "description": "MOSFET。此类型推荐与 WLED 一起使用，可用于控制模拟 LED 灯带。",
+      "descriptionShort": "N 沟道 MOSFET"
+    },
+    "DCDC_mini": {
+      "name": "DC/DC 迷你",
+      "description": "具有可调输出电压的 DC/DC（降压）转换器。",
+      "descriptionShort": "可调输出"
+    },
+    "WS2814_24V_60LPM": {
+			"name": "WS2814 RGBW",
+			"description": "RGBW LED 灯带，可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "24V, 60 LEDs/m"
+		},
+    "WS2813_5V_60LPM": {
+			"name": "WS2813 RGB",
+			"description": "带备份线的 RGB LED 灯带。",
+      "descriptionShort": "5V, 60 LEDs/m"
+		},
+    "WS2815_12V_30LPM": {
+			"name": "WS2815 RGB",
+			"description": "带备份线的 RGB LED 灯带。",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "WS2814_12V_30LPM": {
+			"name": "WS2814 RGBW",
+			"description": "RGBW LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "WS2818_12V_30LPM": {
+			"name": "WS2818 RGB",
+			"description": "RGB LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
+      "descriptionShort": "12V, 30 LEDs/m"
+		},
+    "FCOB_12V_720LPM": {
+			"name": "FCOB RGB",
+			"description": "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
+      "descriptionShort": "12V, 720 LEDs/m"
+		},
+    "FCOB_24V_720LPM": {
+			"name": "FCOB RGB",
+			"description": "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
+      "descriptionShort": "24V, 720 LEDs/m"
+		},
+    "FCOB_24V_784LPM": {
+			"name": "FCOB RGBW",
+			"description": "FCOB RGBW LED 灯带，784 LEDs/m（每米每种颜色 196 个 LED，14 个逻辑 LEDs/m）",
+      "descriptionShort": "24V, 784 LEDs/m"
+		},
+		"APA102_5V_30LPM": {
+			"name": "APA102 RGB",
+			"description": "带时钟信号的 APA102 LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
+      "descriptionShort": "5V, 30 LEDs/m"
+		},
+    "AN_WHITE_24V_240LPM" :{
+      "name": "模拟白光",
+			"description": "模拟 LED 灯带（白色 2835 LED），24V，240 LEDs/m，每段2.5厘米（6 个 LED）",
+      "descriptionShort": "24V, 240 white LEDs/m"
+    },
+    "AN_RGB_CCT_48V_90LPM" :{
+      "name": "模拟 RGB CCT",
+			"description": "模拟 RGB CCT LED 灯带（5050 LED），48V，90 LEDs/m，每段16.65厘米（15 个 LED）",
+      "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM" :{
+      "name": "模拟 RGB",
+			"description": "模拟 RGB LED 灯带（2835 LED），24V，120 LEDs/m，每段5厘米（6 个 LED）",
+      "descriptionShort": "24V, 120 LEDs/m"
+    },
+    "WS2805_24V_60LPM": {
+			"name": "WS2805 RGBW CCT",
+			"description": "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "24V, 60 LEDs/m"
+		},
+    "WS2805_12V_60LPM": {
+			"name": "WS2805 RGBW CCT",
+			"description": "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "12V, 60 LEDs/m"
+		}
+  }
+}
