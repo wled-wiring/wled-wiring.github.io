@@ -1,639 +1,1326 @@
-﻿{
-    "title":  "欢迎来到 WLED 布线设计器！",
-    "dragComponents":  "将组件拖到工作区以开始设计，或加载示例图纸",
-    "componentGroupTypes":  {
-                                "controller":  "控制器",
-                                "led":  "LED",
-                                "psu":  "电源",
-                                "levelshifter":  "电平转换器",
-                                "electronics":  "电子元件/零件",
-                                "others":  "其他组件"
-                            },
-    "buttons":  {
-                    "rotate":  "旋转",
-                    "longer":  "放大",
-                    "shorter":  "缩小"
-                },
-    "tooltip":  {
-                    "deleteWire":  "删除此连接",
-                    "selectColor":  "选择颜色",
-                    "selectWireLength":  "选择导线长度（物理尺寸）",
-                    "selectWireCrossSection":  "选择导线横截面积（物理尺寸）",
-                    "selectWireWidth":  "选择导线宽度（用于绘制）",
-                    "selectWireNetwork":  "选择整个网络",
-                    "clearWireNetwork":  "清除网络选择",
-                    "putWireInfoNode":  "添加导线信息框",
-                    "rerouteWire":  "使用 Pathfinder 重新布线",
-                    "startConnection":  "开始连接",
-                    "closeConnection":  "完成连接",
-                    "rotateLeft":  "向左旋转",
-                    "rotateRight":  "向右旋转",
-                    "delete":  "删除",
-                    "copy":  "复制",
-                    "enlarge":  "延长",
-                    "shorten":  "缩短",
-                    "switchFilled":  "填充 / 仅边框",
-                    "increaseTextSize":  "增大文本大小",
-                    "decreaseTextSize":  "减小文本大小",
-                    "textSize":  "文本大小",
-                    "selectFont":  "选择字体",
-                    "toggleBold":  "切换粗体",
-                    "textAlign":  "文本对齐",
-                    "selectMulti":  "多选",
-                    "deleteSelected":  "删除选中项",
-                    "componentInfo":  "组件信息",
-                    "switchConnLineType":  "更改连接类型",
-                    "switchConnLineTypeHINT":  "提示：更改连接类型"
-                },
-    "popover":  {
-                    "selectWireLength":  "选择导线长度（物理尺寸）：",
-                    "selectWireCrossSection":  "选择导线横截面积（物理尺寸）：",
-                    "selectWireWidth":  "选择导线宽度（用于绘制）：",
-                    "startConnection":  "请选择起始引脚/端子：",
-                    "closeConnection":  "请选择结束引脚/端子："
-                },
-    "select":  {
-                   "startConnection":  "选择引脚 / 端子",
-                   "closeConnection":  "选择引脚 / 端子"
-               },
-    "message":  {
-                    "startPinSelected":  "起始引脚/端子已选择。现在请选择目标引脚/端子。",
-                    "closePinSelected":  "连接已就绪。",
-                    "startPinFirst":  "请先选择起始引脚/端子！",
-                    "theSamePin":  "起始引脚/端子与结束引脚/端子相同！",
-                    "compAddSuccess":  "已添加到图纸！",
-                    "loadModelSuccess":  "WLED 布线模型已成功加载！",
-                    "loadModelSuccessShort":  "成功",
-                    "loadingModel":  "正在从文件链接加载布线模型...",
-                    "loadModelError":  "无法加载 WLED 布线模型。此链接可能已失效。",
-                    "loadModelErrorShort":  "错误",
-                    "loadModelWrongLink":  "链接错误！请检查。",
-                    "componentUpdatesApplied":  "更新已应用。请检查此组件。",
-                    "componentUpdatesAppliedShort":  "已应用更新",
-                    "componentUpdatesAvailableTitle":  "有可用的组件更新",
-                    "componentUpdatesAvailableDescription":  "此图纸中有 {{count}} 个组件可以更新到当前模板。现在更新所有组件吗？",
-                    "componentUpdatesApplyAll":  "全部更新",
-                    "componentUpdatesSkip":  "不更新",
-                    "componentUpdatesAllApplied":  "已应用 {{count}} 个组件更新。"
-                },
-    "sidebar":  {
-                    "components":  {
-                                       "title":  "组件",
-                                       "popoverTitle":  "组件信息",
-                                       "addButtonText":  "添加到图纸",
-                                       "updateButtonText":  "更新此组件",
-                                       "updatePopoverTitle":  "此组件的更改",
-                                       "applyUpdatesButtonText":  "应用更新",
-                                       "updateExplanation":  "图纸中的此组件版本早于应用中的当前组件。可以传递以下更改。",
-                                       "noUpdateChanges":  "没有可用更新。",
-                                       "updateValueMissing":  "缺失",
-                                       "updateChangeProperty":  "属性",
-                                       "updateChangeCurrent":  "当前",
-                                       "updateChangeTemplate":  "模板",
-                                       "popoverContent":  {
-                                                              "whereToBuy":  "在哪里购买？",
-                                                              "listOfConnections":  "引脚/端子列表",
-                                                              "listOfConnectionsHeading1":  "引脚 / 端子",
-                                                              "listOfConnectionsHeading2":  "描述"
-                                                          }
-                                   },
-                    "check":  {
-                                  "title":  "检查布线图",
-                                  "comingSoon":  "基于规则的检查将在未来几个月内实现。敬请期待！",
-                                  "buttonRun":  "Check diagram now",
-                                  "betaNoticeTitle":  "Beta version",
-                                  "betaNoticeDescription":  "This diagram check is still under development. Issue detection may be incomplete or incorrect.",
-                                  "notChecked":  "No check has been run yet.",
-                                  "noIssuesTitle":  "No issues found",
-                                  "noIssuesDescription":  "The current placeholder check did not find any hints.",
-                                  "issueCount":  "{{count}} result(s) found",
-                                  "recommendation":  "Recommendation",
-                                  "affectedElements":  "Affected elements",
-                                  "severity":  {
-                                                   "error":  "Error",
-                                                   "warning":  "Warning",
-                                                   "info":  "Info"
-                                               },
-                                  "classificationLabels":  {
-                                                               "gnd_net_type":  "接地",
-                                                               "suppl_net_type":  "直流供电",
-                                                               "digital_net_type":  "数字信号",
-                                                               "pwm_net_type":  "PWM",
-                                                               "analog_net_type":  "模拟信号",
-                                                               "audio_net_type":  "音频",
-                                                               "eth_net_type":  "以太网",
-                                                               "usb_net_type":  "USB",
-                                                               "rs485_a_net_type":  "RS485 A",
-                                                               "rs485_b_net_type":  "RS485 B",
-                                                               "N_net_type":  "零线",
-                                                               "L_net_type":  "火线",
-                                                               "PE_net_type":  "保护接地"
-                                                           },
-                                  "signalLabels":  {
-                                                       "digital":  "数字信号",
-                                                       "pwm":  "PWM",
-                                                       "analog":  "模拟信号",
-                                                       "audio":  "音频",
-                                                       "usb":  "USB"
-                                                   },
-                                  "mainsInputLabels":  {
-                                                           "line":  "火线",
-                                                           "neutral":  "零线",
-                                                           "pe":  "PE"
-                                                       },
-                                  "issues":  {
-                                                 "diagramEmpty":  {
-                                                                      "title":  "图纸为空",
-                                                                      "shortDescription":  "图纸中尚未添加任何组件。",
-                                                                      "description":  "只有在图纸中存在组件和导线后，检查才能提供技术提示。",
-                                                                      "recommendation":  "请先添加组件，然后再次运行检查。"
-                                                                  }
-                                             },
-                                  "rules":  {
-                                                "network-rules":  {
-                                                                      "title":  "网络规则",
-                                                                      "description":  "检查 component-linked 网络中的基础错误。",
-                                                                      "issues":  {
-                                                                                     "groundMissing":  {
-                                                                                                           "title":  "没有连接接地网络",
-                                                                                                           "shortDescription":  "存在 GND 引脚，但未找到已连接的接地网络。",
-                                                                                                           "description":  "图中至少有一个 GND 引脚，但没有任何 GND 引脚被接线。需要接地参考的组件应连接到公共接地。",
-                                                                                                           "recommendation":  "将相关组件的 GND 引脚连接在一起。"
-                                                                                                       },
-                                                                                     "groundMultiple":  {
-                                                                                                            "title":  "存在多个分离的接地网络",
-                                                                                                            "shortDescription":  "所有 GND 连接应属于同一个公共接地网络。",
-                                                                                                            "description":  "发现 {{count}} 个分离的接地网络。因此电路的不同部分缺少共同参考点。",
-                                                                                                            "recommendation":  "将这些分离的接地网络连接在一起。"
-                                                                                                        },
-                                                                                     "mainsLowVoltageMixed":  {
-                                                                                                                  "title":  "市电与低压线路相连",
-                                                                                                                  "shortDescription":  "一个网络将 L/N 与低压或信号端子连接在一起。",
-                                                                                                                  "description":  "该网络包含 {{classifications}}。市电不得与 GND、直流供电或信号网络相连。",
-                                                                                                                  "recommendation":  "将市电布线与低压及信号布线严格分开。"
-                                                                                                              },
-                                                                                     "peActiveMixed":  {
-                                                                                                           "title":  "保护接地连接到带电线路",
-                                                                                                           "shortDescription":  "PE 网络连接到了带电供电线路或信号网络。",
-                                                                                                           "description":  "该网络包含 {{classifications}}。PE 不得与 L、N、直流供电或信号连接。",
-                                                                                                           "recommendation":  "将 PE 与带电导体和信号连接分开。"
-                                                                                                       },
-                                                                                     "rs485Mixed":  {
-                                                                                                        "title":  "RS485 A 和 B 被连接在一起",
-                                                                                                        "shortDescription":  "一个网络将 RS485_A 与 RS485_B 相连。",
-                                                                                                        "description":  "差分 RS485 线路 A 和 B 不得相互连接。",
-                                                                                                        "recommendation":  "将 RS485_A 和 RS485_B 分成两个独立网络。"
-                                                                                                    },
-                                                                                     "mixedClassifications":  {
-                                                                                                                  "title":  "不同输出类型被连接在一起",
-                                                                                                                  "shortDescription":  "一个网络包含多个网络类别。",
-                                                                                                                  "description":  "该网络同时包含 {{classifications}}。这表示不同类型的输出被连接在一起。",
-                                                                                                                  "recommendation":  "将不同输出类型分离到各自独立的网络中。"
-                                                                                                              },
-                                                                                     "multipleSupplySources":  {
-                                                                                                                   "title":  "多个独立电压源被连接在一起",
-                                                                                                                   "shortDescription":  "一个供电网络包含多个独立电压源。",
-                                                                                                                   "description":  "该网络包含 {{count}} 个独立电压源：{{sources}}。",
-                                                                                                                   "recommendation":  "分离这些电压源，或确认同一网络中只有转接/传递的输出。"
-                                                                                                               },
-                                                                                     "signalSinkWithoutSource":  {
-                                                                                                                     "title":  "{{signal}}输入没有信号源",
-                                                                                                                     "shortDescription":  "一个 {{signal}} 输入已接线，但网络中没有匹配的信号源。",
-                                                                                                                     "description":  "该网络包含 {{sinks}}，但没有匹配的 {{signal}} 输出。",
-                                                                                                                     "recommendation":  "将该输入连接到匹配的输出，或检查相关组件的引脚功能。"
-                                                                                                                 },
-                                                                                     "digitalSignalVoltageMismatch":  {
-                                                                                                                          "title":  "数字电平不匹配",
-                                                                                                                          "shortDescription":  "一个数字输入由不兼容的输出电压驱动。",
-                                                                                                                          "description":  "{{input}} 允许 {{min}} V 到 {{max}} V，但连接到了不兼容的数字输出：{{sources}}。",
-                                                                                                                          "recommendation":  "使用合适的电平转换器，或将该输入连接到允许电压范围内的数字输出。"
-                                                                                                                      },
-                                                                                     "multipleSignalSources":  {
-                                                                                                                   "title":  "连接了多个 {{signal}} 源",
-                                                                                                                   "shortDescription":  "一个 {{signal}} 网络包含多个输出。",
-                                                                                                                   "description":  "该网络连接了多个 {{signal}} 源：{{sources}}。",
-                                                                                                                   "recommendation":  "分离这些输出，确保每个信号网络只有一个信号源。"
-                                                                                                               },
-                                                                                     "supplyInputWithoutSource":  {
-                                                                                                                      "title":  "供电输入没有电压源",
-                                                                                                                      "shortDescription":  "一个供电输入已接线，但网络中没有电压源。",
-                                                                                                                      "description":  "该网络包含供电输入（{{inputs}}），但没有独立的 suppl_out 输出。",
-                                                                                                                      "recommendation":  "将该网络连接到合适的电压源。"
-                                                                                                                  },
-                                                                                     "supplySourceWithoutConsumer":  {
-                                                                                                                         "title":  "供电网络没有负载",
-                                                                                                                         "shortDescription":  "一个供电输出已接线，但没有连接供电输入。",
-                                                                                                                         "description":  "该网络包含电压源，但没有识别到供电负载。",
-                                                                                                                         "recommendation":  "检查该供电是否应继续连接到带有供电输入的组件。"
-                                                                                                                     },
-                                                                                     "supplyVoltageMismatch":  {
-                                                                                                                   "title":  "供电电压不匹配",
-                                                                                                                   "shortDescription":  "源电压与该网络中的某些供电输入不匹配。",
-                                                                                                                   "description":  "该电源提供 {{voltage}} V，但至少一个供电输入不允许该范围：{{inputs}}。",
-                                                                                                                   "recommendation":  "调整供电电压，或将允许电压范围不同的组件分离。"
-                                                                                                               }
-                                                                                 }
-                                                                  },
-                                                "component-rules":  {
-                                                                        "title":  "组件规则",
-                                                                        "description":  "检查单个组件的基础要求。",
-                                                                        "issues":  {
-                                                                                       "requiredPinUnconnected":  {
-                                                                                                                      "title":  "必接引脚未连接",
-                                                                                                                      "shortDescription":  "某个组件有必须连接的引脚。",
-                                                                                                                      "description":  "{{component}} 存在未连接的必接引脚：{{handles}}。",
-                                                                                                                      "recommendation":  "连接该组件上所有标记为必须连接的引脚。"
-                                                                                                                  },
-                                                                                       "groundMissing":  {
-                                                                                                             "title":  "组件没有接地",
-                                                                                                             "shortDescription":  "带 GND 引脚的组件未连接到接地。",
-                                                                                                             "description":  "{{component}} 具有 GND 引脚，但没有任何一个连接到接地网络。",
-                                                                                                             "recommendation":  "将该组件的至少一个 GND 引脚连接到公共接地网络。"
-                                                                                                         },
-                                                                                       "powerMissing":  {
-                                                                                                            "title":  "组件没有供电",
-                                                                                                            "shortDescription":  "带供电输入的组件未供电。",
-                                                                                                            "description":  "{{component}} 具有供电或 USB 输入，但没有任何供电输入连接到包含其他组件 suppl_out 引脚的供电网络，也没有 USB 端子连接到 USB 网络。",
-                                                                                                            "recommendation":  "将供电输入连接到合适的外部电压源，或将 USB 端子连接到 USB 供电。"
-                                                                                                        },
-                                                                                       "mainsInputMissing":  {
-                                                                                                                 "title":  "{{label}}输入未连接",
-                                                                                                                 "shortDescription":  "带 {{label}} 输入的组件未连接到匹配的网络。",
-                                                                                                                 "description":  "{{component}} 具有 {{label}} 输入，但至少一个未连接到匹配的 {{label}} 网络。",
-                                                                                                                 "recommendation":  "将该组件的每个 {{label}} 输入连接到匹配的 {{label}} 网络。"
-                                                                                                             },
-                                                                                       "sn74Ahct125nUsedChannelInputMissing":  {
-                                                                                                                 "title":  "SN74AHCT125N 通道输入未被驱动",
-                                                                                                                 "shortDescription":  "已使用的缓冲器输出存在未连接到数字输出源的输入，或 /OE 引脚既未由数字信号驱动也未接到 GND。",
-                                                                                                                 "description":  "{{component}} 通道 {{channel}} 通过 {{output}} 驱动数字输入，但这些相关引脚连接不正确：{{handles}}。A 必须连接到包含 dig_out 的网络；/OE 可以连接到包含 dig_out 或 GND 的网络。",
-                                                                                                                 "recommendation":  "将相关 A 引脚连接到合适的数字输出，并将 /OE 引脚连接到数字输出或 GND，或将未使用的 Y 输出与数字输入断开。"
-                                                                                                             }
-                                                                                   }
-                                                                    }
-                                            }
-                              },
-                    "simulation":  {
-                                       "title":  "电流模拟",
-                                       "comingSoon":  "电源分配模拟将在未来实现。敬请期待！"
-                                   },
-                    "tools":  {
-                                  "title":  "工具",
-                                  "rerouteAllButton":  "重新布线全部导线",
-                                  "rerouteAllTooltip":  "使用 Pathfinder 顺序重新布线全部导线",
-                                  "rerouteAllDisabledPF":  "仅在 Auto/PF 连接模式下可用",
-                                  "rerouteAllDisabledEmpty":  "图中没有导线",
-                                  "rerouteAllDescription":  "优先布线距离较短的组件对，并保留导线 ID、连接和属性。",
-                                  "rerouteAllSuccess":  "所有导线已重新布线。"
-                              },
-                    "export":  {
-                                   "title":  "保存 / 导出 / 示例",
-                                   "buttonSave":  "将模型保存为 JSON 文件",
-                                   "buttonExportPNG":  "将模型导出为 PNG 文件",
-                                   "buttonExportJPEG":  "将模型导出为 JPEG 文件",
-                                   "buttonExportSVG":  "将模型导出为 SVG 文件",
-                                   "buttonOpen":  "从 JSON 文件加载模型",
-                                   "buttonShare":  "生成模型的公开链接",
-                                   "dividerExport":  "导出",
-                                   "dividerSaveOpen":  "保存 / 打开",
-                                   "dividerShare":  "分享",
-                                   "dividerExamples":  "加载示例",
-                                   "share":  {
-                                                 "modalTitle":  "分享模型 - 生成链接",
-                                                 "modalLinkText":  "链接：",
-                                                 "modalLinkBeingGenerated":  "... 正在生成 ... 请稍候 ...",
-                                                 "modalButtonOK":  "确定",
-                                                 "modalButtonClose":  "关闭",
-                                                 "modalButtonCancel":  "取消",
-                                                 "modalAttentionText":  "当您点击\"确定\"时，您的模型以及所有输入的数据将被传输到公共服务器（https://github.com）并保存在那里。为此，您的模型数据和 IP 地址也将被传输到 https://wled-api.myhome-control.de/。然后您将看到一个链接，可用于与他人分享模型。",
-                                                 "modalLinkError":  "发生错误！如有必要，请重试。",
-                                                 "tooltipCopyLink":  "复制链接到剪贴板",
-                                                 "messageLinkCopied":  "已复制到剪贴板！"
-                                             },
-                                   "selectExample":  "选择示例 ..."
-                               }
-                },
-    "footRow":  {
-                    "legalNotice":  {
-                                        "title":  "法律声明",
-                                        "responsible":  "负责人：Wladislaw Waag",
-                                        "address":  "地址：Wasserburger Landstr. 29, 81825 Munich, Germany",
-                                        "contact":  "联系方式：+49 (0) 176 47 11 5206, info@myhome-control.de",
-                                        "disputeText":  "",
-                                        "disputeSettlmentText":  "消费者争议解决 / 通用仲裁委员会：我们既不愿意也没有义务参与消费者仲裁委员会面前的争议解决程序。"
-                                    },
-                    "dataPrivacy":  {
-                                        "title":  "数据隐私",
-                                        "text1":  "此页面作为 \u0027Github Pages\u0027 的一部分托管和运营。Github 可能收集和处理个人数据，这也可能影响 wled-compile.github.io 网页的访问者。但是，我们对此没有影响。请阅读 Github 隐私声明：",
-                                        "text2":  "此外，一旦您使用\u0027分享\u0027功能，您的 IP 地址、您创建的模型以及您输入的所有数据将被转发到 https://myhome-control.de 和 https://github.com/wled-development/wled-wiring-store。这对于此功能是绝对必要的。https://myhome-control.de 的数据保护声明可在以下位置找到",
-                                        "text3":  "我们的网站包含指向我们无法控制的外部网站的链接。我们不能对此第三方内容承担任何责任。相应页面的提供者或运营商始终对链接页面的内容负责。链接页面在链接时已检查可能的法律违规行为。当时无法识别非法内容。如果我们发现任何法律违规行为，我们将立即删除相关链接。"
-                                    },
-                    "links":  {
-                                  "title":  "有用的链接",
-                                  "link1Text":  "官方 WLED 文档：",
-                                  "link2Text":  "WLED 常见问题：",
-                                  "link3Text":  "WLED 计算器：",
-                                  "link4Text":  "扩展 WLED 在线安装程序：",
-                                  "link5Text":  "在线编译您自己的 WLED 软件：",
-                                  "link6Text":  "购买 WLED 控制器（德国）：",
-                                  "link7Text":  "购买 WLED 控制器（全球）："
-                              },
-                    "contribute":  {
-                                       "title":  "贡献/GitHub",
-                                       "text":  "非常感谢您的贡献！如果您想贡献，请访问项目的 GitHub 链接："
-                                   }
-                },
-    "examples":  {
-                     "example1":  "ESP32 微控制器 + 电平转换器 + DC/DC + 24V LED 灯带",
-                     "example2":  "ABC! WLED 控制器 + 24V LED 灯带",
-                     "example3":  "ABC! WLED 控制器 + 长 24V LED 灯带 + 线路输入 + 以太网",
-                     "example4":  "ABC! WLED 控制器 + 长距离扩展",
-                     "example5":  "ABC! WLED 控制器 + 模拟 24V LED 灯带 + PWM 板"
-                 },
-    "compData":  {
-                     "Router":  {
-                                    "name":  "WAN/LAN 路由器",
-                                    "description":  "通用 WLAN/LAN 路由器。",
-                                    "descriptionShort":  "通用"
-                                },
-                     "Button":  {
-                                    "name":  "按钮",
-                                    "description":  "通用按钮。按下并保持时，触点闭合。释放按钮时，触点立即打开。不要与开关混淆。",
-                                    "descriptionShort":  "通用"
-                                },
-                     "DC_JACK_FEMALE":  {
-                                            "name":  "DC 端子",
-                                            "description":  "用于将带 DC 端子的电源分离出正极（+）和负极（-）导线。",
-                                            "descriptionShort":  "最高 3A"
-                                        },
-                     "Elko":  {
-                                  "name":  "电解电容",
-                                  "description":  "具有可选电容的电解电容。注意极性！通常用于稳定 LED 或其他组件的电源。",
-                                  "descriptionShort":  "可选电容"
-                              },
-                     "ESP32_30P":  {
-                                       "name":  "ESP32 微控制器 30 引脚",
-                                       "description":  "ESP32 控制器，30 引脚版本。也称为 NodeMCU。",
-                                       "descriptionShort":  "控制器"
-                                   },
-                     "ESP32_38P":  {
-                                       "name":  "ESP32 微控制器 38 引脚",
-                                       "description":  "ESP32 控制器，38 引脚版本。也称为 NodeMCU。",
-                                       "descriptionShort":  "控制器"
-                                   },
-                     "ESP32C3D1mini":  {
-                                           "name":  "ESP32-C3 D1 mini",
-                                           "description":  "D1 mini 格式的 ESP32-C3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
-                                           "descriptionShort":  "控制器"
-                                       },
-                     "ESP32C3_supermini":  {
-                                               "name":  "ESP32-C3 supermini",
-                                               "description":  "ESP32-C3 控制器，supermini 版本。WLED 可在此控制器类型上运行，但功能可能受限。",
-                                               "descriptionShort":  "控制器"
-                                           },
-                     "ESP32D1mini":  {
-                                         "name":  "ESP32 D1 mini",
-                                         "description":  "D1 mini 型号的 ESP32 控制器。",
-                                         "descriptionShort":  "控制器"
-                                     },
-                     "ESP32S3D1mini":  {
-                                           "name":  "ESP32-S3 D1 mini",
-                                           "description":  "D1 mini 型号的 ESP32-S3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
-                                           "descriptionShort":  "控制器"
-                                       },
-                     "ESP8266D1mini":  {
-                                           "name":  "ESP8266 D1 mini",
-                                           "description":  "D1 mini 型号的 ESP8266 控制器。不再推荐用于新的 WLED 项目（性能太弱）。",
-                                           "descriptionShort":  "控制器"
-                                       },
-                     "InfoNode":  {
-                                      "name":  "文本",
-                                      "description":  "用于在图纸中添加标签或注释的文本元素。",
-                                      "descriptionShort":  "用于注释等"
-                                  },
-                     "INMP441":  {
-                                     "name":  "INMP441 麦克风",
-                                     "description":  "INMP441 麦克风。它是 WLED 支持的数字麦克风，用于声音反应效果，提供高质量。",
-                                     "descriptionShort":  "数字"
-                                 },
-                     "IR_KY022":  {
-                                      "name":  "KY022 红外接收器",
-                                      "description":  "KY-022 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
-                                      "descriptionShort":  "红外"
-                                  },
-                     "IR_TSOP38238":  {
-                                          "name":  "TSOP38238 红外接收器",
-                                          "description":  "TSOP38238 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
-                                          "descriptionShort":  "红外"
-                                      },
-                     "Kerko":  {
-                                   "name":  "陶瓷电容",
-                                   "description":  "具有可选电容的陶瓷电容。通常用于开关电子电路的输入端（电源和地之间）以抑制噪声。应使用尽可能短的引线/走线连接。",
-                                   "descriptionShort":  "可选电容"
-                               },
-                     "LineBoxNode":  {
-                                         "name":  "矩形",
-                                         "description":  "用于绘制矩形（填充或框）的元素。",
-                                         "descriptionShort":  "绘图元素"
-                                     },
-                     "miniOTOFuse":  {
-                                         "name":  "保险丝",
-                                         "description":  "来自汽车的保险丝。适用于最高 32V 的电压。仅从专业经销商处购买，因为市场上许多廉价仿制品无法正常工作。WLED 计算器（www.wled-calculator.github.io）可用于选型。",
-                                         "descriptionShort":  "可选 4-30A"
-                                     },
-                     "FUSE_Board":  {
-                                        "name":  "保险丝板",
-                                        "description":  "用于电源分配和熔断保护。",
-                                        "descriptionShort":  "4 通道"
-                                    },
-                     "PIR_HCSR501":  {
-                                         "name":  "HC-SR501 PIR 传感器",
-                                         "description":  "HCSR501 型 PIR 运动传感器。可与 WLED 一起使用。",
-                                         "descriptionShort":  "运动检测器"
-                                     },
-                     "PLUG_LNPE":  {
-                                       "name":  "电源插头",
-                                       "description":  "用于 230V 电源插座的插头。警告：有生命危险！仅在您具备相应知识时使用。",
-                                       "descriptionShort":  "用于 230V 交流电"
-                                   },
-                     "PSU_HP":  {
-                                    "name":  "电源",
-                                    "description":  "具有可调电压/电流（功率）的电源。这些通常用于大型设置的高性能电源。电源插头必须单独连接。",
-                                    "descriptionShort":  "可调 V/I"
-                                },
-                     "PSU_USB":  {
-                                     "name":  "USB 电源",
-                                     "description":  "USB 电源，输出电压 5V，可调电流最高 5A。",
-                                     "descriptionShort":  "5V，可调 I"
-                                 },
-                     "PSU_USB_WIRES":  {
-                                           "name":  "USB 电源",
-                                           "description":  "USB 电源，输出电压 5V，可调电流最高 5A，带独立 +/- 线。",
-                                           "descriptionShort":  "5V，独立 +/- 线"
-                                       },
-                     "Resistor":  {
-                                      "name":  "电阻器",
-                                      "description":  "具有可调阻值的电阻器。",
-                                      "descriptionShort":  "可调电阻"
-                                  },
-                     "SN74AHCT125N":  {
-                                          "name":  "电平转换器",
-                                          "description":  "WLED 推荐的电平转换器类型。电平转换器是将微控制器的控制信号（3.3V）转换为可寻址 LED 的 LED 数据输入（5V）电平所必需的。没有电平转换器，经常会出现闪烁（12V 和 24V LED 几乎总是如此）。",
-                                          "descriptionShort":  "SN74AHCT125N"
-                                      },
-                     "SolderJoint":  {
-                                         "name":  "焊点",
-                                         "description":  "表示焊点，例如用于将线连接在一起。",
-                                         "descriptionShort":  "用于导线等"
-                                     },
-                     "WAGO_2X":  {
-                                     "name":  "WAGO 端子 2x",
-                                     "description":  "广泛使用的弹簧夹端子，双向。",
-                                     "descriptionShort":  "弹簧夹"
-                                 },
-                     "WAGO_3X":  {
-                                     "name":  "WAGO 端子 3x",
-                                     "description":  "广泛使用的弹簧夹端子，三向。",
-                                     "descriptionShort":  "弹簧夹"
-                                 },
-                     "WireInfoNode":  {
-                                          "name":  "导线信息",
-                                          "description":  "关于导线的信息。",
-                                          "descriptionShort":  " "
-                                      },
-                     "WS2812B_5V_30LPM":  {
-                                              "name":  "WS2812B RGB",
-                                              "description":  "WS2812 RGB LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
-                                              "descriptionShort":  "5V, 30 LEDs/m"
-                                          },
-                     "MHC_V43":  {
-                                     "name":  "WLED V43 控制器",
-                                     "description":  "用于 5V、12V 或 24V 可寻址 LED 的专业 WLED 控制器。包括 ESP32 微控制器、SN74AHCT 电平转换器、保险丝、电容、EMI 滤波器。可选配件包括以太网适配器、INMP441 麦克风、线路输入适配器和 USB 适配器。",
-                                     "descriptionShort":  "基于 ESP32"
-                                 },
-                     "MHC_V63":  {
-                                     "name":  "WLED V63 扩展板",
-                                     "description":  "用于 5V 或 12V 可寻址 LED 的专业 WLED 扩展板。包括 SN74AHCT 电平转换器、保险丝、电容。可选配件包括 INMP441 麦克风、线路输入适配器和 USB 适配器。可与 D1 mini 格式的 ESP8266、ESP32、ESP32-C3 或 ESP32-S3 一起使用。",
-                                     "descriptionShort":  "适用于 ESP32-xx, ESP8266"
-                                 },
-                     "MHC_SwitchBoard":  {
-                                             "name":  "WLED 开关板",
-                                             "description":  "继电器板的更好/现代替代品，用于完全关闭 LED。具有过流、过温、短路和反接保护。",
-                                             "descriptionShort":  "通用 5-24V"
-                                         },
-                     "MHC_PWMBoard":  {
-                                          "name":  "WLED PWM 板",
-                                          "description":  "该板使用 MOSFET 通过 PWM 信号控制模拟 LED 灯带。3 个通道，每个最大 5A。具有过流、过温、短路和反接保护。",
-                                          "descriptionShort":  "通用 12-48V"
-                                      },
-                     "MHC_RS485_R":  {
-                                         "name":  "RS-485 接收器",
-                                         "description":  "RS-485 接收器，用作 RS-485 适配器的范围扩展器接收器。",
-                                         "descriptionShort":  "RS-485 接收器"
-                                     },
-                     "MHC_Relay5V":  {
-                                         "name":  "5V 继电器板",
-                                         "description":  "用于 5V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
-                                         "descriptionShort":  "用于 5V LED"
-                                     },
-                     "MHC_Relay12V":  {
-                                          "name":  "12V 继电器板",
-                                          "description":  "用于 12V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
-                                          "descriptionShort":  "用于 12V LED"
-                                      },
-                     "MHC_Relay24V":  {
-                                          "name":  "24V 继电器板",
-                                          "description":  "用于 24V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
-                                          "descriptionShort":  "用于 24V LED"
-                                      },
-                     "AUDIO_SOURCE":  {
-                                          "name":  "音频源",
-                                          "description":  "通用音频信号源。",
-                                          "descriptionShort":  "线路输出"
-                                      },
-                     "LM2596_PCB":  {
-                                        "name":  "LM2596 DC/DC",
-                                        "description":  "具有可调输出电压的 DC/DC（降压）转换器。",
-                                        "descriptionShort":  "可调输出"
-                                    },
-                     "IRLZ44N":  {
-                                     "name":  "IRLZ44N",
-                                     "description":  "MOSFET。此类型推荐与 WLED 一起使用，可用于控制模拟 LED 灯带。",
-                                     "descriptionShort":  "N 沟道 MOSFET"
-                                 },
-                     "DCDC_mini":  {
-                                       "name":  "DC/DC 迷你",
-                                       "description":  "具有可调输出电压的 DC/DC（降压）转换器。",
-                                       "descriptionShort":  "可调输出"
-                                   },
-                     "WS2814_24V_60LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED 灯带，可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2813_5V_60LPM":  {
-                                             "name":  "WS2813 RGB",
-                                             "description":  "带备份线的 RGB LED 灯带。",
-                                             "descriptionShort":  "5V, 60 LEDs/m"
-                                         },
-                     "WS2815_12V_30LPM":  {
-                                              "name":  "WS2815 RGB",
-                                              "description":  "带备份线的 RGB LED 灯带。",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2814_12V_30LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2818_12V_30LPM":  {
-                                              "name":  "WS2818 RGB",
-                                              "description":  "RGB LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "FCOB_12V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
-                                             "descriptionShort":  "12V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
-                                             "descriptionShort":  "24V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_784LPM":  {
-                                             "name":  "FCOB RGBW",
-                                             "description":  "FCOB RGBW LED 灯带，784 LEDs/m（每米每种颜色 196 个 LED，14 个逻辑 LEDs/m）",
-                                             "descriptionShort":  "24V, 784 LEDs/m"
-                                         },
-                     "APA102_5V_30LPM":  {
-                                             "name":  "APA102 RGB",
-                                             "description":  "带时钟信号的 APA102 LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
-                                             "descriptionShort":  "5V, 30 LEDs/m"
-                                         },
-                     "AN_WHITE_24V_240LPM":  {
-                                                 "name":  "模拟白光",
-                                                 "description":  "模拟 LED 灯带（白色 2835 LED），24V，240 LEDs/m，每段2.5厘米（6 个 LED）",
-                                                 "descriptionShort":  "24V, 240 white LEDs/m"
-                                             },
-                     "AN_RGB_CCT_48V_90LPM":  {
-                                                  "name":  "模拟 RGB CCT",
-                                                  "description":  "模拟 RGB CCT LED 灯带（5050 LED），48V，90 LEDs/m，每段16.65厘米（15 个 LED）",
-                                                  "descriptionShort":  "48V, 90 LEDs/m"
-                                              },
-                     "AN_RGB_24V_120LPM":  {
-                                               "name":  "模拟 RGB",
-                                               "description":  "模拟 RGB LED 灯带（2835 LED），24V，120 LEDs/m，每段5厘米（6 个 LED）",
-                                               "descriptionShort":  "24V, 120 LEDs/m"
-                                           },
-                     "WS2805_24V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2805_12V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
-                                              "descriptionShort":  "12V, 60 LEDs/m"
-                                          }
-                 }
+{
+  "title": "欢迎来到 WLED 布线设计器！",
+  "dragComponents": "将组件拖到工作区以开始设计，或加载示例图纸",
+  "autosave": {
+    "restoreTitle": "发现自动保存的布线图",
+    "restoreDescription": "此浏览器中有一个本地自动保存的布线图。要继续使用它，还是开始新的布线图？",
+    "savedAt": "自动保存时间：{{value}}",
+    "lastManualSaveAt": "上次手动保存：{{value}}",
+    "documentFileName": "文件名：{{name}}",
+    "continueButton": "继续自动保存",
+    "newDiagramButton": "开始新布线图",
+    "saveFailedTitle": "自动保存失败",
+    "saveFailedDescription": "无法在此浏览器中本地保存该布线图。"
+  },
+  "componentGroupTypes": {
+    "controller": "控制器",
+    "led": "LED",
+    "psu": "电源",
+    "levelshifter": "电平转换器",
+    "electronics": "电子元件/零件",
+    "others": "其他组件"
+  },
+  "buttons": {
+    "rotate": "旋转",
+    "longer": "放大",
+    "shorter": "缩小"
+  },
+  "tooltip": {
+    "deleteWire": "删除此连接",
+    "selectColor": "选择颜色",
+    "selectWireLength": "选择导线长度（物理尺寸）",
+    "selectWireCrossSection": "选择导线横截面积（物理尺寸）",
+    "selectWireWidth": "选择导线宽度（用于绘制）",
+    "selectWireNetwork": "选择整个网络",
+    "clearWireNetwork": "清除网络选择",
+    "putWireInfoNode": "添加导线信息框",
+    "rerouteWire": "使用 Pathfinder 重新布线",
+    "startConnection": "开始连接",
+    "closeConnection": "完成连接",
+    "rotateLeft": "向左旋转",
+    "rotateRight": "向右旋转",
+    "delete": "删除",
+    "copy": "复制",
+    "enlarge": "延长",
+    "shorten": "缩短",
+    "resizeLength": "调整长度",
+    "switchFilled": "填充 / 仅边框",
+    "increaseTextSize": "增大文本大小",
+    "decreaseTextSize": "减小文本大小",
+    "textSize": "文本大小",
+    "selectFont": "选择字体",
+    "toggleBold": "切换粗体",
+    "textAlign": "文本对齐",
+    "selectMulti": "多选",
+    "deleteSelected": "删除选中项",
+    "componentInfo": "组件信息",
+    "switchConnLineType": "更改连接类型",
+    "ledSimulationOptions": "LED simulation settings"
+  },
+  "ledSimulationOptions": {
+    "title": "LED simulation",
+    "recommended": "recommended",
+    "whyButton": "为什么？",
+    "whyTitle": "为什么有这些选项？",
+    "whyExplanation": "市面上有非常多种 LED 灯带。有些灯带使用相同的型号名称，甚至可能来自同一家制造商，但它们的电气特性仍然可能明显不同。为了建立模型，我们测量了许多灯带，并基于这些数据引入了不同的选项。如果你不确定自己使用的是哪一种灯带，请先使用推荐设置。你也可以用最差值进行计算，以检查你的方案是否足够稳健。",
+    "unknownOption": "Unknown option. Update this component from the current template.",
+    "fields": {
+      "supplyResistance": "Positive path / V+ resistance",
+      "gndResistance": "Negative path / GND resistance",
+      "currentCurve": "LED current curve"
+    },
+    "resistance": {
+      "typical_5mm": {
+        "name": "Typical 5 mm strip",
+        "description": "Typical copper path for a 5 mm LED strip: 0.12 Ohm per meter."
+      },
+      "good_5mm": {
+        "name": "Good 5 mm strip",
+        "description": "Better copper path for a 5 mm LED strip: 0.09 Ohm per meter."
+      },
+      "poor_5mm": {
+        "name": "Poor 5 mm strip",
+        "description": "Higher-resistance copper path for a weak 5 mm LED strip: 0.24 Ohm per meter."
+      },
+      "narrow_fcob_path_good": {
+        "name": "优质窄 FCOB 铜箔路径",
+        "description": "FCOB 灯带的优质铜箔路径（窄边，与数据路径共用）：每米 0.12 欧姆。"
+      },
+      "narrow_fcob_path_typical": {
+        "name": "典型窄 FCOB 铜箔路径",
+        "description": "FCOB 灯带的典型铜箔路径（窄边，与数据路径共用）：每米 0.16 欧姆。"
+      },
+      "narrow_fcob_path_bad": {
+        "name": "较差窄 FCOB 铜箔路径",
+        "description": "FCOB 灯带中电阻较高的铜箔路径（窄边，与数据路径共用）：每米 0.22 欧姆。"
+      },
+      "bright_fcob_path_good": {
+        "name": "优质高功率 FCOB 铜箔路径",
+        "description": "FCOB 灯带的优质铜箔路径（宽边，完全使用）：每米 0.06 欧姆。"
+      },
+      "bright_fcob_path_typical": {
+        "name": "典型高功率 FCOB 铜箔路径",
+        "description": "FCOB 灯带的典型铜箔路径（宽边，完全使用）：每米 0.08 欧姆。"
+      },
+      "bright_fcob_path_bad": {
+        "name": "较差高功率 FCOB 铜箔路径",
+        "description": "FCOB 灯带中电阻较高的铜箔路径（宽边，完全使用）：每米 0.20 欧姆。"
+      }
+    },
+    "currentCurve": {
+      "ws2814_24v_typical": {
+        "name": "Typical WS2814 24 V",
+        "description": "Typical voltage-dependent WS2814 24 V current curve."
+      },
+      "ws2812b_5v_typical": {
+        "name": "WS2812B 5 V（典型）",
+        "description": "WS2812B RGB 5 V，5050 LED 尺寸，典型版本。"
+      },
+      "ws2812b_5v_good": {
+        "name": "WS2812B 5 V（良好）",
+        "description": "WS2812B RGB 5 V，5050 LED 尺寸，良好/新版（改进的颜色稳定性）。"
+      },
+      "ws2812b_eco_5v_typical": {
+        "name": "WS2812B ECO 5 V（典型）",
+        "description": "WS2812B RGB ECO 5 V，5050 LED 尺寸，典型版本。"
+      },
+      "ws2811_24v_typical": {
+        "name": "WS2811 24 V（典型）",
+        "description": "WS2811 RGB 24 V，5050 LED 尺寸，典型版本。"
+      },
+      "ws2814_12v_typical": {
+        "name": "WS2814 12 V（典型）",
+        "description": "WS2812B RGBW 12 V，5050 LED 尺寸，典型版本。"
+      },
+      "ws28xx_fcob_rgb_24v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 24 V，720 LEDs/m（典型）",
+        "description": "WS28xx FCOB RGB 24 V，720 LEDs/m，20 个逻辑 LED/m，典型版本。"
+      },
+      "ws28xx_fcob_rgb_12v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 12 V，720 LEDs/m（典型）",
+        "description": "WS28xx FCOB RGB 12 V，720 LEDs/m，20 个逻辑 LED/m，典型版本。"
+      },
+      "ws28xx_fcob_rgbw_24v_784lpm_typical": {
+        "name": "WS28xx FCOB RGBW 24 V，784 LEDs/m（典型）",
+        "description": "WS28xx FCOB RGB 24 V，784 LEDs/m，14 个逻辑 LED/m，典型版本。"
+      },
+      "sk6812_fcob_rgb_5v_240lpm_typical": {
+        "name": "SK6812 FCOB RGB 5 V，240 LEDs/m（典型）",
+        "description": "SK6812 FCOB RGB 5 V，240 LEDs/m，80 个逻辑 LED/m，典型版本。"
+      }
+    }
+  },
+  "componentEditor": {
+    "title": "组件编辑器",
+    "valid": "有效",
+    "invalid": "无效",
+    "actions": {
+      "new": "新建",
+      "openCore": "打开内置组件",
+      "openLocal": "打开本地草稿",
+      "saveLocal": "保存到本地",
+      "importJson": "导入 JSON",
+      "exportJson": "导出 JSON",
+      "backToDesigner": "返回设计器",
+      "addHandle": "添加连接点",
+      "deleteHandle": "删除连接点",
+      "addField": "添加字段",
+      "deleteField": "删除字段",
+      "addOption": "添加选项",
+      "addConnection": "添加连接",
+      "deleteConnection": "删除连接",
+      "addSimulationElement": "添加仿真元素",
+      "deleteSimulationElement": "删除仿真元素"
+    },
+    "tabs": {
+      "basics": "基础",
+      "geometry": "几何",
+      "handles": "连接点",
+      "fields": "字段",
+      "connections": "内部连接",
+      "simulation": "仿真",
+      "runtime": "运行时"
+    },
+    "fields": {
+      "id": "组件 ID",
+      "version": "版本",
+      "name": "名称",
+      "descriptionShort": "简短描述",
+      "description": "描述",
+      "group": "分组",
+      "showName": "显示名称",
+      "imageUrl": "图片 URL",
+      "imageWidth": "图片宽度",
+      "imageHeight": "图片高度",
+      "rotation": "旋转",
+      "borderWidth": "边框宽度",
+      "lengthStep": "物理长度步进",
+      "rotatable": "可旋转",
+      "resizableX": "可沿 X 调整",
+      "resizableY": "可沿 Y 调整",
+      "noBackgroundImage": "无背景图片",
+      "relatedToHandle": "相关连接点"
+    },
+    "sections": {
+      "applyHandles": "应用连接点",
+      "applyFields": "应用字段",
+      "applyConnections": "应用内部连接",
+      "applySimulation": "应用仿真",
+      "applyRuntime": "应用运行时",
+      "handlesDescription": "以 schema JSON 编辑组件连接点。验证会检查 ID、尺寸、功能、隐藏条件和引用。",
+      "fieldsDescription": "以 schema JSON 编辑数字字段和选择字段。选择项可以包含可选图片定义。",
+      "connectionsDescription": "以 schema JSON 编辑内部短接和保险丝连接。",
+      "simulationDescription": "以 schema JSON 编辑仿真定义；没有仿真数据时使用 null。",
+      "runtimeDescription": "以 schema JSON 编辑已有的运行时 UI 选项；不需要时使用 null。"
+    },
+    "preview": {
+      "title": "预览"
+    },
+    "validation": {
+      "title": "验证",
+      "noIssues": "没有验证问题。"
+    },
+    "messages": {
+      "savedLocal": "组件草稿已保存到本地。",
+      "imported": "组件包已导入。",
+      "importFailed": "无法导入组件包。",
+      "invalidJson": "JSON 无效",
+      "noHandles": "还没有连接点。添加一个连接点后即可编辑其属性。",
+      "noFields": "还没有字段。添加一个字段后即可编辑其属性。",
+      "noConnections": "还没有连接。添加一个连接后即可编辑其属性。",
+      "noSimulationElements": "还没有仿真元素。添加一个仿真元素后即可编辑其属性。"
+    }
+  },
+  "popover": {
+    "selectWireLength": "选择导线长度（物理尺寸）：",
+    "selectWireCrossSection": "选择导线横截面积（物理尺寸）：",
+    "selectWireWidth": "选择导线宽度（用于绘制）：",
+    "startConnection": "请选择起始引脚/端子：",
+    "closeConnection": "请选择结束引脚/端子："
+  },
+  "select": {
+    "startConnection": "选择引脚 / 端子",
+    "closeConnection": "选择引脚 / 端子"
+  },
+  "message": {
+    "startPinSelected": "起始引脚/端子已选择。现在请选择目标引脚/端子。",
+    "closePinSelected": "连接已就绪。",
+    "startPinFirst": "请先选择起始引脚/端子！",
+    "theSamePin": "起始引脚/端子与结束引脚/端子相同！",
+    "compAddSuccess": "已添加到图纸！",
+    "loadModelSuccess": "WLED 布线模型已成功加载！",
+    "loadModelSuccessShort": "成功",
+    "loadingModel": "正在从文件链接加载布线模型...",
+    "loadModelError": "无法加载 WLED 布线模型。此链接可能已失效。",
+    "loadModelErrorShort": "错误",
+    "loadModelWrongLink": "链接错误！请检查。",
+    "saveModelSuccess": "模型已保存。",
+    "saveModelDownloadStarted": "模型下载已开始。",
+    "saveModelError": "无法保存模型。",
+    "componentUpdatesApplied": "更新已应用。请检查此组件。",
+    "componentUpdatesAppliedShort": "已应用更新",
+    "componentUpdatesAvailableTitle": "有可用的组件更新",
+    "componentUpdatesAvailableDescription": "此图纸中有 {{count}} 个组件可以更新到当前模板。现在更新所有组件吗？",
+    "componentUpdatesApplyAll": "全部更新",
+    "componentUpdatesSkip": "不更新",
+    "componentUpdatesAllApplied": "已应用 {{count}} 个组件更新。"
+  },
+  "sidebar": {
+    "components": {
+      "title": "组件",
+      "popoverTitle": "组件信息",
+      "addButtonText": "添加到图纸",
+      "updateButtonText": "更新此组件",
+      "updatePopoverTitle": "此组件的更改",
+      "applyUpdatesButtonText": "应用更新",
+      "updateExplanation": "图纸中的此组件版本早于应用中的当前组件。可以传递以下更改。",
+      "noUpdateChanges": "没有可用更新。",
+      "updateValueMissing": "缺失",
+      "updateChangeProperty": "属性",
+      "updateChangeCurrent": "当前",
+      "updateChangeTemplate": "模板",
+      "popoverContent": {
+        "whereToBuy": "在哪里购买？",
+        "listOfConnections": "引脚/端子列表",
+        "listOfConnectionsHeading1": "引脚 / 端子",
+        "listOfConnectionsHeading2": "描述"
+      }
+    },
+    "check": {
+      "title": "检查布线图",
+      "comingSoon": "基于规则的检查将在未来几个月内实现。敬请期待！",
+      "buttonRun": "立即检查图纸",
+      "betaNoticeTitle": "Beta 版本",
+      "betaNoticeDescription": "此图纸检查仍在开发中。问题检测可能不完整或不准确。",
+      "notChecked": "尚未运行检查。",
+      "noIssuesTitle": "未发现问题",
+      "noIssuesDescription": "当前图纸检查未发现任何问题。",
+      "rulesButton": "规则",
+      "rulesModalTitle": "已应用的检查规则",
+      "rulesModalDescription": "检查布线图时当前会应用以下规则。",
+      "issueCount": "发现 {{count}} 个结果",
+      "recommendation": "建议",
+      "affectedElements": "受影响的元素",
+      "targetTypes": {
+        "node": "组件",
+        "edge": "连接"
+      },
+      "diagnostics": {
+        "modeLabel": "诊断模式",
+        "suppressedTag": "已抑制",
+        "specificity": "特异性 {{value}}",
+        "suppressedBy": "抑制来源：{{ids}}",
+        "mode": {
+          "user-friendly": "普通",
+          "diagnostic": "所有问题",
+          "diagnostic-with-suppression-markers": "所有问题 + 标记"
+        }
+      },
+      "severity": {
+        "error": "错误",
+        "warning": "警告",
+        "info": "信息"
+      },
+      "classificationLabels": {
+        "gnd_net_type": "接地",
+        "suppl_net_type": "直流供电",
+        "digital_net_type": "数字信号",
+        "pwm_net_type": "PWM",
+        "analog_net_type": "模拟信号",
+        "audio_net_type": "音频",
+        "eth_net_type": "以太网",
+        "usb_net_type": "USB",
+        "rs485_a_net_type": "RS485 A",
+        "rs485_b_net_type": "RS485 B",
+        "N_net_type": "零线",
+        "L_net_type": "火线",
+        "PE_net_type": "保护接地"
+      },
+      "signalLabels": {
+        "digital": "数字信号",
+        "pwm": "PWM",
+        "analog": "模拟信号",
+        "audio": "音频",
+        "usb": "USB"
+      },
+      "analogLedColorLabels": {
+        "red": "红色",
+        "green": "绿色",
+        "blue": "蓝色",
+        "white": "白色",
+        "warmWhite": "暖白"
+      },
+      "mainsInputLabels": {
+        "line": "火线",
+        "neutral": "零线",
+        "pe": "PE"
+      },
+      "rulePlaceholders": {
+        "signal": "信号",
+        "mainsInput": "市电"
+      },
+      "invalidWireReasons": {
+        "missing-node": "组件缺失",
+        "missing-handle": "引脚缺失",
+        "hidden-handle": "引脚已隐藏"
+      },
+      "issues": {
+        "diagramEmpty": {
+          "title": "图纸为空",
+          "shortDescription": "图纸中尚未添加任何组件。",
+          "description": "只有在图纸中存在组件和导线后，检查才能提供技术提示。",
+          "recommendation": "请先添加组件，然后再次运行检查。"
+        }
+      },
+      "rules": {
+        "network-rules": {
+          "title": "网络规则",
+          "description": "检查组件连接网络中的基础问题。",
+          "issues": {
+            "groundMissing": {
+              "title": "没有连接接地网络",
+              "shortDescription": "存在 GND 引脚，但未找到已连接的接地网络。",
+              "description": "图中至少有一个 GND 引脚，但没有任何 GND 引脚被接线。需要接地参考的组件应连接到公共接地。",
+              "recommendation": "将相关组件的 GND 引脚连接在一起。"
+            },
+            "groundMultiple": {
+              "title": "存在多个分离的接地网络",
+              "shortDescription": "所有 GND 连接应属于同一个公共接地网络。",
+              "description": "发现 {{count}} 个分离的接地网络。因此电路的不同部分缺少共同参考点。",
+              "recommendation": "将这些分离的接地网络连接在一起。"
+            },
+            "mainsLowVoltageMixed": {
+              "title": "市电与低压线路相连",
+              "shortDescription": "一个网络将 L/N 与低压或信号端子连接在一起。",
+              "description": "该网络包含 {{classifications}}。市电不得与 GND、直流供电或信号网络相连。",
+              "recommendation": "将市电布线与低压及信号布线严格分开。"
+            },
+            "peActiveMixed": {
+              "title": "保护接地连接到带电线路",
+              "shortDescription": "PE 网络连接到了带电供电线路或信号网络。",
+              "description": "该网络包含 {{classifications}}。PE 不得与 L、N、直流供电或信号连接。",
+              "recommendation": "将 PE 与带电导体和信号连接分开。"
+            },
+            "rs485Mixed": {
+              "title": "RS485 A 和 B 被连接在一起",
+              "shortDescription": "一个网络将 RS485_A 与 RS485_B 相连。",
+              "description": "差分 RS485 线路 A 和 B 不得相互连接。",
+              "recommendation": "将 RS485_A 和 RS485_B 分成两个独立网络。"
+            },
+            "mixedClassifications": {
+              "title": "不同输出类型被连接在一起",
+              "shortDescription": "一个网络包含多个网络类别。",
+              "description": "该网络同时包含 {{classifications}}。这表示不同类型的输出被连接在一起。",
+              "recommendation": "将不同输出类型分离到各自独立的网络中。"
+            },
+            "multipleSupplySources": {
+              "title": "多个独立电压源被连接在一起",
+              "shortDescription": "一个供电网络包含多个独立电压源。",
+              "description": "该网络包含 {{count}} 个独立电压源：{{sources}}。",
+              "recommendation": "分离这些电压源，或确认同一网络中只有转接/传递的输出。"
+            },
+            "signalSinkWithoutSource": {
+              "title": "{{signal}}输入没有信号源",
+              "shortDescription": "一个 {{signal}} 输入已接线，但网络中没有匹配的信号源。",
+              "description": "该网络包含 {{sinks}}，但没有匹配的 {{signal}} 输出。",
+              "recommendation": "将该输入连接到匹配的输出，或检查相关组件的引脚功能。"
+            },
+            "digitalSignalVoltageMismatch": {
+              "title": "数字电平不匹配",
+              "shortDescription": "一个数字输入由不兼容的输出电压驱动。",
+              "description": "{{input}} 允许 {{min}} V 到 {{max}} V，但连接到了不兼容的数字输出：{{sources}}。",
+              "recommendation": "使用合适的电平转换器，或将该输入连接到允许电压范围内的数字输出。"
+            },
+            "multipleSignalSources": {
+              "title": "连接了多个 {{signal}} 源",
+              "shortDescription": "一个 {{signal}} 网络包含多个输出。",
+              "description": "该网络连接了多个 {{signal}} 源：{{sources}}。",
+              "recommendation": "分离这些输出，确保每个信号网络只有一个信号源。"
+            },
+            "supplyInputWithoutSource": {
+              "title": "供电输入没有电压源",
+              "shortDescription": "一个供电输入已接线，但网络中没有电压源。",
+              "description": "该网络包含供电输入（{{inputs}}），但没有独立的 suppl_out 输出。",
+              "recommendation": "将该网络连接到合适的电压源。"
+            },
+            "supplySourceWithoutConsumer": {
+              "title": "供电网络没有负载",
+              "shortDescription": "一个供电输出已接线，但没有连接供电输入。",
+              "description": "该网络包含电压源，但没有识别到供电负载。",
+              "recommendation": "检查该供电是否应继续连接到带有供电输入的组件。"
+            },
+            "supplyVoltageMismatch": {
+              "title": "供电电压不匹配",
+              "shortDescription": "源电压与供电网络中的某些引脚容差不匹配。",
+              "description": "该电源提供 {{voltage}} V，但至少一个已连接引脚不允许该电压范围：{{inputs}}。",
+              "recommendation": "调整供电电压，或将允许电压范围不同的组件分离。"
+            },
+            "wireConnectedToHiddenOrMissingHandle": {
+              "title": "导线指向缺失的引脚",
+              "shortDescription": "导线终止于缺失或隐藏的引脚。",
+              "description": "导线 {{wire}} 无法在 {{side}} 侧电气连接到 {{handle}} 引脚：{{reason}}。",
+              "recommendation": "将导线重新连接到可见且存在的引脚。"
+            },
+            "mainsWireConnectedToLowVoltageComponent": {
+              "title": "市电连接到了不合适的组件",
+              "shortDescription": "L/N/PE 网络连接到了非市电端子。",
+              "description": "{{component}} 上的 {{handle}} 位于市电网络中，但它不是 L/N/PE 端子。",
+              "recommendation": "移除此连接，并仅使用适用于市电电压的端子。"
+            },
+            "groundAndSupplyPolaritySwapped": {
+              "title": "正极供电与 GND 被连接在一起",
+              "shortDescription": "一个网络同时包含接地和直流供电。",
+              "description": "GND 和供电端子在此网络中相连。这很可能是极性接反或短路。",
+              "recommendation": "分离正极供电和 GND 连接，并检查极性。"
+            },
+            "supplyVoltageUnknown": {
+              "title": "供电电压未知",
+              "shortDescription": "供电网络中有一个无法确定电压的电源。",
+              "description": "{{source}} 的供电连接到了输入端，但无法解析电压值。",
+              "recommendation": "在电源或相关字段上设置电压值。"
+            },
+            "signalOutputWithoutConsumer": {
+              "title": "{{signal}} 输出没有负载",
+              "shortDescription": "信号输出已接线，但没有到达匹配的输入。",
+              "description": "{{source}} 已连接，但未找到匹配的 {{signal}} 输入。",
+              "recommendation": "将信号连接到匹配的输入，或移除未使用的连接。"
+            },
+            "dataDirectionWrong": {
+              "title": "数据方向不合理",
+              "shortDescription": "LED 数据网络只连接了输出端或只连接了输入端。",
+              "description": "这些数据端子没有形成合理的源到接收端连接：{{handles}}。",
+              "recommendation": "按正确方向将 DATA_out 连接到 DATA_in。"
+            },
+            "clockedLedClockMissing": {
+              "title": "时钟线缺失或不匹配",
+              "shortDescription": "带时钟的 LED 灯带有数据连接，但没有匹配的时钟连接。",
+              "description": "{{component}} 需要与 DATA 匹配的时钟线。问题：{{reason}}",
+              "recommendation": "将 Clock_in 连接到独立且匹配的数字时钟信号。",
+              "reasons": {
+                "unconnected": "Clock_in 未连接。",
+                "ledChainMismatch": "在 LED 到 LED 串接时，Clock_in 没有来自同一上游灯带的匹配时钟输出。",
+                "sameAsData": "Clock 和 Data 使用了同一信号路径。",
+                "supply": "Clock_in 连接到了供电电压。",
+                "groundOrBias": "Clock_in 连接到了 GND 或偏置网络。",
+                "noDigitalSource": "Clock_in 没有可到达的数字输出源。",
+                "ledDataOrBackupNet": "时钟路径同时也驱动 LED Data_in 或 Backup_in。",
+                "differentController": "Data 和 Clock 来自不同的控制器。",
+                "noControllerOrigin": "Data 来自控制器，但 Clock 没有可确认的控制器源。"
+              }
+            },
+            "digitalBackupPairMismatch": {
+              "title": "备用数据线不匹配",
+              "shortDescription": "Backup_in 并非来自上游 LED 灯带匹配的 Backup_out。",
+              "description": "{{component}} 的数据来自 {{source}}，但备用线不是来自同一条灯带。",
+              "recommendation": "将 Backup_in 连接到同一上游灯带的 Backup_out。"
+            },
+            "digitalBackupInputTiedToData": {
+              "title": "Backup_in 连接到了数据线",
+              "shortDescription": "Backup_in 连接到数据网络可以容忍，但建议连接到 GND。",
+              "description": "{{component}} 不是下游灯带。Backup_in 位于数据网络而不是 GND。",
+              "recommendation": "优先将 Backup_in 连接到 GND。"
+            },
+            "digitalBackupInputNotGrounded": {
+              "title": "Backup_in 未连接到 GND",
+              "shortDescription": "第一条 LED 灯带的 Backup_in 未连接到 GND。",
+              "description": "{{component}} 不是由上一条 LED 灯带供给数据。Backup_in 必须连接到 GND。",
+              "recommendation": "将 Backup_in 连接到 GND。"
+            },
+            "fuseBypassed": {
+              "title": "保险丝被旁路",
+              "shortDescription": "保险丝输入和输出在外部被直接连接。",
+              "description": "{{component}} 中保险丝的两侧在外部属于同一网络。保护功能被旁路。",
+              "recommendation": "移除跨接保险丝的外部桥接。"
+            },
+            "usbPowerPairInvalid": {
+              "title": "USB 供电连接无效",
+              "shortDescription": "USB 供电必须将一个 USB 电源直接连接到一个 USB 设备。",
+              "description": "此 USB 供电网络不是点对点连接：{{reason}}。",
+              "recommendation": "使用一根直接 USB 线，将一个 USB 电源输出连接到一个 USB 设备，不要使用分支或额外端子。"
+            },
+            "wireWithoutPhysicalParameters": {
+              "title": "电源导线缺少物理参数",
+              "shortDescription": "电源、GND 或 USB 导线缺少长度或横截面积。",
+              "description": "此导线位于供电、GND 或 USB 网络中，但缺少长度或横截面积。",
+              "recommendation": "为此导线设置长度和横截面积。"
+            },
+            "sourceWireCrossSectionTooSmall": {
+              "title": "电源附近导线过细",
+              "shortDescription": "直接连接到电源的导线无法承受该电源限流值。",
+              "description": "这根导线直接连接到电源。导线可承载 {{ampacity}} A，需要 {{required}} A。",
+              "recommendation": "请选择更大的截面积，或使用限流值更低的电源。"
+            },
+            "sourceGroundWireCrossSectionTooSmall": {
+              "title": "电源附近 GND 导线过细",
+              "shortDescription": "直接连接到电源的 GND 导线无法承受该电源限流值。",
+              "description": "这根 GND 导线直接连接到电源。导线可承载 {{ampacity}} A，需要 {{required}} A。",
+              "recommendation": "请选择更大的截面积，或使用限流值更低的电源。或者，对 GND 导线进行布线或绝缘处理，确保即使在故障情况下也不会与供电导线发生短路。"
+            },
+            "unfusedSupplyWireCrossSectionTooSmall": {
+              "title": "未熔断保护的供电导线过细",
+              "shortDescription": "直接连接电源的供电网络中有一根导线过细。",
+              "description": "这根导线位于直接连接电源的网络中。导线可承载 {{ampacity}} A，需要 {{required}} A。",
+              "recommendation": "请选择更大的截面积、限流值更低的电源，或在中间加入合适的保险丝。"
+            },
+            "fusedSupplyWireCrossSectionTooSmall": {
+              "title": "保险丝后的供电导线过细",
+              "shortDescription": "保险丝额定电流与导线截面积不匹配。",
+              "description": "这根导线所在网络通过保险丝连接到电源。保险丝额定电流相对于 {{ampacity}} A 的导线载流能力过高。",
+              "recommendation": "增大导线截面积；如果负载不需要这么大电流，请降低保险丝额定值。"
+            },
+            "ledSupplyInputNotAdequatelyProtected": {
+              "title": "LED 供电输入保护不足",
+              "shortDescription": "数字 LED 的供电输入没有被电源或保险丝充分限流。",
+              "description": "{{input}} 最多可承载 {{limit}} A，但没有被电源或保险丝充分限制。",
+              "recommendation": "在电源和 LED 输入之间加入合适的保险丝，或使用限流值更低的电源。"
+            },
+            "componentGroundWireCrossSectionSmallerThanSupply": {
+              "title": "GND 导线小于供电导线",
+              "shortDescription": "组件上的 GND 导线小于已连接的供电导线。",
+              "description": "GND 导线为 {{crosssection}} mm2；参考供电导线为 {{required}} mm2。",
+              "recommendation": "GND 导线通常应至少与对应供电导线的截面积相同。请仔细检查该连接。"
+            },
+            "ledGroundWireCrossSectionSmallerThanSupply": {
+              "title": "LED GND 导线小于供电导线",
+              "shortDescription": "LED 连接区域的 GND 导线小于本地或最近的供电导线。",
+              "description": "GND 导线为 {{crosssection}} mm2；参考供电导线为 {{required}} mm2。",
+              "recommendation": "GND 导线通常应至少与供电导线的截面积相同。请仔细检查该连接。"
+            },
+            "connectorGroundWireCrossSectionSmallerThanBranch": {
+              "title": "GND 主干小于分支",
+              "shortDescription": "连接件之间的 GND 导线小于后续 GND 分支。",
+              "description": "这根 GND 导线为 {{crosssection}} mm2；后续分支需要 {{required}} mm2。",
+              "recommendation": "由于图中没有实际布线方式，此警告可能是假阳性。请手动检查该位置。"
+            },
+            "pinWireCrossSectionTooLarge": {
+              "title": "导线无法接到此端子",
+              "shortDescription": "此导线横截面积对该引脚过大。",
+              "description": "{{handle}} 连接了一根 {{total}} mm2 的导线。最大允许 {{limit}} mm2。该导线横截面积过大，不能可靠地拧紧或焊接到此端子。",
+              "recommendation": "请使用截面积较小的导线，或使用合适的分配器/适配器。在很多情况下，也可以使用一段较短且截面积较小的导线作为中间连接段。"
+            },
+            "pinTotalCrossSectionTooLarge": {
+              "title": "多根导线无法一起接到此端子",
+              "shortDescription": "连接到该引脚的导线总横截面积过大。",
+              "description": "{{handle}} 连接的导线总横截面积为 {{total}} mm2。最大允许 {{limit}} mm2。这些导线的总横截面积过大，不能一起可靠地拧紧或焊接到此端子。",
+              "recommendation": "减小该引脚上的总横截面积，或使用合适的分线端子。"
+            },
+            "pinWireCrossSectionDifficult": {
+              "title": "导线可能较难连接",
+              "shortDescription": "此导线横截面积仍允许用于该引脚，但已接近困难范围。",
+              "description": "{{handle}} 连接了一根 {{total}} mm2 的导线。从 {{limit}} mm2 起，将导线连接或焊接到此引脚可能会比较困难。",
+              "recommendation": "检查此连接是否容易可靠完成，并确认该横截面积是否确有必要，或是否可以减小。如果使用较大的横截面积是为了减小压降，通常可以在引脚处直接焊接一小段较细的导线作为过渡。但仍需注意载流能力，并在图中准确建模该过渡段。"
+            },
+            "pinTotalCrossSectionDifficult": {
+              "title": "多根导线可能较难一起连接",
+              "shortDescription": "连接到该引脚的导线总横截面积仍允许，但已接近困难范围。",
+              "description": "{{handle}} 连接的导线总横截面积为 {{total}} mm2。从 {{limit}} mm2 起，将这些导线一起连接或焊接到此引脚可能会比较困难。",
+              "recommendation": "检查此连接是否容易可靠完成，并确认这些横截面积是否确有必要，或是否可以减小。如果使用较大的横截面积是为了减小压降，通常可以在引脚处直接焊接一小段较细的导线作为过渡。但仍需注意载流能力，并在图中准确建模该过渡段。"
+            },
+            "duplicateParallelWire": {
+              "title": "重复的并联连接",
+              "shortDescription": "多条导线连接了同一对引脚。",
+              "description": "{{count}} 条导线连接了同一对引脚。",
+              "recommendation": "移除意外重复的导线。"
+            }
+          }
+        },
+        "component-rules": {
+          "title": "组件规则",
+          "description": "检查单个组件的基础要求。",
+          "issues": {
+            "requiredPinUnconnected": {
+              "title": "必接引脚未连接",
+              "shortDescription": "某个组件有必须连接的引脚。",
+              "description": "{{component}} 存在未连接的必接引脚：{{handles}}。",
+              "recommendation": "连接该组件上所有标记为必须连接的引脚。"
+            },
+            "groundMissing": {
+              "title": "组件没有接地",
+              "shortDescription": "带 GND 引脚的组件未连接到接地。",
+              "description": "{{component}} 具有 GND 引脚，但没有任何一个连接到接地网络。",
+              "recommendation": "将该组件的至少一个 GND 引脚连接到公共接地网络。"
+            },
+            "powerMissing": {
+              "title": "组件没有供电",
+              "shortDescription": "带供电输入的组件未供电。",
+              "description": "{{component}} 具有供电或 USB 输入，但没有任何供电输入连接到包含其他组件 suppl_out 引脚的供电网络，也没有 USB 端子连接到 USB 网络。",
+              "recommendation": "将供电输入连接到合适的外部电压源，或将 USB 端子连接到 USB 供电。"
+            },
+            "mainsInputMissing": {
+              "title": "{{label}}输入未连接",
+              "shortDescription": "带 {{label}} 输入的组件未连接到匹配的网络。",
+              "description": "{{component}} 具有 {{label}} 输入，但至少一个未连接到匹配的 {{label}} 网络。",
+              "recommendation": "将该组件的每个 {{label}} 输入连接到匹配的 {{label}} 网络。"
+            },
+            "unusedRequiredFunctionalGroup": {
+              "title": "已使用的功能组不完整",
+              "shortDescription": "LED 输入组只连接了一部分。",
+              "description": "{{component}} 已使用数据输入，但该组缺少供电或 GND。",
+              "recommendation": "为 LED 输入组连接数据、供电和 GND。"
+            },
+            "controlledOutputWithoutControlInput": {
+              "title": "受控输出没有控制信号",
+              "shortDescription": "已使用的可控输出没有数字控制输入。",
+              "description": "{{component}} 使用了 {{output}}，但相关控制输入 {{control}} 未连接到数字网络。",
+              "recommendation": "将控制输入连接到合适的数字输出；如果未使用该开关输出，则断开它。"
+            },
+            "analogLedColorChannelUnconnected": {
+              "title": "颜色通道未连接",
+              "shortDescription": "模拟 LED 灯带的一个颜色无法控制。",
+              "description": "{{component}} 没有连接 {{color}} 通道。相关引脚：{{handles}}。",
+              "recommendation": "如果需要控制该颜色，请将至少一个 {{color}} 端子连接到合适的 PWM 输出。"
+            },
+            "analogLedColorChannelMultiplePwmSignals": {
+              "title": "颜色通道连接到多个 PWM 信号",
+              "shortDescription": "模拟 LED 灯带的一个颜色连接到了不同的 PWM 输出。",
+              "description": "{{component}} 的 {{color}} 通道连接到了多个 PWM 信号：{{signals}}。相关引脚：{{handles}}。",
+              "recommendation": "同一颜色通道的所有端子应连接到同一个 PWM 信号。如需更高功率，请将模拟灯带拆分为独立灯带或隔离分段。"
+            },
+            "componentHasOnlyOneTerminalConnected": {
+              "title": "仅连接了一个端子",
+              "shortDescription": "双端子组件只有一个引脚已连接。",
+              "description": "{{component}} 只在 {{handle}} 处连接。",
+              "recommendation": "连接两个端子，或移除未使用的组件。"
+            },
+            "capacitorPolarityMismatch": {
+              "title": "电容极性错误",
+              "shortDescription": "有极性电容可能接反。",
+              "description": "{{component}} 的正极接到了 GND，或负极接到了供电。",
+              "recommendation": "将正极连接到正供电，将负极连接到 GND。"
+            },
+            "mainsConnectorIncomplete": {
+              "title": "市电连接不完整",
+              "shortDescription": "市电组件只连接了 L 或只连接了 N。",
+              "description": "{{component}} 的 L/N 连接不完整。",
+              "recommendation": "正确连接 L 和 N，或完全断开市电连接。"
+            },
+            "protectiveEarthMissingForMetalOrMainsDevice": {
+              "title": "缺少保护接地",
+              "shortDescription": "带 PE 的市电组件缺少保护接地。",
+              "description": "{{component}} 使用市电电压，但 PE 未正确连接。",
+              "recommendation": "将 PE 连接到保护接地网络。"
+            },
+            "supplyInputOnlyInternallyPowered": {
+              "title": "供电仅通过内部转接",
+              "shortDescription": "组件看起来只通过内部供电引脚连接。",
+              "description": "{{component}} 具有供电输入，但无法到达外部电压源。",
+              "recommendation": "将供电连接到外部电源。"
+            },
+            "fuseCurrentMissingOrUnderspecified": {
+              "title": "缺少保险丝额定值",
+              "shortDescription": "保险丝没有可识别的额定电流。",
+              "description": "{{component}} 包含一个无法评估额定电流的保险丝。",
+              "recommendation": "设置或检查保险丝额定值。"
+            },
+            "isolatedComponent": {
+              "title": "组件处于孤立状态",
+              "shortDescription": "技术组件没有连接任何导线。",
+              "description": "{{component}} 在图纸中未接线。",
+              "recommendation": "为该组件接线；如果不需要，则移除它。"
+            },
+            "componentDefinitionIncompleteForChecks": {
+              "title": "组件定义不完整",
+              "shortDescription": "某个引脚缺少用于检查的元数据。",
+              "description": "{{component}} 的 {{handle}} 引脚缺少检查所需的信息。",
+              "recommendation": "更新组件模板，或补充该引脚的检查元数据。"
+            },
+            "ambiguousMultiFunctionHandle": {
+              "title": "多功能引脚功能不明确",
+              "shortDescription": "某个多功能引脚无法明确归类。",
+              "description": "{{handle}} 具有这些功能：{{functions}}。",
+              "recommendation": "检查连接，或选择更明确的引脚功能。"
+            },
+            "sn74Ahct125nUsedChannelInputMissing": {
+              "title": "SN74AHCT125N 通道输入未被驱动",
+              "shortDescription": "已使用的缓冲器输出存在未连接到数字输出源的输入，或 /OE 引脚既未由数字信号驱动也未接到 GND。",
+              "description": "{{component}} 通道 {{channel}} 通过 {{output}} 驱动数字输入，但这些相关引脚连接不正确：{{handles}}。A 必须连接到包含 dig_out 的网络；/OE 可以连接到包含 dig_out 或 GND 的网络。",
+              "recommendation": "将相关 A 引脚连接到合适的数字输出，并将 /OE 引脚连接到数字输出或 GND，或将未使用的 Y 输出与数字输入断开。"
+            },
+            "sn74Ahct125nDirectLedOutputMissingSeriesResistor": {
+              "title": "SN74AHCT125N 输出直接连接到 LED 输入",
+              "shortDescription": "SN74AHCT125N 输出直接连接到 LED 数据或时钟输入。",
+              "description": "{{output}} 直接连接到 {{led}} 的 {{input}}。该信号路径通常应包含约 68 欧姆的串联电阻。",
+              "recommendation": "在 SN74AHCT125N 输出和 LED 数据/时钟输入之间放置约 68 欧姆的电阻。"
+            },
+            "digitalLedSignalGroupGroundMissing": {
+              "title": "数字 LED 输入组缺少 GND",
+              "shortDescription": "数据或时钟输入已连接，但同一 LED 输入组的 GND 未连接。",
+              "description": "{{component}} 在 {{group}} 组中有已连接的数字信号输入（{{signals}}），但同一组中没有 GND 连接。",
+              "recommendation": "将同一 LED 灯带组（_start、_end 或 _middle_N）的 GND 引脚连接到公共接地网络。"
+            }
+          }
+        }
+      }
+    },
+    "simulation": {
+      "title": "电流模拟",
+      "inDevelopmentTitle": "模拟功能仍在开发中",
+      "comingSoon": "电源分配模拟将在未来实现。敬请期待！",
+      "settings": "设置",
+      "brightness": "亮度：{{value}}%",
+      "buttonRun": "开始模拟",
+      "buttonDelete": "删除结果",
+      "betaNoticeTitle": "Beta 版本",
+      "betaNoticeDescription": "仿真功能仍在开发中。结果可以帮助判断布线是否合理，但不能替代对真实设备的测量。",
+      "infoButton": "仿真内容",
+      "infoModalTitle": "仿真会计算什么",
+      "infoModalIntro": "仿真会估算当前图纸中电压和电流的分布情况。",
+      "infoModalItems": {
+        "power": "它会使用图纸中的电源、DC/DC 转换器和负载。",
+        "wires": "它会考虑导线长度和截面积，从而显示可能的压降。",
+        "leds": "对于 LED 灯带，会评估亮度、颜色模式以及灯带上的电压变化。",
+        "protection": "它会提示电流过高、电压过低或保险丝过载等可疑位置。",
+        "limits": "它模拟的是直流静态状态，不模拟数据协议、信号波形、上电浪涌或发热。"
+      },
+      "infoModalCaution": {
+        "label": "注意！",
+        "text": "这里模拟的是典型组件。尤其是电源和 LED 灯带，市面上有许多不同版本，它们的行为可能明显不同。因此，真实搭建中的数值总会或多或少不同于这里的仿真结果。不过，这个仿真仍然可以为你的设计提供很好的参考。"
+      },
+      "infoModalModelDetails": {
+        "title": "模型如何被简化",
+        "leds": {
+          "title": "LED 灯带：",
+          "description": "数字 LED 灯带会被分成较小的区段。仿真会根据亮度、颜色模式和局部电压估算每个区段的电流。灯带中的铜箔走线会被建模为电阻，因此可以看到沿灯带产生的电压下降。"
+        },
+        "powerSources": {
+          "title": "电压源：",
+          "description": "电源会被看作带电流限制的稳压直流电压源。在电流限制以内，它们近似保持输出电压恒定。过载时会建模为输出电压下降，而不是精确复现每一种真实电源的保护行为。"
+        },
+        "dcdc": {
+          "title": "DC/DC 转换器：",
+          "description": "DC/DC 转换器会被看作把输入电压转换为稳定输出电压的组件。仿真会考虑输出电流限制和有限的输入功率。效率、温度影响以及快速调节过程会被简化。"
+        },
+        "wires": {
+          "title": "导线：",
+          "description": "导线会按欧姆电阻计算。导线越长、截面积越小，电阻就越大。电流流过这个电阻时会产生压降，并显示在图纸中。"
+        }
+      },
+      "infoModalNote": "请把仿真作为设计合理性的检查。涉及安全或最终安装的设备仍然需要实际测量并按规范检查。",
+      "displayMode": {
+        "label": "结果显示",
+        "default": "默认",
+        "extended": "扩展",
+        "defaultDescription": "显示相关电流、供电输出、USB 供电电压和 LED 电压。",
+        "extendedDescription": "显示所有可用的模拟标签。"
+      },
+      "notRun": "尚未运行模拟。",
+      "running": "正在运行模拟...",
+      "invalidated": "图纸已更改，模拟结果已移除。",
+      "blockedTitle": "Simulation not started",
+      "blockedDescription": "Run a current diagram check without errors before starting the simulation.",
+      "diagramCheckDebugBypass": "Debug mode: simulation starts without diagram-check gating.",
+      "diagramCheckSettingsBypass": "已启用高级设置：即使布线图检查存在错误，也会启动模拟。",
+      "diagramCheckGate": {
+        "not-checked": {
+          "title": "Diagram check required",
+          "description": "Run the diagram check before starting the simulation."
+        },
+        "stale": {
+          "title": "Diagram check is outdated",
+          "description": "The diagram changed after the last check. Run the diagram check again."
+        },
+        "has-errors": {
+          "title": "Diagram check has {{count}} error(s)",
+          "description": "Fix the diagram-check errors before starting the simulation. Warnings do not block simulation."
+        }
+      },
+      "modelReadyTitle": "模拟模型已创建",
+      "modelReadyDescription": "{{components}} 个已模拟组件，{{wires}} 条已模拟导线。",
+      "failedTitle": "模拟失败",
+      "failedDescription": "无法创建模拟模型。请检查下面的消息。",
+      "workerFailedTitle": "Simulation worker failed",
+      "noIssues": "没有模拟消息。",
+      "issueCount": "{{count}} 条模拟消息",
+      "affectedElements": "受影响的元素",
+      "targetPin": "{{component}} - {{pin}}",
+      "targetWire": "导线：{{source}} -> {{target}}",
+      "targetComponent": "{{component}}",
+      "ledVoltagePlot": {
+        "title": "LED 灯带电压图",
+        "openButton": "显示 LED 电压图",
+        "closeButton": "关闭",
+        "modalTitle": "LED 电压随长度变化：{{component}}",
+        "xAxis": "沿灯带长度 (m)",
+        "yAxis": "VLED (V)",
+        "ledCounts": "逻辑 LED：{{logical}} · 物理 LED：{{physical}}",
+        "minVoltage": "最小值 {{voltage}} V，位置 {{distance}} m",
+        "pointTooltip": "{{distance}} m：{{voltage}} V，区段 {{section}}，LED {{index}}"
+      },
+      "issues": {
+        "dcdcInputPowerAmbiguous": {
+          "title": "DCDC 输入功率限制不明确",
+          "description": "该 DCDC 输入可以被动到达多个输入电压源。由于未建模多电源之间的电流分配，因此未计算动态输入功率限制。"
+        },
+        "dcdcInputPowerLimited": {
+          "title": "DCDC 输入功率受限",
+          "description": "DCDC 输出电流 {{current}} A 超过动态输入功率限制 {{limit}} A。输出电压已由 DCDC 输入功率模型降低。"
+        },
+        "currentLimit": {
+          "title": "电流限制被超过",
+          "description": "电压源电流 {{current}} A 超过限制 {{limit}} A。输出电压已由电源过载模型降低。"
+        },
+        "currentLimitReduced": {
+          "description": "降低输出电压前，电源负载超过限制 {{limit}} A。降压后的最终电流为 {{current}} A。"
+        },
+        "currentLimitExtreme": {
+          "title": "电流限制超过过多",
+          "description": "电压源电流 {{current}} A 超过限制 {{limit}} A 的 150%。模拟已停止。"
+        },
+        "fuseCurrent": {
+          "title": "保险丝电流超标",
+          "description": "保险丝电流 {{current}} A 超过额定电流 {{limit}} A。"
+        },
+        "pinVoltageLow": {
+          "title": "供电电压过低",
+          "description": "供电电压为 {{voltage}} V，低于最小值 {{limit}} V。"
+        },
+        "pinVoltageHigh": {
+          "title": "供电电压过高",
+          "description": "供电电压为 {{voltage}} V，高于最大值 {{limit}} V。"
+        },
+        "pinCurrentLimit": {
+          "title": "引脚电流超过限制",
+          "description": "引脚电流 {{current}} A 超过最大值 {{limit}} A。"
+        },
+        "wireAmpacityExceeded": {
+          "title": "导线电流超过载流能力",
+          "description": "模拟电流 {{current}} A 超过 {{crosssection}} {{conductor}} 的导线载流能力 {{limit}} A。对于常见导线类型，此截面积过小。请使用更耐高温/更高电流等级的导线，或增大导线截面积。"
+        },
+        "wireAmpacityFullLoadRequired": {
+          "title": "导线载流能力需要满载模拟",
+          "description": "只有在满载模拟后，才能可靠评估导线载流能力。",
+          "descriptionRgb": "对于 RGB 灯带，只有在 100% 亮度并使用 RGB 白光进行模拟后，才能可靠评估导线载流能力。对于纯 RGB 灯带，Separate + RGB white 与 RGB 白光等效，也会被接受。",
+          "descriptionRgbw": "由于图中包含 RGBW 灯带，只有在 100% 亮度并使用 Separate + RGB white 进行满载模拟后，才能可靠评估导线载流能力。"
+        },
+        "ledStripSupplyVoltageLow": {
+          "title": "LED 灯带供电电压过低",
+          "description": "已连接的 LED 灯带供电点处 VLED 为 {{voltage}} V，低于最小值 {{limit}} V。请提高电源电压；如果电源正在限流，请提高可用功率。"
+        },
+        "ledStripVoltageDropHigh": {
+          "title": "LED 灯带压降过高",
+          "description": "已连接的供电点电压在允许范围内，但灯带长度上的最低 VLED 为 {{voltage}} V，低于关键曲线值 {{limit}} V。颜色还原可能会明显失真。请沿 LED 灯带增加更多注入供电点。"
+        },
+        "ledStripVoltageDropWarning": {
+          "title": "LED 灯带压降过高",
+          "description": "已连接的供电点电压在允许范围内，但灯带长度上的最低 VLED 为 {{voltage}} V，低于警告值 {{limit}} V。颜色还原可能会轻微失真。请沿 LED 灯带增加更多注入供电点。"
+        },
+        "ledStripVoltageLow": {
+          "title": "LED 灯带电压过低",
+          "description": "LED 灯带最低电压为 {{voltage}} V，低于最小值 {{limit}} V。"
+        },
+        "ledStripVoltageHigh": {
+          "title": "LED 灯带电压过高",
+          "description": "LED 灯带最高电压为 {{voltage}} V，高于最大值 {{limit}} V。"
+        },
+        "unpoweredSubnet": {
+          "title": "已忽略未供电子电路",
+          "description": "一个有效的模拟子电路无法从任何电压源到达，因此已被忽略。"
+        },
+        "solverFailed": {
+          "title": "模拟求解器失败",
+          "description": "求解器返回状态 {{status}}。"
+        },
+        "solverNotConverged": {
+          "title": "模拟求解器未收敛",
+          "description": "电压相关的 LED 电流在迭代限制内未收敛。"
+        }
+      },
+      "severity": {
+        "error": "错误",
+        "warning": "警告",
+        "info": "信息"
+      },
+      "colorModes": {
+        "rgbWhite": "RGB 白光",
+        "separateWhite": "独立白光",
+        "separateAndRgbWhite": "独立 + RGB 白光",
+        "red": "红色",
+        "green": "绿色",
+        "blue": "蓝色"
+      }
+    },
+    "tools": {
+      "wireInstallationButton": "导线敷设",
+      "wireInstallationDescription": "导线截面积检查的设置。",
+      "wireInstallationTitle": "导线敷设",
+      "wireInstallationTypeLabel": "敷设方式",
+      "ambientTemperatureLabel": "环境温度",
+      "wireInstallationTypes": {
+        "surface": "表面敷设",
+        "conduit": "穿管敷设",
+        "insulatedWall": "保温墙内"
+      },
+      "title": "工具",
+      "rerouteAllButton": "重新布线全部导线",
+      "rerouteAllTooltip": "使用 Pathfinder 顺序重新布线全部导线",
+      "rerouteAllDisabledPF": "仅在 Auto/PF 连接模式下可用",
+      "rerouteAllDisabledEmpty": "图中没有导线",
+      "rerouteAllDescription": "优先布线距离较短的组件对，并保留导线 ID、连接和属性。",
+      "rerouteAllSuccess": "所有导线已重新布线。"
+    },
+    "advancedSettings": {
+      "title": "高级设置",
+      "simulationSettingsButton": "模拟设置",
+      "simulationSettingsDescription": "电气模拟启动选项。",
+      "simulationSettingsTitle": "模拟设置",
+      "allowSimulationWithDiagramCheckErrorsLabel": "即使布线图检查存在错误也启动模拟",
+      "allowSimulationWithDiagramCheckErrorsDescription": "仅在你明确需要检查仍含有检查错误的布线图时使用。警告不会阻止模拟。",
+      "autosaveEnabledLabel": "在本地自动保存布线图",
+      "autosaveEnabledDescription": "在此浏览器中保留一份恢复副本。关闭后会删除当前自动保存。"
+    },
+    "export": {
+      "title": "保存 / 导出 / 示例",
+      "buttonSave": "保存模型",
+      "buttonSaveAs": "模型另存为...",
+      "buttonExportPNG": "将模型导出为 PNG 文件",
+      "buttonExportJPEG": "将模型导出为 JPEG 文件",
+      "buttonExportSVG": "将模型导出为 SVG 文件",
+      "buttonOpen": "打开模型...",
+      "buttonShare": "生成模型的公开链接",
+      "currentFile": "当前文件：{{name}}",
+      "saveAsModalTitle": "模型另存为",
+      "saveAsModalOk": "保存",
+      "dividerExport": "导出",
+      "dividerSaveOpen": "保存 / 打开",
+      "dividerShare": "分享",
+      "dividerExamples": "加载示例",
+      "share": {
+        "modalTitle": "分享模型 - 生成链接",
+        "modalLinkText": "链接：",
+        "modalLinkBeingGenerated": "... 正在生成 ... 请稍候 ...",
+        "modalButtonOK": "确定",
+        "modalButtonClose": "关闭",
+        "modalButtonCancel": "取消",
+        "modalAttentionText": "当您点击\"确定\"时，您的模型以及所有输入的数据将被传输到公共服务器（https://github.com）并保存在那里。为此，您的模型数据和 IP 地址也将被传输到 https://wled-api.myhome-control.de/。然后您将看到一个链接，可用于与他人分享模型。",
+        "modalLinkError": "发生错误！如有必要，请重试。",
+        "tooltipCopyLink": "复制链接到剪贴板",
+        "messageLinkCopied": "已复制到剪贴板！"
+      },
+      "selectExample": "选择示例 ..."
+    }
+  },
+  "footRow": {
+    "legalNotice": {
+      "title": "法律声明",
+      "responsible": "负责人：Wladislaw Waag",
+      "address": "地址：Wasserburger Landstr. 29, 81825 Munich, Germany",
+      "contact": "联系方式：+49 (0) 176 47 11 5206, info@myhome-control.de",
+      "disputeText": "",
+      "disputeSettlmentText": "消费者争议解决 / 通用仲裁委员会：我们既不愿意也没有义务参与消费者仲裁委员会面前的争议解决程序。"
+    },
+    "dataPrivacy": {
+      "title": "数据隐私",
+      "text1": "此页面作为 'Github Pages' 的一部分托管和运营。Github 可能收集和处理个人数据，这也可能影响 wled-compile.github.io 网页的访问者。但是，我们对此没有影响。请阅读 Github 隐私声明：",
+      "text2": "此外，一旦您使用'分享'功能，您的 IP 地址、您创建的模型以及您输入的所有数据将被转发到 https://myhome-control.de 和 https://github.com/wled-development/wled-wiring-store。这对于此功能是绝对必要的。https://myhome-control.de 的数据保护声明可在以下位置找到",
+      "text3": "我们的网站包含指向我们无法控制的外部网站的链接。我们不能对此第三方内容承担任何责任。相应页面的提供者或运营商始终对链接页面的内容负责。链接页面在链接时已检查可能的法律违规行为。当时无法识别非法内容。如果我们发现任何法律违规行为，我们将立即删除相关链接。"
+    },
+    "links": {
+      "title": "有用的链接",
+      "link1Text": "官方 WLED 文档：",
+      "link2Text": "WLED 常见问题：",
+      "link3Text": "WLED 计算器：",
+      "link4Text": "扩展 WLED 在线安装程序：",
+      "link5Text": "在线编译您自己的 WLED 软件：",
+      "link6Text": "购买 WLED 控制器（德国）：",
+      "link7Text": "购买 WLED 控制器（全球）："
+    },
+    "contribute": {
+      "title": "贡献/GitHub",
+      "text": "非常感谢您的贡献！如果您想贡献，请访问项目的 GitHub 链接："
+    }
+  },
+  "examples": {
+    "example1": "ESP32 微控制器 + 电平转换器 + DC/DC + 24V LED 灯带",
+    "example2": "ABC! WLED 控制器 + 24V LED 灯带",
+    "example3": "ABC! WLED 控制器 + 长 24V LED 灯带 + 线路输入 + 以太网",
+    "example4": "ABC! WLED 控制器 + 长距离扩展",
+    "example5": "ABC! WLED 控制器 + 模拟 24V LED 灯带 + PWM 板"
+  },
+  "compData": {
+    "Router": {
+      "name": "WAN/LAN 路由器",
+      "description": "通用 WLAN/LAN 路由器。",
+      "descriptionShort": "通用"
+    },
+    "Button": {
+      "name": "按钮",
+      "description": "通用按钮。按下并保持时，触点闭合。释放按钮时，触点立即打开。不要与开关混淆。",
+      "descriptionShort": "通用"
+    },
+    "DC_JACK_FEMALE": {
+      "name": "DC 端子",
+      "description": "用于将带 DC 端子的电源分离出正极（+）和负极（-）导线。",
+      "descriptionShort": "最高 3A"
+    },
+    "Elko": {
+      "name": "电解电容",
+      "description": "具有可选电容的电解电容。注意极性！通常用于稳定 LED 或其他组件的电源。",
+      "descriptionShort": "可选电容"
+    },
+    "ESP32_30P": {
+      "name": "ESP32 微控制器 30 引脚",
+      "description": "ESP32 控制器，30 引脚版本。也称为 NodeMCU。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32_38P": {
+      "name": "ESP32 微控制器 38 引脚",
+      "description": "ESP32 控制器，38 引脚版本。也称为 NodeMCU。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32C3D1mini": {
+      "name": "ESP32-C3 D1 mini",
+      "description": "D1 mini 格式的 ESP32-C3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32C3_supermini": {
+      "name": "ESP32-C3 supermini",
+      "description": "ESP32-C3 控制器，supermini 版本。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32D1mini": {
+      "name": "ESP32 D1 mini",
+      "description": "D1 mini 型号的 ESP32 控制器。",
+      "descriptionShort": "控制器"
+    },
+    "ESP32S3D1mini": {
+      "name": "ESP32-S3 D1 mini",
+      "description": "D1 mini 型号的 ESP32-S3 控制器。WLED 可在此控制器类型上运行，但功能可能受限。",
+      "descriptionShort": "控制器"
+    },
+    "ESP8266D1mini": {
+      "name": "ESP8266 D1 mini",
+      "description": "D1 mini 型号的 ESP8266 控制器。不再推荐用于新的 WLED 项目（性能太弱）。",
+      "descriptionShort": "控制器"
+    },
+    "InfoNode": {
+      "name": "文本",
+      "description": "用于在图纸中添加标签或注释的文本元素。",
+      "descriptionShort": "用于注释等"
+    },
+    "INMP441": {
+      "name": "INMP441 麦克风",
+      "description": "INMP441 麦克风。它是 WLED 支持的数字麦克风，用于声音反应效果，提供高质量。",
+      "descriptionShort": "数字"
+    },
+    "IR_KY022": {
+      "name": "KY022 红外接收器",
+      "description": "KY-022 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
+      "descriptionShort": "红外"
+    },
+    "IR_TSOP38238": {
+      "name": "TSOP38238 红外接收器",
+      "description": "TSOP38238 红外接收器，WLED 支持，允许使用红外遥控器控制 WLED。",
+      "descriptionShort": "红外"
+    },
+    "Kerko": {
+      "name": "陶瓷电容",
+      "description": "具有可选电容的陶瓷电容。通常用于开关电子电路的输入端（电源和地之间）以抑制噪声。应使用尽可能短的引线/走线连接。",
+      "descriptionShort": "可选电容"
+    },
+    "LineBoxNode": {
+      "name": "矩形",
+      "description": "用于绘制矩形（填充或框）的元素。",
+      "descriptionShort": "绘图元素"
+    },
+    "miniOTOFuse": {
+      "name": "保险丝",
+      "description": "来自汽车的保险丝。适用于最高 32V 的电压。仅从专业经销商处购买，因为市场上许多廉价仿制品无法正常工作。WLED 计算器（www.wled-calculator.github.io）可用于选型。",
+      "descriptionShort": "可选 4-30A"
+    },
+    "FUSE_Board": {
+      "name": "保险丝板",
+      "description": "用于电源分配和熔断保护。",
+      "descriptionShort": "4 通道"
+    },
+    "PIR_HCSR501": {
+      "name": "HC-SR501 PIR 传感器",
+      "description": "HCSR501 型 PIR 运动传感器。可与 WLED 一起使用。",
+      "descriptionShort": "运动检测器"
+    },
+    "PLUG_LNPE": {
+      "name": "电源插头",
+      "description": "用于 230V 电源插座的插头。警告：有生命危险！仅在您具备相应知识时使用。",
+      "descriptionShort": "用于 230V 交流电"
+    },
+    "PSU_HP": {
+      "name": "电源",
+      "description": "具有可调电压/电流（功率）的电源。这些通常用于大型设置的高性能电源。电源插头必须单独连接。",
+      "descriptionShort": "可调 V/I"
+    },
+    "PSU_USB": {
+      "name": "USB 电源",
+      "description": "USB 电源，输出电压 5V，可调电流最高 5A。",
+      "descriptionShort": "5V，可调 I"
+    },
+    "PSU_USB_WIRES": {
+      "name": "USB 电源",
+      "description": "USB 电源，输出电压 5V，可调电流最高 5A，带独立 +/- 线。",
+      "descriptionShort": "5V，独立 +/- 线"
+    },
+    "Resistor": {
+      "name": "电阻器",
+      "description": "具有可调阻值的电阻器。",
+      "descriptionShort": "可调电阻"
+    },
+    "SN74AHCT125N": {
+      "name": "电平转换器",
+      "description": "WLED 推荐的电平转换器类型。电平转换器是将微控制器的控制信号（3.3V）转换为可寻址 LED 的 LED 数据输入（5V）电平所必需的。没有电平转换器，经常会出现闪烁（12V 和 24V LED 几乎总是如此）。",
+      "descriptionShort": "SN74AHCT125N"
+    },
+    "SolderJoint": {
+      "name": "焊点",
+      "description": "表示焊点，例如用于将线连接在一起。",
+      "descriptionShort": "用于导线等"
+    },
+    "WAGO_2X": {
+      "name": "WAGO 端子 2x",
+      "description": "广泛使用的弹簧夹端子，双向。",
+      "descriptionShort": "弹簧夹"
+    },
+    "WAGO_3X": {
+      "name": "WAGO 端子 3x",
+      "description": "广泛使用的弹簧夹端子，三向。",
+      "descriptionShort": "弹簧夹"
+    },
+    "WireInfoNode": {
+      "name": "导线信息",
+      "description": "关于导线的信息。",
+      "descriptionShort": " "
+    },
+    "WS2812B_5V_30LPM": {
+      "name": "WS2812B RGB",
+      "description": "WS2812 RGB LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "MHC_V43": {
+      "name": "WLED V43 控制器",
+      "description": "用于 5V、12V 或 24V 可寻址 LED 的专业 WLED 控制器。包括 ESP32 微控制器、SN74AHCT 电平转换器、保险丝、电容、EMI 滤波器。可选配件包括以太网适配器、INMP441 麦克风、线路输入适配器和 USB 适配器。",
+      "descriptionShort": "基于 ESP32"
+    },
+	"MHC_V57": {
+      "name": "WLED PRO V57 控制器",
+      "description": "用于 5V、12V 或 24V 可寻址 LED 的专业 WLED 控制器。包括 ESP32 微控制器、SN74AHCT 电平转换器、保险丝、电容、EMI 滤波器。可选配件包括以太网适配器、INMP441 麦克风、线路输入适配器和 USB 适配器。",
+      "descriptionShort": "基于 ESP32"
+    },
+    "MHC_SwitchBoard": {
+      "name": "WLED 开关板",
+      "description": "继电器板的更好/现代替代品，用于完全关闭 LED。具有过流、过温、短路和反接保护。",
+      "descriptionShort": "通用 5-24V"
+    },
+    "MHC_PWMBoard": {
+      "name": "WLED PWM 板",
+      "description": "该板使用 MOSFET 通过 PWM 信号控制模拟 LED 灯带。3 个通道，每个最大 5A。具有过流、过温、短路和反接保护。",
+      "descriptionShort": "通用 12-48V"
+    },
+    "MHC_RS485_R": {
+      "name": "RS-485 接收器",
+      "description": "RS-485 接收器，用作 RS-485 适配器的范围扩展器接收器。",
+      "descriptionShort": "RS-485 接收器"
+    },
+    "MHC_Relay5V": {
+      "name": "5V 继电器板",
+      "description": "用于 5V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 5V LED"
+    },
+    "MHC_Relay12V": {
+      "name": "12V 继电器板",
+      "description": "用于 12V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 12V LED"
+    },
+    "MHC_Relay24V": {
+      "name": "24V 继电器板",
+      "description": "用于 24V 可寻址 LED 的专业继电器板。允许通过继电器在不使用时关闭 LED 灯带，节省能源，延长 LED 灯带寿命，并提高安全性。两个路径允许两个独立的控制，或者例如，控制两个电源输入。",
+      "descriptionShort": "用于 24V LED"
+    },
+    "AUDIO_SOURCE": {
+      "name": "音频源",
+      "description": "通用音频信号源。",
+      "descriptionShort": "线路输出"
+    },
+    "LM2596_PCB": {
+      "name": "LM2596 DC/DC",
+      "description": "具有可调输出电压的 DC/DC（降压）转换器。",
+      "descriptionShort": "可调输出"
+    },
+    "IRLZ44N": {
+      "name": "IRLZ44N",
+      "description": "MOSFET。此类型推荐与 WLED 一起使用，可用于控制模拟 LED 灯带。",
+      "descriptionShort": "N 沟道 MOSFET"
+    },
+    "DCDC_mini": {
+      "name": "DC/DC 迷你",
+      "description": "具有可调输出电压的 DC/DC（降压）转换器。",
+      "descriptionShort": "可调输出"
+    },
+    "WS2814_24V_60LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED 灯带，可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2813_5V_60LPM": {
+      "name": "WS2813 RGB",
+      "description": "带备份线的 RGB LED 灯带。",
+      "descriptionShort": "5V, 60 LEDs/m"
+    },
+    "WS2815_12V_30LPM": {
+      "name": "WS2815 RGB",
+      "description": "带备份线的 RGB LED 灯带。",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2814_12V_30LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2818_12V_30LPM": {
+      "name": "WS2818 RGB",
+      "description": "RGB LED 灯带，可单独寻址的 LED，每组 3 个（1 个逻辑 LED = 3 个物理 LED）。",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "FCOB_12V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
+      "descriptionShort": "12V, 720 LEDs/m"
+    },
+    "FCOB_24V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED 灯带，720 LEDs/m（每米每种颜色 240 个 LED，20 个逻辑 LEDs/m）",
+      "descriptionShort": "24V, 720 LEDs/m"
+    },
+    "FCOB_24V_784LPM": {
+      "name": "FCOB RGBW",
+      "description": "FCOB RGBW LED 灯带，784 LEDs/m（每米每种颜色 196 个 LED，14 个逻辑 LEDs/m）",
+      "descriptionShort": "24V, 784 LEDs/m"
+    },
+    "APA102_5V_30LPM": {
+      "name": "APA102 RGB",
+      "description": "带时钟信号的 APA102 LED 灯带，5V，每米 30 个 LED，可单独寻址的 LED。",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "AN_WHITE_24V_240LPM": {
+      "name": "模拟白光",
+      "description": "模拟 LED 灯带（白色 2835 LED），24V，240 LEDs/m，每段2.5厘米（6 个 LED）",
+      "descriptionShort": "24V, 240 白光 LEDs/m"
+    },
+    "AN_RGB_CCT_48V_90LPM": {
+      "name": "模拟 RGB CCT",
+      "description": "模拟 RGB CCT LED 灯带（5050 LED），48V，90 LEDs/m，每段16.65厘米（15 个 LED）",
+      "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM": {
+      "name": "模拟 RGB",
+      "description": "模拟 RGB LED 灯带（2835 LED），24V，120 LEDs/m，每段5厘米（6 个 LED）",
+      "descriptionShort": "24V, 120 LEDs/m"
+    },
+    "WS2805_24V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2805_12V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED 灯带（数字），可单独寻址的 LED，每组 6 个（1 个逻辑 LED = 6 个物理 LED）。",
+      "descriptionShort": "12V, 60 LEDs/m"
+    }
+  }
 }

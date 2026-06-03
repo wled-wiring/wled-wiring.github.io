@@ -31,7 +31,7 @@ This is the source code of the WLED-WIRING TOOL.
 *	In reactflow handles have a position property. We had to modify usage of handles significantly (to implement proper node rotation etc.).  “position” property must be always Position.Left. We use our own property postype ("centered" | "top" | "bottom" | "left" | "right")
 *	 Reactflow does not support proper rotation of the node. The usage of “transform” as given in reactflow example breaks a lot. Therefore, we implemented it differently. The rotation can be only 0, 90, 280 or 270 deg.
 *	We use i18n package for translations, the translations are stored in src\translations.
-*	editor.html and src\editor are just for development purposes now
+*	The local component editor is integrated into the main app and can be opened with `?componentEditor=1`; its implementation lives in `src\editor`.
 *	We want that the wled-wiring designer tool can be used on devices with mouse (mainly), but also support basic usage on touch devices. Be sure you test your changes on both types.
 
 # How to make a PR using git
@@ -56,4 +56,3 @@ Here is a short description of how to do a PR:
 
 # Copyright
 (c) Wladislaw Waag, info@myhome-control.de
-

@@ -1,0 +1,2 @@
+export const ENABLE_SIMULATION_CONTROLS = true;
+export const DEBUG_BYPASS_SIMULATION_DIAGRAM_CHECK = false;

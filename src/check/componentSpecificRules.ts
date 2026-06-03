@@ -2,11 +2,20 @@ import type { Node } from '@xyflow/react';
 
 import i18next from '../i18n';
 import type { ComponentDataType } from '../types';
+import { getComponentDisplayName } from '../utils/componentDisplayName';
+import { readableWireLabel } from '../utils/wireLabel';
 import type { CheckHandle, CheckNet, DiagramCheckContext } from './checkContext';
 import { describeHandle } from './checkContext';
-import type { DiagramCheckIssue, DiagramCheckTarget } from './diagramCheckTypes';
+import type { DiagramCheckIssue, DiagramCheckIssueFingerprint, DiagramCheckTarget } from './diagramCheckTypes';
 
 type TranslationValues = Record<string, number | string | undefined>;
+type IssueOptions = {
+  priority?: number;
+  specificity?: number;
+  fingerprint?: DiagramCheckIssueFingerprint;
+  suppresses?: string[];
+  suppressedBy?: string[];
+};
 
 export type ComponentSpecificRule = {
   id: string;
@@ -26,26 +35,34 @@ const issueText = (
   values?: TranslationValues,
 ) => checkText(`rules.${COMPONENT_RULE_ID}.issues.${issueKey}.${field}`, values);
 
+const componentName = (node: Node<ComponentDataType>) => getComponentDisplayName(node.data, node.id);
+
+const describeComponentHandle = (handle: CheckHandle) => describeHandle(handle, { includeComponent: false });
+
 const nodeTarget = (node: Node<ComponentDataType>): DiagramCheckTarget => ({
   type: 'node',
   id: node.id,
-  label: node.data.technicalID || node.data.name || node.id,
+  label: componentName(node),
 });
 
-const edgeTarget = (edge: CheckNet['edges'][number]): DiagramCheckTarget => ({
+const edgeTarget = (
+  edge: CheckNet['edges'][number],
+  nodes: Iterable<Node<ComponentDataType>> = [],
+): DiagramCheckTarget => ({
   type: 'edge',
   id: edge.id,
-  label: `${edge.sourceHandle || edge.source} -> ${edge.targetHandle || edge.target}`,
+  label: readableWireLabel(edge, nodes),
 });
 
 const handleTargets = (handle: CheckHandle): DiagramCheckTarget[] => [
   nodeTarget(handle.node),
-  ...handle.connectedEdges.map(edgeTarget),
+  ...handle.connectedEdges.map((edge) => edgeTarget(edge, [handle.node])),
 ];
 
 const netTargets = (net: CheckNet): DiagramCheckTarget[] => {
   const nodes = new Map(net.handles.map((handle) => [handle.node.id, nodeTarget(handle.node)]));
-  const edges = new Map(net.edges.map((edge) => [edge.id, edgeTarget(edge)]));
+  const netNodes = net.handles.map((handle) => handle.node);
+  const edges = new Map(net.edges.map((edge) => [edge.id, edgeTarget(edge, netNodes)]));
   return [...nodes.values(), ...edges.values()];
 };
 
@@ -65,12 +82,16 @@ const translatedIssue = (
   severity: DiagramCheckIssue['severity'],
   values?: TranslationValues,
   targets?: DiagramCheckTarget[],
-  priority?: number,
+  options?: IssueOptions,
 ): DiagramCheckIssue => ({
   id,
   ruleId: COMPONENT_RULE_ID,
   severity,
-  priority,
+  priority: options?.priority,
+  specificity: options?.specificity,
+  fingerprint: options?.fingerprint,
+  suppresses: options?.suppresses,
+  suppressedBy: options?.suppressedBy,
   title: issueText(issueKey, 'title', values),
   shortDescription: issueText(issueKey, 'shortDescription', values),
   description: issueText(issueKey, 'description', values),
@@ -121,6 +142,11 @@ const pinGroupIsUsed = (context: DiagramCheckContext, output: CheckHandle) => (
   ))
 );
 
+const isLedDataOrClockInput = (handle: CheckHandle) => (
+  handle.node.data.group === 'led' &&
+  (hasFunction(handle, 'dig_in') || hasFunction(handle, 'dig_clock_in'))
+);
+
 const sn74Ahct125nPinGroups = [
   { channel: '1', oe: '1OE', input: '1A', output: '1Y' },
   { channel: '2', oe: '2OE', input: '2A', output: '2Y' },
@@ -163,10 +189,10 @@ const checkSN74AHCT125NUsedChannelInputs: ComponentSpecificRule = {
           `component-sn74ahct125n-used-channel-input-missing-${node.id}-${group.channel}`,
           'error',
           {
-            component: node.data.technicalID || node.data.name || node.id,
+            component: componentName(node),
             channel: group.channel,
-            output: describeHandle(output),
-            handles: missingHandles.map(describeHandle).join(', '),
+            output: describeComponentHandle(output),
+            handles: missingHandles.map(describeComponentHandle).join(', '),
           },
           [
             nodeTarget(node),
@@ -175,7 +201,20 @@ const checkSN74AHCT125NUsedChannelInputs: ComponentSpecificRule = {
             ...(outputNet ? netTargets(outputNet) : []),
             ...missingNetTargets,
           ],
-          3,
+          {
+            priority: 38,
+            specificity: 100,
+            fingerprint: {
+              scope: 'component',
+              key: `${node.id}:${group.channel}`,
+              problem: 'sn74ahct125n-used-channel-input-missing',
+            },
+            suppresses: [
+              'digital-sink-without-source',
+              'multiple-digital-sources',
+              'digital-signal-voltage-mismatch',
+            ],
+          },
         ));
       });
     });
@@ -184,8 +223,62 @@ const checkSN74AHCT125NUsedChannelInputs: ComponentSpecificRule = {
   },
 };
 
+const checkSN74AHCT125NDirectLedOutputMissingSeriesResistor: ComponentSpecificRule = {
+  id: 'sn74ahct125n-direct-led-output-series-resistor',
+  componentTechnicalIds: ['SN74AHCT125N'],
+  check: (context) => {
+    const issues: DiagramCheckIssue[] = [];
+
+    handlesByNode(context).forEach((nodeHandles) => {
+      const node = nodeHandles[0]?.node;
+      if (!node || node.data.technicalID !== 'SN74AHCT125N') return;
+
+      nodeHandles
+        .filter((output) => hasFunction(output, 'dig_out') && output.connectedEdges.length > 0)
+        .forEach((output) => {
+          const elementaryNet = context.getElementaryNetByHandle(output);
+          if (!elementaryNet) return;
+
+          elementaryNet.handles
+            .filter((candidate) => candidate.key !== output.key)
+            .filter(isLedDataOrClockInput)
+            .forEach((ledInput) => {
+              issues.push(translatedIssue(
+                'sn74Ahct125nDirectLedOutputMissingSeriesResistor',
+                `component-sn74ahct125n-direct-led-output-missing-series-resistor-${output.key}-${ledInput.key}`,
+                'warning',
+                {
+                  output: describeComponentHandle(output),
+                  input: describeComponentHandle(ledInput),
+                  led: componentName(ledInput.node),
+                },
+                [
+                  nodeTarget(node),
+                  ...handleTargets(output),
+                  ...handleTargets(ledInput),
+                  ...netTargets(elementaryNet),
+                ],
+                {
+                  priority: 72,
+                  specificity: 80,
+                  fingerprint: {
+                    scope: 'handle',
+                    key: `${output.key}:${ledInput.key}`,
+                    problem: 'sn74ahct125n-direct-led-output-missing-series-resistor',
+                  },
+                },
+              ));
+            });
+        });
+    });
+
+    return issues;
+  },
+};
+
 export const componentSpecificRules: ComponentSpecificRule[] = [
   checkSN74AHCT125NUsedChannelInputs,
+  checkSN74AHCT125NDirectLedOutputMissingSeriesResistor,
 ];
 
 export const runComponentSpecificRules = (context: DiagramCheckContext) => (

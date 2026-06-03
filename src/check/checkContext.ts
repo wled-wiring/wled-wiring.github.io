@@ -1,10 +1,11 @@
 import type { Edge, Node } from '@xyflow/react';
 
 import type { ComponentDataType, EdgeDataType, HandleDataType } from '../types';
+import { getComponentDisplayName } from '../utils/componentDisplayName';
 
 export type CheckHandleFunction = NonNullable<HandleDataType['functions']>[number] | 'unknown';
 
-export type CheckNetLayer = 'elementary' | 'fused' | 'component-linked';
+export type CheckNetLayer = 'elementary' | 'fused' | 'component-linked' | 'component-linked-elementary-based';
 
 export type CheckNetClassification =
   | 'gnd_net_type'
@@ -45,6 +46,14 @@ export type CheckNet = {
   sinkHandles: CheckHandle[];
 };
 
+export type CheckInvalidWire = {
+  edge: Edge<EdgeDataType>;
+  side: 'source' | 'target';
+  node?: Node<ComponentDataType>;
+  handleId?: string | null;
+  reason: 'missing-node' | 'missing-handle' | 'hidden-handle';
+};
+
 export type DiagramCheckContext = {
   nodes: Node<ComponentDataType>[];
   edges: Edge<EdgeDataType>[];
@@ -53,10 +62,13 @@ export type DiagramCheckContext = {
   elementaryNets: CheckNet[];
   fusedNets: CheckNet[];
   componentLinkedNets: CheckNet[];
+  componentLinkedElementaryBasedNets: CheckNet[];
+  invalidWires: CheckInvalidWire[];
   getHandle: (nodeId: string, handleId?: string | null) => CheckHandle | undefined;
   getNetByHandle: (handle: CheckHandle) => CheckNet | undefined;
   getElementaryNetByHandle: (handle: CheckHandle) => CheckNet | undefined;
   getFusedNetByHandle: (handle: CheckHandle) => CheckNet | undefined;
+  getComponentLinkedElementaryBasedNetByHandle: (handle: CheckHandle) => CheckNet | undefined;
   hasFunction: (handle: CheckHandle, fn: CheckHandleFunction) => boolean;
   handlesWithFunction: (fn: CheckHandleFunction) => CheckHandle[];
   connectedHandles: (handle: CheckHandle) => CheckHandle[];
@@ -110,10 +122,6 @@ const getNodeHandleById = (node: Node<ComponentDataType>, handleId: string) => (
   allVisibleHandles(node).find((handle) => handle.hid === handleId)
 );
 
-const isPassiveTerminalNode = (node: Node<ComponentDataType>) => (
-  ['Kerko', 'Resistor'].includes(node.data.technicalID)
-);
-
 const isPassiveJoinNode = (node: Node<ComponentDataType>) => (
   ['SolderJoint', 'WAGO_2X', 'WAGO_3X'].includes(node.data.technicalID)
 );
@@ -125,55 +133,80 @@ const isHiddenByCondition = (node: Node<ComponentDataType>, handle: HandleDataTy
   }) || false
 );
 
+const repeatedHandleTemplateId = (handle: HandleDataType) => (
+  typeof handle.repeatIndex === 'number'
+    ? handle.hid.replace(new RegExp(`_${handle.repeatIndex}$`), '')
+    : undefined
+);
+
+const resolveRepeatedRelatedHandleIds = (
+  node: Node<ComponentDataType>,
+  relatedToHandle: string[] | undefined,
+  repeatIndex: number | undefined,
+) => {
+  if (repeatIndex === undefined) return relatedToHandle;
+
+  return relatedToHandle?.map((relatedHandleId) => {
+    const relatedTemplate = node.data.handles?.find((candidate) => (
+      candidate.hid === relatedHandleId && candidate.repeated === 'yes'
+    ));
+    return relatedTemplate ? `${relatedHandleId}_${repeatIndex}` : relatedHandleId;
+  });
+};
+
+const hydrateRepeatedHandle = (
+  node: Node<ComponentDataType>,
+  handle: HandleDataType,
+) => {
+  const templateId = repeatedHandleTemplateId(handle);
+  const template = templateId
+    ? node.data.handles?.find((candidate) => candidate.hid === templateId && candidate.repeated === 'yes')
+    : undefined;
+
+  const hydrated = template ? { ...template, ...handle } : handle;
+
+  return {
+    ...hydrated,
+    relatedToHandle: resolveRepeatedRelatedHandleIds(node, hydrated.relatedToHandle, handle.repeatIndex),
+  };
+};
+
+const repeatedVisibleHandles = (node: Node<ComponentDataType>) => (
+  (node.data.repeatedHandleArray || []).map((handle) => hydrateRepeatedHandle(node, handle))
+);
+
 const allVisibleHandles = (node: Node<ComponentDataType>) => (
   [
     ...(node.data.handles || []),
-    ...(node.data.repeatedHandleArray || []),
+    ...repeatedVisibleHandles(node),
   ].filter((handle) => !isHiddenByCondition(node, handle))
 );
 
+const allHandles = (node: Node<ComponentDataType>) => (
+  [
+    ...(node.data.handles || []),
+    ...repeatedVisibleHandles(node),
+  ]
+);
+
 const inferRawFunctions = (
-  node: Node<ComponentDataType>,
   handle: HandleDataType,
 ): CheckHandleFunction[] => (
-  isPassiveTerminalNode(node)
-    ? ((handle.functions || []).filter((fn) => fn !== 'dig_in' && fn !== 'dig_out') as CheckHandleFunction[])
-    : ((handle.functions || []) as CheckHandleFunction[])
+  (handle.functions || []) as CheckHandleFunction[]
 );
+
+const resistorTerminalIds = new Set(['1', '2']);
 
 const inferFunctions = (
   node: Node<ComponentDataType>,
   handle: HandleDataType,
   rawFunctions: CheckHandleFunction[],
 ): CheckHandleFunction[] => {
-  const functions = new Set<CheckHandleFunction>(rawFunctions);
-  const handleText = `${handle.hid} ${handle.name || ''} ${handle.description || ''}`.toLowerCase();
-
-  if (rawFunctions.includes('usb_full')) {
-    functions.add('suppl_in');
-  }
-  if (node.data.group === 'led') {
-    if (/(\b|_)(5v|12v|24v|48v)(\b|_)|supply input/.test(handleText)) {
-      functions.add('suppl_in');
-    }
-    if (/\bgnd\b|ground/.test(handleText)) {
-      functions.add('gnd');
-    }
-    if (/data.*start|data.*input/.test(handleText) && !functions.has('not_connected')) {
-      functions.add('dig_in');
-    }
-    if (/data.*end|data.*output/.test(handleText) && !functions.has('not_connected')) {
-      functions.add('dig_out');
-    }
-    if (/clock.*start|clock.*input/.test(handleText) && !functions.has('not_connected')) {
-      functions.add('dig_clock_in');
-    }
-    if (/clock.*end|clock.*output/.test(handleText) && !functions.has('not_connected')) {
-      functions.add('dig_clock_out');
-    }
+  if (node.data.technicalID === 'Resistor' && resistorTerminalIds.has(handle.hid)) {
+    return ['passive'];
   }
 
-  return Array.from(functions);
+  return rawFunctions;
 };
 
 const hasVoltageOutputFunction = (functions: CheckHandleFunction[]) => (
@@ -191,14 +224,14 @@ const inferVoltageOut = (node: Node<ComponentDataType>, handle: HandleDataType, 
   if (!hasVoltageOutputFunction(functions)) {
     return undefined;
   }
-  if (typeof handle.Vout === 'number' && handle.Vout > 0) {
-    return handle.Vout;
-  }
   if (handle.VoutDependency) {
     const inputFieldValue = getInputFieldValue(node, handle.VoutDependency);
     if (typeof inputFieldValue === 'number') {
       return inputFieldValue;
     }
+  }
+  if (typeof handle.Vout === 'number' && handle.Vout > 0) {
+    return handle.Vout;
   }
   const sourceVoltage = getInputFieldValue(node, 'source_voltage');
   if (functions.includes('suppl_out') && typeof sourceVoltage === 'number') {
@@ -242,7 +275,7 @@ const buildCheckHandle = (
   handle: HandleDataType,
   edges: Edge<EdgeDataType>[],
 ): CheckHandle => {
-  const rawFunctions = inferRawFunctions(node, handle);
+  const rawFunctions = inferRawFunctions(handle);
   const functions = inferFunctions(node, handle, rawFunctions);
   const voltageRange = inferVoltageRange(handle, functions);
 
@@ -265,9 +298,7 @@ const uniqueBy = <T,>(items: T[], keyOfItem: (item: T) => string) => (
   Array.from(new Map(items.map((item) => [keyOfItem(item), item])).values())
 );
 
-const classificationFunctions = (handle: CheckHandle) => (
-  handle.rawFunctions.length > 0 ? handle.rawFunctions : handle.functions
-);
+const classificationFunctions = (handle: CheckHandle) => handle.functions;
 
 const hasExclusiveFunction = (handle: CheckHandle, functions: CheckHandleFunction[]) => {
   const handleFunctions = classificationFunctions(handle);
@@ -486,6 +517,25 @@ const createGroupedNets = (
   ));
 };
 
+const inheritSupplyClassificationFromParentNets = (
+  nets: CheckNet[],
+  parentNetByHandleKey: Map<string, CheckNet>,
+) => (
+  nets.map((net) => {
+    if (net.classifications.includes('suppl_net_type')) return net;
+
+    const hasSupplyParentNet = net.handles.some((handle) => (
+      parentNetByHandleKey.get(handle.key)?.classifications.includes('suppl_net_type')
+    ));
+    if (!hasSupplyParentNet) return net;
+
+    return {
+      ...net,
+      classifications: [...net.classifications, 'suppl_net_type' as const],
+    };
+  })
+);
+
 const getFuseConnectionPairs = (
   nodes: Node<ComponentDataType>[],
   handleByKey: Map<string, CheckHandle>,
@@ -526,8 +576,21 @@ const sameInputFieldDependency = (a: CheckHandle, b: CheckHandle) => (
 
 const hasFunction = (handle: CheckHandle, fn: CheckHandleFunction) => handle.functions.includes(fn);
 
+const isInternalShort = (a: CheckHandle, b: CheckHandle) => (
+  a.node.id === b.node.id &&
+  Boolean(a.node.data.internalConnections?.some((connection) => (
+    connection.kind === 'short' &&
+    (
+      (connection.fromHandle === a.handle.hid && connection.toHandle === b.handle.hid) ||
+      (connection.fromHandle === b.handle.hid && connection.toHandle === a.handle.hid)
+    )
+  )))
+);
+
 const shouldLinkThroughComponent = (a: CheckHandle, b: CheckHandle) => {
   if (a.node.id !== b.node.id || a.key === b.key) return false;
+
+  if (isInternalShort(a, b)) return true;
 
   if (hasFunction(a, 'gnd') && hasFunction(b, 'gnd')) return true;
 
@@ -557,14 +620,18 @@ const shouldLinkDigitalNetsThroughResistor = (
 ) => (
   a.node.id === b.node.id &&
   a.key !== b.key &&
-  a.node.data.technicalID === 'Resistor' &&
-  aNet.classifications.includes('digital_net_type') &&
-  bNet.classifications.includes('digital_net_type')
+  isPassiveSeriesSignalPair(a, b) &&
+  netHasDigitalEndpoint(aNet) &&
+  netHasDigitalEndpoint(bNet)
 );
 
 const getComponentConnectionPairs = (
   handles: CheckHandle[],
   childNetByHandleKey: Map<string, CheckNet>,
+  options: {
+    skipFusePassThroughPairs?: boolean;
+    skipLedSupplyInputPassThroughPairs?: boolean;
+  } = {},
 ) => {
   const handlesByNode = new Map<string, CheckHandle[]>();
   const pairs: [string, string][] = [];
@@ -579,6 +646,8 @@ const getComponentConnectionPairs = (
         const net = childNetByHandleKey.get(handle.key);
         const candidateNet = childNetByHandleKey.get(candidate.key);
         if (!net || !candidateNet || net.id === candidateNet.id) return;
+        if (options.skipFusePassThroughPairs && isFusePassThrough(handle, candidate)) return;
+        if (options.skipLedSupplyInputPassThroughPairs && isLedSupplyInputPassThrough(handle, candidate)) return;
         if (
           shouldLinkThroughComponent(handle, candidate) ||
           shouldLinkDigitalNetsThroughResistor(handle, candidate, net, candidateNet)
@@ -603,22 +672,37 @@ const isFusePassThrough = (a: CheckHandle, b: CheckHandle) => (
   )))
 );
 
+const isLedSupplyInputPassThrough = (a: CheckHandle, b: CheckHandle) => {
+  if (a.node.id !== b.node.id || a.key === b.key) return false;
+  return a.node.data.group === 'led' && isSupplyInputPassThrough(a, b);
+};
+
 const isSupplyInputPassThrough = (a: CheckHandle, b: CheckHandle) => {
   if (a.node.id !== b.node.id || a.key === b.key) return false;
   return a.functions.includes('suppl_in') && b.functions.includes('suppl_in');
 };
 
-const isSeriesSignalNode = (node: Node<ComponentDataType>) => (
-  node.data.technicalID === 'Resistor'
+const netHasDigitalEndpoint = (net: CheckNet) => (
+  net.classifications.includes('digital_net_type') ||
+  net.handles.some((handle) => (
+    hasFunction(handle, 'dig_in') ||
+    hasFunction(handle, 'dig_clock_in') ||
+    hasFunction(handle, 'dig_backup_in') ||
+    hasFunction(handle, 'dig_out') ||
+    hasFunction(handle, 'dig_clock_out') ||
+    hasFunction(handle, 'dig_backup_out')
+  ))
 );
 
-const isSignalPassThrough = (a: CheckHandle, b: CheckHandle) => {
-  if (a.node.id !== b.node.id || !isSeriesSignalNode(a.node)) return false;
+const isPassiveSeriesSignalPair = (a: CheckHandle, b: CheckHandle) => {
+  if (a.node.id !== b.node.id || a.node.data.technicalID !== 'Resistor') return false;
   if (a.key === b.key) return false;
 
   const nodeHandles = [...(a.node.data.handles || []), ...(a.node.data.repeatedHandleArray || [])];
-  return nodeHandles.length === 2;
+  return nodeHandles.length === 2 && hasFunction(a, 'passive') && hasFunction(b, 'passive');
 };
+
+const isSignalPassThrough = (a: CheckHandle, b: CheckHandle) => isPassiveSeriesSignalPair(a, b);
 
 export function createDiagramCheckContext(
   nodes: Node<ComponentDataType>[],
@@ -642,8 +726,50 @@ export function createDiagramCheckContext(
     'component-linked',
     getComponentConnectionPairs(handles, fusedNetByHandleKey),
   );
+  const componentLinkedNetByHandleKey = netByHandleKey(componentLinkedNets);
+  const componentLinkedElementaryBasedNets = inheritSupplyClassificationFromParentNets(
+    createGroupedNets(
+      elementaryNets,
+      'component-linked-elementary-based',
+      getComponentConnectionPairs(handles, elementaryNetByHandleKey, {
+        skipFusePassThroughPairs: true,
+        skipLedSupplyInputPassThroughPairs: true,
+      }),
+    ),
+    componentLinkedNetByHandleKey,
+  );
+  const componentLinkedElementaryBasedNetByHandleKey = netByHandleKey(componentLinkedElementaryBasedNets);
   const nets = componentLinkedNets;
-  const netByHandleKeyMap = netByHandleKey(nets);
+  const netByHandleKeyMap = componentLinkedNetByHandleKey;
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const invalidWires: CheckInvalidWire[] = edges.flatMap((edge): CheckInvalidWire[] => {
+    const refs: { side: 'source' | 'target'; nodeId: string; handleId?: string | null }[] = [
+      { side: 'source', nodeId: edge.source, handleId: edge.sourceHandle },
+      { side: 'target', nodeId: edge.target, handleId: edge.targetHandle },
+    ];
+
+    return refs.flatMap((ref): CheckInvalidWire[] => {
+      const node = nodeById.get(ref.nodeId);
+      if (!node) {
+        return [{ edge, side: ref.side, handleId: ref.handleId, reason: 'missing-node' }];
+      }
+      if (!ref.handleId) {
+        return [{ edge, side: ref.side, node, handleId: ref.handleId, reason: 'missing-handle' }];
+      }
+
+      const visibleHandle = allVisibleHandles(node).some((handle) => handle.hid === ref.handleId);
+      if (visibleHandle) return [];
+
+      const knownHiddenHandle = allHandles(node).some((handle) => handle.hid === ref.handleId);
+      return [{
+        edge,
+        side: ref.side,
+        node,
+        handleId: ref.handleId,
+        reason: knownHiddenHandle ? 'hidden-handle' : 'missing-handle',
+      }];
+    });
+  });
 
   edges.forEach((edge) => {
     if (!edge.sourceHandle || !edge.targetHandle) return;
@@ -659,10 +785,6 @@ export function createDiagramCheckContext(
   const resolveVoltageOut = (handle: CheckHandle, visited = new Set<string>()): number | undefined => {
     if (!hasVoltageOutputFunction(handle.functions)) {
       return undefined;
-    }
-
-    if (typeof handle.handle.Vout === 'number' && handle.handle.Vout > 0) {
-      return handle.handle.Vout;
     }
 
     const dependency = handle.handle.VoutDependency;
@@ -688,6 +810,10 @@ export function createDiagramCheckContext(
           }
         }
       }
+    }
+
+    if (typeof handle.handle.Vout === 'number' && handle.handle.Vout > 0) {
+      return handle.handle.Vout;
     }
 
     return handle.voltageOut;
@@ -722,6 +848,7 @@ export function createDiagramCheckContext(
 
   const powerReachableHandles = (handle: CheckHandle) => (
     reachableHandles(handle, (current, candidate) => (
+      isInternalShort(current, candidate) ||
       isFusePassThrough(current, candidate) ||
       isSupplyInputPassThrough(current, candidate)
     ))
@@ -756,6 +883,7 @@ export function createDiagramCheckContext(
         .filter((candidate) => (
           candidate.node.id !== handle.node.id &&
           (
+            isInternalShort(current, candidate) ||
             isFusePassThrough(current, candidate) ||
             isSupplyInputPassThrough(current, candidate)
           )
@@ -769,7 +897,10 @@ export function createDiagramCheckContext(
   };
 
   const signalReachableHandles = (handle: CheckHandle) => (
-    reachableHandles(handle, isSignalPassThrough)
+    reachableHandles(handle, (current, candidate) => (
+      isInternalShort(current, candidate) ||
+      isSignalPassThrough(current, candidate)
+    ))
   );
 
   return {
@@ -780,10 +911,13 @@ export function createDiagramCheckContext(
     elementaryNets,
     fusedNets,
     componentLinkedNets,
+    componentLinkedElementaryBasedNets,
+    invalidWires,
     getHandle: (nodeId, handleId) => (handleId ? handleByKey.get(keyOf(nodeId, handleId)) : undefined),
     getNetByHandle: (handle) => netByHandleKeyMap.get(handle.key),
     getElementaryNetByHandle: (handle) => elementaryNetByHandleKey.get(handle.key),
     getFusedNetByHandle: (handle) => fusedNetByHandleKey.get(handle.key),
+    getComponentLinkedElementaryBasedNetByHandle: (handle) => componentLinkedElementaryBasedNetByHandleKey.get(handle.key),
     hasFunction,
     handlesWithFunction: (fn) => handles.filter((handle) => hasFunction(handle, fn)),
     connectedHandles: (handle) => {
@@ -797,9 +931,15 @@ export function createDiagramCheckContext(
   };
 }
 
-export const describeHandle = (handle: CheckHandle) => (
-  `${handle.node.data.technicalID || handle.node.id}: ${handle.handle.name || handle.handle.hid}`
-);
+export const describeHandle = (
+  handle: CheckHandle,
+  options: { includeComponent?: boolean } | number = {},
+) => {
+  const pinLabel = handle.handle.name || handle.handle.hid;
+  if (typeof options === 'object' && options.includeComponent === false) return pinLabel;
+
+  return `${getComponentDisplayName(handle.node.data, handle.node.id)}: ${pinLabel}`;
+};
 
 export const voltageMatches = (sourceVoltage: number | undefined, target: CheckHandle) => {
   if (sourceVoltage === undefined) return false;

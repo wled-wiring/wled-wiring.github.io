@@ -48,6 +48,21 @@ html, body {
   min-width: 0;
 }
 
+.component-card-extra {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 16px;
+}
+
+.component-card-simulation-icon {
+  color: #1677ff;
+  display: block;
+  height: 14px;
+  width: 14px;
+}
+
 @media (max-width: 600px) {
   #reactflowDiv {
     border-bottom-style: solid;
@@ -99,6 +114,58 @@ html, body {
   flex: 0 0 content;
 }
 
+.component-editor-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.component-editor-header {
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+
+.component-editor-main {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 12px;
+  grid-template-columns: minmax(360px, 1fr) minmax(340px, 0.85fr);
+  min-height: 0;
+  padding: 12px;
+}
+
+.component-editor-form,
+.component-editor-preview {
+  min-width: 0;
+  overflow: auto;
+}
+
+.component-editor-flow {
+  border-style: solid;
+  border-width: 1px;
+  height: 360px;
+}
+
+.component-editor-preview-handle-tools {
+  margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+  .component-editor-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .component-editor-main {
+    grid-template-columns: 1fr;
+  }
+}
+
 .react-flow__panel {
   text-align: center;
 }
@@ -114,6 +181,10 @@ html, body {
 
 .react-flow__node:has(> .node-type_solderjoint) {
   z-index: 200 !important;
+}
+
+.react-flow__node:has(> .node-type_resize-active) {
+  z-index: 300 !important;
 }
 
 .node-type_solderjoint {
@@ -179,6 +250,11 @@ textarea.info-node-textarea {
 
 .react-flow__handle:hover {
   box-shadow: 0 0 2px 5px currentColor;
+}
+
+.react-flow__handle--editor-selected {
+  cursor: pointer;
+  z-index: 5;
 }
 
 .pin-tooltip-floating {

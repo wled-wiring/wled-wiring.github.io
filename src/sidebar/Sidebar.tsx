@@ -1,14 +1,17 @@
-import { useState, type CSSProperties } from 'react';
+import { memo, useState, type CSSProperties } from 'react';
 
 import { useTranslation } from "react-i18next";
 
 import type { CollapseProps } from 'antd';
-import { Collapse, theme } from 'antd';
+import { Alert, Collapse, theme } from 'antd';
 
 import {ComponentPage} from './ComponentPage';
 import {ImportExportPage} from './ImportExportPage';
 import {DiagramCheckPage} from './DiagramCheckPage';
 import {ToolsPage} from './ToolsPage';
+import {AdvancedSettingsPage} from './AdvancedSettingsPage';
+import { SimulationPage } from '../simulation/SimulationPage';
+import { ENABLE_SIMULATION_CONTROLS } from '../simulation/simulationFeatureFlags';
 
 const Sidebar = () => {
   const {t} = useTranslation(['main']);
@@ -18,6 +21,9 @@ const Sidebar = () => {
   const isDiagramCheckOpen = Array.isArray(activePanelKeys)
     ? activePanelKeys.includes('3')
     : activePanelKeys === '3';
+  const isSimulationOpen = Array.isArray(activePanelKeys)
+    ? activePanelKeys.includes('4')
+    : activePanelKeys === '4';
 
   const panelStyle: React.CSSProperties = {
     border: 'none',
@@ -26,6 +32,17 @@ const Sidebar = () => {
     borderBottomStyle: 'solid',
     borderBottomWidth: 1,
   };
+
+  const simulationPanel = ENABLE_SIMULATION_CONTROLS
+    ? <SimulationPage isOpen={isSimulationOpen} />
+    : (
+      <Alert
+        type="info"
+        showIcon
+        message={t('sidebar.simulation.inDevelopmentTitle')}
+        description={t('sidebar.simulation.comingSoon')}
+      />
+    );
   
   const getItems: (panelStyle: CSSProperties) => CollapseProps['items'] = (panelStyle) => [
   {
@@ -49,13 +66,19 @@ const Sidebar = () => {
   {
     key: '4',
     label: <span>{t('sidebar.simulation.title')}</span>,
-    children: <div>{t('sidebar.simulation.comingSoon')}</div>,
+    children: simulationPanel,
     style: panelStyle,
   },
   {
     key: '5',
     label: <span>{t('sidebar.tools.title')}</span>,
     children: <ToolsPage />,
+    style: panelStyle,
+  },
+  {
+    key: '6',
+    label: <span>{t('sidebar.advancedSettings.title')}</span>,
+    children: <AdvancedSettingsPage />,
     style: panelStyle,
   },
 ];
@@ -70,4 +93,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

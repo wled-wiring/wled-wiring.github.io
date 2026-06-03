@@ -4,12 +4,12 @@ import type { ComponentDataType, DirectionType, EdgeDataType, XYPoint, edgePoint
 import {
   buildPath,
   createMatrix,
+  endpointLineDirection,
   getPathResult,
 } from './pathfinder_functions';
 import {
-  getHandleMiddleRealPosition,
-  postypeToAdjustedXYConn,
-  rotatePrefferedLineDirection,
+  findHandleData,
+  getRenderedWireEndpoint,
 } from './utils_functions';
 
 export const ROTATE_WIRE_PIN_STUB_ENABLED = true;
@@ -24,7 +24,6 @@ type RotateComponentWiresParams = {
   nodes: Node[];
   edges: Edge[];
   nodeId: string;
-  oldRotation: number;
   newRotation: number;
   pathFindingEnabled: boolean;
 };
@@ -44,6 +43,53 @@ type RerouteWireGroup = {
   originalIndex: number;
   minDistance: number;
   averageDistance: number;
+};
+
+type RouteWireWithPathfinderOptions = {
+  enforceEndpointDirections?: boolean;
+  bindToRenderedEndpoints?: boolean;
+};
+
+type WireRoute = {
+  startXY: XYPoint;
+  endXY: XYPoint;
+  edgePoints: edgePoint[];
+};
+
+type WireRoutingDiagnostic = {
+  edgeId: string;
+  segmentIndex: number;
+  from: XYPoint;
+  to: XYPoint;
+};
+
+const getRotatedNodeSize = (node: Node, rotation: number) => {
+  const nodeData = getNodeData(node);
+  const image = nodeData?.image;
+  if(!nodeData || !image) return undefined;
+
+  const nodeLength = nodeData.nodeLength || 1;
+  const borderWidth = nodeData.borderWidth || 0;
+  const rotationSwapsSize = rotation === 90 || rotation === 270;
+  const contentWidth = rotationSwapsSize ? image.height : nodeLength * image.width;
+  const contentHeight = rotationSwapsSize ? nodeLength * image.width : image.height;
+
+  return {
+    width: contentWidth + borderWidth * 2,
+    height: contentHeight + borderWidth * 2,
+  };
+};
+
+const normalizeEndpointForRenderedWire = (
+  point: XYPoint,
+  direction: DirectionType,
+  role: 'source' | 'target',
+) => {
+  if(role === 'target') return point;
+
+  if(directionIsHorizontal(direction)) return {...point, y: Math.round(point.y)};
+  if(directionIsVertical(direction)) return {...point, x: Math.round(point.x)};
+  return point;
 };
 
 const pointFromEdgePoint = (point: edgePoint): XYPoint => ({x: point.x, y: point.y});
@@ -66,11 +112,21 @@ const isFinitePoint = (point: XYPoint | undefined): point is XYPoint => (
   Number.isFinite(point?.y)
 );
 
-const isCollinear = (a: XYPoint, b: XYPoint, c: XYPoint) => (
+const isGeometricallyCollinear = (a: XYPoint, b: XYPoint, c: XYPoint) => (
   Math.abs((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)) <= EPSILON
 );
 
-const removeRedundantPoints = (points: XYPoint[]) => {
+const isOrthogonallyCollinear = (a: XYPoint, b: XYPoint, c: XYPoint) => (
+  (sameNumber(a.x, b.x) && sameNumber(b.x, c.x)) ||
+  (sameNumber(a.y, b.y) && sameNumber(b.y, c.y))
+);
+
+const isProtectedEndpointStubIndex = (points: XYPoint[], index: number) => (
+  points.length > 2 &&
+  (index === 1 || index === points.length - 2)
+);
+
+const removeRedundantPoints = (points: XYPoint[], preserveEndpointStubs = false) => {
   const withoutDuplicates = points.filter((point, index) => (
     index === 0 || !sameNumber(point.x, points[index - 1].x) || !sameNumber(point.y, points[index - 1].y)
   ));
@@ -80,7 +136,13 @@ const removeRedundantPoints = (points: XYPoint[]) => {
   while(changed) {
     changed = false;
     for(let index = 1; index < compacted.length - 1; index += 1) {
-      if(isCollinear(compacted[index - 1], compacted[index], compacted[index + 1])) {
+      if(preserveEndpointStubs && isProtectedEndpointStubIndex(compacted, index)) continue;
+
+      const canRemovePoint = preserveEndpointStubs
+        ? isOrthogonallyCollinear(compacted[index - 1], compacted[index], compacted[index + 1])
+        : isGeometricallyCollinear(compacted[index - 1], compacted[index], compacted[index + 1]);
+
+      if(canRemovePoint) {
         compacted.splice(index, 1);
         changed = true;
         break;
@@ -94,31 +156,11 @@ const removeRedundantPoints = (points: XYPoint[]) => {
 const getNodeData = (node: Node | undefined) => node?.data as ComponentDataType | undefined;
 
 const getHandle = (node: Node | undefined, handleId?: string | null) => {
-  const nodeData = getNodeData(node);
-  if(!nodeData || !handleId) return undefined;
-
-  return nodeData.handles.find((handle) => handle.hid === handleId)
-    ?? nodeData.repeatedHandleArray?.find((handle) => handle.hid === handleId);
+  return findHandleData(node, handleId);
 };
 
 const getHandleConnectionPoint = (node: Node, handleId?: string | null): XYPoint | undefined => {
-  const nodeData = node.data as ComponentDataType;
-  const handle = getHandle(node, handleId);
-  if(!handle) return undefined;
-
-  const handleMiddle = getHandleMiddleRealPosition(node, handleId || '');
-  const handleX = handleMiddle.x + node.position.x + nodeData.borderWidth;
-  const handleY = handleMiddle.y + node.position.y + nodeData.borderWidth;
-  const [x, y] = postypeToAdjustedXYConn(
-    handle.postype || 'left',
-    handleX,
-    handleY,
-    handle.width || 0,
-    handle.height || 0,
-    nodeData.rotation || 0,
-  );
-
-  return {x, y};
+  return getRenderedWireEndpoint(node, handleId);
 };
 
 const getEdgePoints = (edgeData: EdgeDataType) => (
@@ -129,26 +171,43 @@ const getEdgePoints = (edgeData: EdgeDataType) => (
   ].filter((point): point is XYPoint => Boolean(point))
 );
 
-const directionFromSegment = (from: XYPoint, to: XYPoint): DirectionType => {
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
+const getRoutePoints = (route: WireRoute) => [
+  route.startXY,
+  ...route.edgePoints.map(pointFromEdgePoint),
+  route.endXY,
+];
 
-  if(Math.abs(dx) >= Math.abs(dy)) {
-    if(sameNumber(dx, 0)) return undefined;
-    return dx > 0 ? 'right' : 'left';
-  }
-
-  if(sameNumber(dy, 0)) return undefined;
-  return dy > 0 ? 'down' : 'up';
+export const findNonOrthogonalWireRouteSegments = (
+  edgeId: string,
+  route: WireRoute,
+): WireRoutingDiagnostic[] => {
+  const points = getRoutePoints(route);
+  return points
+    .slice(0, -1)
+    .flatMap((point, index) => {
+      const nextPoint = points[index + 1];
+      return nextPoint && !isHorizontalOrVertical(point, nextPoint)
+        ? [{
+          edgeId,
+          segmentIndex: index,
+          from: point,
+          to: nextPoint,
+        }]
+        : [];
+    });
 };
 
-const rotateDirectionByDelta = (direction: DirectionType, deltaDegrees: number): DirectionType => {
-  if(!direction) return undefined;
+const warnNonOrthogonalWireRouteSegments = (
+  edgeId: string,
+  route: WireRoute,
+  context: string,
+) => {
+  if(!import.meta.env.DEV) return;
 
-  const directions: Exclude<DirectionType, undefined>[] = ['right', 'down', 'left', 'up'];
-  const index = directions.indexOf(direction);
-  const steps = ((((Math.round(deltaDegrees / 90) % 4) + 4) % 4));
-  return directions[(index + steps) % directions.length];
+  const diagnostics = findNonOrthogonalWireRouteSegments(edgeId, route);
+  if(diagnostics.length === 0) return;
+
+  console.warn(`[wire-routing] non-orthogonal ${context} route`, diagnostics);
 };
 
 const pointFromDirection = (start: XYPoint, direction: DirectionType, length: number): XYPoint | undefined => {
@@ -159,7 +218,68 @@ const pointFromDirection = (start: XYPoint, direction: DirectionType, length: nu
   return undefined;
 };
 
+const oppositeDirection = (direction: DirectionType): DirectionType => {
+  if(direction === 'left') return 'right';
+  if(direction === 'right') return 'left';
+  if(direction === 'up') return 'down';
+  if(direction === 'down') return 'up';
+  return undefined;
+};
+
+const segmentLeavesInDirection = (from: XYPoint, to: XYPoint, direction: DirectionType) => {
+  if(direction === 'right') return sameNumber(from.y, to.y) && to.x > from.x + EPSILON;
+  if(direction === 'left') return sameNumber(from.y, to.y) && to.x < from.x - EPSILON;
+  if(direction === 'down') return sameNumber(from.x, to.x) && to.y > from.y + EPSILON;
+  if(direction === 'up') return sameNumber(from.x, to.x) && to.y < from.y - EPSILON;
+  return true;
+};
+
 const directionIsHorizontal = (direction: DirectionType) => direction === 'left' || direction === 'right';
+
+const directionIsVertical = (direction: DirectionType) => direction === 'up' || direction === 'down';
+
+const forceStubOntoEndpointAxis = (
+  endpoint: XYPoint,
+  stub: XYPoint,
+  direction: DirectionType,
+) => {
+  if(directionIsHorizontal(direction)) return {...stub, y: endpoint.y};
+  if(directionIsVertical(direction)) return {...stub, x: endpoint.x};
+  return stub;
+};
+
+const forceEndpointStubsOntoAxes = (
+  points: XYPoint[],
+  sourceDirection: DirectionType,
+  targetDirection: DirectionType,
+) => {
+  if(points.length < 2) return points;
+
+  const nextPoints = points.map((point) => ({...point}));
+
+  if(sourceDirection) {
+    const sourceStub = forceStubOntoEndpointAxis(nextPoints[0], nextPoints[1], sourceDirection);
+    nextPoints[1] = segmentLeavesInDirection(nextPoints[0], sourceStub, sourceDirection)
+      ? sourceStub
+      : pointFromDirection(nextPoints[0], sourceDirection, ROTATE_WIRE_PIN_STUB_LENGTH) ?? sourceStub;
+  }
+
+  if(targetDirection) {
+    const targetStubIndex = nextPoints.length - 2;
+    const targetEndpointIndex = nextPoints.length - 1;
+    const targetIncomingDirection = oppositeDirection(targetDirection);
+    const targetStub = forceStubOntoEndpointAxis(
+      nextPoints[targetEndpointIndex],
+      nextPoints[targetStubIndex],
+      targetDirection,
+    );
+    nextPoints[targetStubIndex] = segmentLeavesInDirection(targetStub, nextPoints[targetEndpointIndex], targetIncomingDirection)
+      ? targetStub
+      : pointFromDirection(nextPoints[targetEndpointIndex], targetDirection, ROTATE_WIRE_PIN_STUB_LENGTH) ?? targetStub;
+  }
+
+  return nextPoints;
+};
 
 const addStub = (
   points: XYPoint[],
@@ -247,7 +367,7 @@ const forcePointOntoEndpointAxis = (
     : {...point, y: endpoint.y}
 );
 
-const makeRoutePathOrthogonal = (points: XYPoint[]) => {
+const makeRoutePathOrthogonal = (points: XYPoint[], preserveEndpointStubs = false) => {
   const orthogonalPoints: XYPoint[] = [];
 
   points.forEach((point, index) => {
@@ -270,7 +390,49 @@ const makeRoutePathOrthogonal = (points: XYPoint[]) => {
     orthogonalPoints.push(via, point);
   });
 
-  return removeRedundantPoints(orthogonalPoints);
+  return removeRedundantPoints(orthogonalPoints, preserveEndpointStubs);
+};
+
+const enforceEndpointDirections = (
+  points: XYPoint[],
+  sourceDirection: DirectionType,
+  targetDirection: DirectionType,
+) => {
+  if(points.length < 2) return points;
+
+  const nextPoints = points.map((point) => ({...point}));
+
+  if(
+    sourceDirection &&
+    !segmentLeavesInDirection(nextPoints[0], nextPoints[1], sourceDirection)
+  ) {
+    const sourceStub = pointFromDirection(nextPoints[0], sourceDirection, ROTATE_WIRE_PIN_STUB_LENGTH);
+    if(sourceStub) {
+      if(nextPoints.length === 2) {
+        nextPoints.splice(1, 0, sourceStub);
+      } else {
+        nextPoints[1] = sourceStub;
+      }
+    }
+  }
+
+  const targetIncomingDirection = oppositeDirection(targetDirection);
+  if(
+    targetIncomingDirection &&
+    !segmentLeavesInDirection(nextPoints[nextPoints.length - 2], nextPoints[nextPoints.length - 1], targetIncomingDirection)
+  ) {
+    const targetStub = pointFromDirection(nextPoints[nextPoints.length - 1], targetDirection, ROTATE_WIRE_PIN_STUB_LENGTH);
+    if(targetStub) {
+      if(nextPoints.length <= 3) {
+        nextPoints.splice(nextPoints.length - 1, 0, targetStub);
+      } else {
+        nextPoints[nextPoints.length - 2] = targetStub;
+      }
+    }
+  }
+
+  const orthogonalPoints = makeRoutePathOrthogonal(nextPoints, true);
+  return forceEndpointStubsOntoAxes(orthogonalPoints, sourceDirection, targetDirection);
 };
 
 const bindPathfinderPathToRenderedEndpoints = (
@@ -325,9 +487,9 @@ const sortGroupItems = (group: RerouteWireGroup) => {
   const secondAxis = groupSortAxis(group.items, secondNodeId);
 
   return [...group.items].sort((a, b) => (
+    a.distance - b.distance ||
     handleSortValue(a, firstNodeId, firstAxis) - handleSortValue(b, firstNodeId, firstAxis) ||
     handleSortValue(a, secondNodeId, secondAxis) - handleSortValue(b, secondNodeId, secondAxis) ||
-    a.distance - b.distance ||
     a.originalIndex - b.originalIndex
   ));
 };
@@ -385,25 +547,22 @@ export const routeWireWithPathfinder = (
   nodes: Node[],
   edges: Edge[],
   edge: Edge,
+  options: RouteWireWithPathfinderOptions = {},
 ) => {
   const sourceNode = nodes.find((node) => node.id === edge.source);
   const targetNode = nodes.find((node) => node.id === edge.target);
   if(!sourceNode || !targetNode || !edge.sourceHandle || !edge.targetHandle) return undefined;
 
-  const sourcePoint = getHandleConnectionPoint(sourceNode, edge.sourceHandle);
-  const targetPoint = getHandleConnectionPoint(targetNode, edge.targetHandle);
+  let sourcePoint = getHandleConnectionPoint(sourceNode, edge.sourceHandle);
+  let targetPoint = getHandleConnectionPoint(targetNode, edge.targetHandle);
   if(!sourcePoint || !targetPoint) return undefined;
 
   const sourceHandle = getHandle(sourceNode, edge.sourceHandle);
   const targetHandle = getHandle(targetNode, edge.targetHandle);
-  const sourceDirection = rotatePrefferedLineDirection(
-    sourceHandle?.prefferedLineDirection,
-    (sourceNode.data as ComponentDataType).rotation,
-  );
-  const targetDirection = rotatePrefferedLineDirection(
-    targetHandle?.prefferedLineDirection,
-    (targetNode.data as ComponentDataType).rotation,
-  );
+  const sourceDirection = endpointLineDirection(sourceNode, sourceHandle, sourcePoint.x, sourcePoint.y);
+  const targetDirection = endpointLineDirection(targetNode, targetHandle, targetPoint.x, targetPoint.y);
+  sourcePoint = normalizeEndpointForRenderedWire(sourcePoint, sourceDirection, 'source');
+  targetPoint = normalizeEndpointForRenderedWire(targetPoint, targetDirection, 'target');
   const {x_arr, y_arr, matrix, obstacleRects} = createMatrix(nodes);
   const pathResult = getPathResult(
     matrix,
@@ -434,20 +593,27 @@ export const routeWireWithPathfinder = (
       obstacleRects,
       sourceNodeId: sourceNode.id,
       targetNodeId: targetNode.id,
+      sourceDirection,
+      targetDirection,
     },
   );
   const edgeData = edge.data as EdgeDataType | undefined;
-  const anchoredPath = bindPathfinderPathToRenderedEndpoints(
-    path,
-    edgeData?.startXY,
-    edgeData?.endXY,
-  );
-  if(anchoredPath.length < 2) return undefined;
+  const anchoredPath = options.bindToRenderedEndpoints === false
+    ? path
+    : bindPathfinderPathToRenderedEndpoints(
+      path,
+      edgeData?.startXY,
+      edgeData?.endXY,
+    );
+  const finalPath = options.enforceEndpointDirections
+    ? enforceEndpointDirections(anchoredPath, sourceDirection, targetDirection)
+    : anchoredPath;
+  if(finalPath.length < 2) return undefined;
 
   return {
-    startXY: anchoredPath[0],
-    endXY: anchoredPath[anchoredPath.length - 1],
-    edgePoints: anchoredPath.slice(1, -1).map(edgePointFromPoint),
+    startXY: finalPath[0],
+    endXY: finalPath[finalPath.length - 1],
+    edgePoints: finalPath.slice(1, -1).map(edgePointFromPoint),
   };
 };
 
@@ -486,8 +652,6 @@ const routeWithStubs = (
   edge: Edge,
   edgeData: EdgeDataType,
   rotatedNodeId: string,
-  oldRotation: number,
-  newRotation: number,
   shiftBends: boolean,
 ) => {
   const oldPoints = getEdgePoints(edgeData);
@@ -497,39 +661,41 @@ const routeWithStubs = (
   const targetNode = nodes.find((node) => node.id === edge.target);
   if(!sourceNode || !targetNode) return undefined;
 
-  const sourcePoint = getHandleConnectionPoint(sourceNode, edge.sourceHandle);
-  const targetPoint = getHandleConnectionPoint(targetNode, edge.targetHandle);
+  let sourcePoint = getHandleConnectionPoint(sourceNode, edge.sourceHandle);
+  let targetPoint = getHandleConnectionPoint(targetNode, edge.targetHandle);
   if(!sourcePoint || !targetPoint) return undefined;
 
+  const sourceHandle = getHandle(sourceNode, edge.sourceHandle);
+  const targetHandle = getHandle(targetNode, edge.targetHandle);
+  const sourceDirection = endpointLineDirection(sourceNode, sourceHandle, sourcePoint.x, sourcePoint.y);
+  const targetDirection = endpointLineDirection(targetNode, targetHandle, targetPoint.x, targetPoint.y);
+  sourcePoint = normalizeEndpointForRenderedWire(sourcePoint, sourceDirection, 'source');
+  targetPoint = normalizeEndpointForRenderedWire(targetPoint, targetDirection, 'target');
   const sourceRotated = edge.source === rotatedNodeId;
   const targetRotated = edge.target === rotatedNodeId;
-  const rotationDelta = newRotation - oldRotation;
   const oldInnerPoints = (edgeData.edgePoints ?? []).map(pointFromEdgePoint);
   let points = [sourcePoint, ...oldInnerPoints, targetPoint];
 
   let sourceStubDirection: DirectionType;
   let targetStubDirection: DirectionType;
 
-  if(sourceRotated && isHorizontalOrVertical(oldPoints[0], oldPoints[1])) {
-    sourceStubDirection = rotateDirectionByDelta(directionFromSegment(oldPoints[0], oldPoints[1]), rotationDelta);
+  if(sourceRotated) {
+    sourceStubDirection = sourceDirection;
     points = addStub(points, true, sourceStubDirection);
   }
 
-  if(targetRotated && isHorizontalOrVertical(oldPoints[oldPoints.length - 1], oldPoints[oldPoints.length - 2])) {
-    targetStubDirection = rotateDirectionByDelta(
-      directionFromSegment(oldPoints[oldPoints.length - 1], oldPoints[oldPoints.length - 2]),
-      rotationDelta,
-    );
+  if(targetRotated) {
+    targetStubDirection = targetDirection;
     points = addStub(points, false, targetStubDirection);
   }
 
-  if(oldInnerPoints.length === 0 && sourceRotated && !nodeIsSolderJoint(targetNode)) {
-    targetStubDirection = directionFromSegment(oldPoints[oldPoints.length - 1], oldPoints[0]);
+  if(oldInnerPoints.length === 0 && sourceRotated && !targetRotated && !nodeIsSolderJoint(targetNode)) {
+    targetStubDirection = targetDirection;
     points = addStub(points, false, targetStubDirection);
   }
 
-  if(oldInnerPoints.length === 0 && targetRotated && !nodeIsSolderJoint(sourceNode)) {
-    sourceStubDirection = directionFromSegment(oldPoints[0], oldPoints[oldPoints.length - 1]);
+  if(oldInnerPoints.length === 0 && targetRotated && !sourceRotated && !nodeIsSolderJoint(sourceNode)) {
+    sourceStubDirection = sourceDirection;
     points = addStub(points, true, sourceStubDirection);
   }
 
@@ -542,7 +708,7 @@ const routeWithStubs = (
     }
   }
 
-  const compactedPoints = removeRedundantPoints(points);
+  const compactedPoints = enforceEndpointDirections(points, sourceDirection, targetDirection);
   return {
     startXY: compactedPoints[0],
     endXY: compactedPoints[compactedPoints.length - 1],
@@ -554,19 +720,31 @@ export const rotateComponentWires = ({
   nodes,
   edges,
   nodeId,
-  oldRotation,
   newRotation,
   pathFindingEnabled,
 }: RotateComponentWiresParams) => {
   const updatedNodes = nodes.map((node) => (
     node.id === nodeId
-      ? {
-        ...node,
-        data: {
-          ...(node.data as ComponentDataType),
-          rotation: newRotation,
-        },
-      }
+      ? (() => {
+        const rotatedSize = getRotatedNodeSize(node, newRotation);
+        return {
+          ...node,
+          ...(rotatedSize
+            ? {
+              width: rotatedSize.width,
+              height: rotatedSize.height,
+              measured: {
+                ...node.measured,
+                ...rotatedSize,
+              },
+            }
+            : {}),
+          data: {
+            ...(node.data as ComponentDataType),
+            rotation: newRotation,
+          },
+        };
+      })()
       : node
   ));
   const pathfinderActive = (
@@ -579,6 +757,10 @@ export const rotateComponentWires = ({
     ROTATE_WIRE_SHIFT_BENDS_ENABLED &&
     pathFindingEnabled
   );
+
+  if(!pathFindingEnabled) {
+    return edges;
+  }
 
   if(pathfinderActive) {
     let workingEdges = [...edges];
@@ -599,11 +781,15 @@ export const rotateComponentWires = ({
       if(!currentEdge || !currentEdgeData) return;
 
       const routingEdges = workingEdges.filter((edge) => edge.id !== edgeId);
-      const route = routeWireWithPathfinder(updatedNodes, routingEdges, currentEdge)
+      const route = routeWireWithPathfinder(updatedNodes, routingEdges, currentEdge, {
+        bindToRenderedEndpoints: false,
+        enforceEndpointDirections: true,
+      })
         ?? (ROTATE_WIRE_PIN_STUB_ENABLED
-          ? routeWithStubs(updatedNodes, currentEdge, currentEdgeData, nodeId, oldRotation, newRotation, shiftBendsActive)
+          ? routeWithStubs(updatedNodes, currentEdge, currentEdgeData, nodeId, shiftBendsActive)
           : undefined);
       if(!route) return;
+      warnNonOrthogonalWireRouteSegments(currentEdge.id, route, 'component rotation');
 
       const updatedEdge = {
         ...currentEdge,
@@ -630,10 +816,11 @@ export const rotateComponentWires = ({
     }
 
     const route = ROTATE_WIRE_PIN_STUB_ENABLED
-      ? routeWithStubs(updatedNodes, edge, edgeData, nodeId, oldRotation, newRotation, shiftBendsActive)
+      ? routeWithStubs(updatedNodes, edge, edgeData, nodeId, shiftBendsActive)
       : undefined;
 
     if(!route) return edge;
+    warnNonOrthogonalWireRouteSegments(edge.id, route, 'component rotation fallback');
 
     return {
       ...edge,

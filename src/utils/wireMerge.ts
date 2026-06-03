@@ -181,6 +181,7 @@ const buildMergedEdge = (wireA: OrientedWire, wireB: OrientedWire): Edge | undef
     physLength: mergePhysicalLength(dataA.physLength, dataB.physLength),
     correspondingInfoNodeSelected: false,
     checkHighlighted: Boolean(dataA.checkHighlighted || dataB.checkHighlighted),
+    simulationHighlighted: Boolean(dataA.simulationHighlighted || dataB.simulationHighlighted),
   } as EdgeDataType;
 
   return mergedEdge;

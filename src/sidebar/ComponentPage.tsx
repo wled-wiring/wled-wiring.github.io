@@ -9,6 +9,9 @@ import { useReactFlow} from '@xyflow/react';
 
 import { useTranslation } from "react-i18next";
 import { useUndoRedo } from '../utils/undoRedo';
+import { initializeLedSimulationOptionValues } from '../simulation/ledStripSimulationOptions';
+import { ENABLE_SIMULATION_CONTROLS } from '../simulation/simulationFeatureFlags';
+import SimulationIcon from '../icons/simulation.svg?react';
 
 const ComponentGroups=["controller", "led", "psu", "levelshifter", "electronics", "others"];
 const touchCapablePointerQuery = '(hover: none), (pointer: coarse), (any-pointer: coarse)';
@@ -186,92 +189,102 @@ export const ComponentPage = () => {
               ) || [];
 
               if(compData.image !== undefined) {
+                const showSimulationIcon = ENABLE_SIMULATION_CONTROLS && compData.simdata !== undefined;
                 return <Card
                     key={"Card_"+compData.technicalID}
                     hoverable
                     size='small'
                     title=<>{t(compData.name)}<br/>{t(compData.description)}</>
                     extra = {
-                      <Popover
-                        trigger={componentInfoTrigger}
-                        title=<>
-                          <span>{t('sidebar.components.popoverTitle')}</span>&nbsp;&nbsp;&nbsp;
-                          <Button
-                            onClick={(_)=>{
-                              const {position, shouldCenterAfterAdd}=getAddToDiagramPlacement(compData);
-                              const type='general-component-type';
-                              const newNode = {
-                                id: String(Math.random()),
-                                type,
-                                position,
-                                data: structuredClone(compData),
-                              };
-                              takeSnapshot('add component');
-                              reactFlowInstance.setNodes((nds) => nds.concat(newNode));
-                              if(shouldCenterAfterAdd) {
-                                window.requestAnimationFrame(() => {
-                                  reactFlowInstance.setCenter(
-                                    position.x + (compData.image?.width || 0) / 2,
-                                    position.y + (compData.image?.height || 0) / 2,
-                                    {
-                                      duration: 250,
-                                      zoom: reactFlowInstance.getZoom(),
-                                    },
-                                  );
+                      <div className="component-card-extra">
+                        {showSimulationIcon && (
+                          <SimulationIcon
+                            className="component-card-simulation-icon"
+                            aria-hidden="true"
+                            focusable="false"
+                          />
+                        )}
+                        <Popover
+                          trigger={componentInfoTrigger}
+                          title=<>
+                            <span>{t('sidebar.components.popoverTitle')}</span>&nbsp;&nbsp;&nbsp;
+                            <Button
+                              onClick={(_)=>{
+                                const {position, shouldCenterAfterAdd}=getAddToDiagramPlacement(compData);
+                                const type='general-component-type';
+                                const newNode = {
+                                  id: String(Math.random()),
+                                  type,
+                                  position,
+                                  data: initializeLedSimulationOptionValues(structuredClone(compData)),
+                                };
+                                takeSnapshot('add component');
+                                reactFlowInstance.setNodes((nds) => nds.concat(newNode));
+                                if(shouldCenterAfterAdd) {
+                                  window.requestAnimationFrame(() => {
+                                    reactFlowInstance.setCenter(
+                                      position.x + (compData.image?.width || 0) / 2,
+                                      position.y + (compData.image?.height || 0) / 2,
+                                      {
+                                        duration: 250,
+                                        zoom: reactFlowInstance.getZoom(),
+                                      },
+                                    );
+                                  });
+                                }
+                                messageApi.open({
+                                  type: 'success',
+                                  content:  t('message.compAddSuccess'),
                                 });
+                              }}
+                            >
+                            {t('sidebar.components.addButtonText')}
+                            </Button>
+                          </>
+                          content= {
+                            <div
+                              style={{
+                                maxWidth: 400,
+                                maxHeight: 600,
+                              }}
+                            >
+                              {compData.popover?.description && <p>{t(compData.popover.description)}</p>}
+                              {compData.popover?.buyLinks && compData.popover?.buyLinks.length>0 &&
+                                <div>
+                                  <u>{t('sidebar.components.popoverContent.whereToBuy')}</u><ul>
+                                  {compData.popover.buyLinks.map((link, index) => {
+                                    return <li key={index}>
+                                      <a href={link.url} target="_blank">{link.text}</a>
+                                    </li>;
+                                  })}
+                                  </ul>
+                                </div>
                               }
-                              messageApi.open({
-                                type: 'success',
-                                content:  t('message.compAddSuccess'),
-                              });
-                            }}
-                          >
-                          {t('sidebar.components.addButtonText')}
-                          </Button>
-                        </>
-                        content= {
-                          <div
-                            style={{
-                              maxWidth: 400,
-                              maxHeight: 600,
-                            }}
-                          >
-                            {compData.popover?.description && <p>{t(compData.popover.description)}</p>}
-                            {compData.popover?.buyLinks && compData.popover?.buyLinks.length>0 &&
-                              <div>
-                                <u>{t('sidebar.components.popoverContent.whereToBuy')}</u><ul>
-                                {compData.popover.buyLinks.map((link, index) => {
-                                  return <li key={index}>
-                                    <a href={link.url} target="_blank">{link.text}</a>
-                                  </li>;
-                                })}
-                                </ul>
-                              </div>
-                            }
-                            {
-                              compData.handles && compData.handles.length>0 &&
-                              <div
-                                style={{
-                                  maxWidth: 400,
-                                  maxHeight: 400,
-                                }}
-                              >
-                                <u>{t('sidebar.components.popoverContent.listOfConnections')}</u>
-                                <Table
-                                  columns={connectionListColumns}
-                                  dataSource={connectionListData}
-                                  rowKey="key"
-                                  size='small'
-                                  tableLayout='auto'
-                                  pagination={{ position: ['topRight'], pageSize: 5 }}
+                              {
+                                compData.handles && compData.handles.length>0 &&
+                                <div
+                                  style={{
+                                    maxWidth: 400,
+                                    maxHeight: 400,
+                                  }}
                                 >
-                                </Table>
-                              </div>
-                            }
-                          </div>
-                        }
-                      
-                      ><span style={{color: "blue", touchAction: "manipulation"}}><b>...</b></span></Popover>
+                                  <u>{t('sidebar.components.popoverContent.listOfConnections')}</u>
+                                  <Table
+                                    columns={connectionListColumns}
+                                    dataSource={connectionListData}
+                                    rowKey="key"
+                                    size='small'
+                                    tableLayout='auto'
+                                    pagination={{ position: ['topRight'], pageSize: 5 }}
+                                  >
+                                  </Table>
+                                </div>
+                              }
+                            </div>
+                          }
+                        
+                        ><span style={{color: "blue", touchAction: "manipulation"}}><b>...</b></span></Popover>
+                      </div>
                     }
                     style={{ 
                       fontSize: 12,

@@ -1,4 +1,9 @@
 import type { Node, HandleType, Position, Edge} from '@xyflow/react';
+import type { ComponentSimulationDefinition } from './simulation/simulationTypes';
+import type {
+  LedStripSimulationOptionSelection,
+  LedStripSimulationOptionValues,
+} from './simulation/ledStripSimulationOptions';
 
 export type GeneralComponent = Node<ComponentDataType, 'general-component-type'>;
 export type EditableWire = Edge<EdgeDataType, 'editable-wire-type'>;
@@ -15,6 +20,13 @@ export type HandleRepeatedType=("yes" | "no");
 export type HandleRepeatAtFirstType=("yes" | "no");
 
 export type ComponentGroupType=("controller" | "led" | "psu" | "levelshifter" | "electronics" | "others" | "special");
+
+export type ComponentRef = {
+  source: "core" | "local" | "store";
+  packageId?: string;
+  componentId: string;
+  version: number;
+};
 
 
 export type PhysLengthType = {startIndex: number, length: number|undefined};
@@ -47,8 +59,8 @@ export type CompSelectFieldDataType = {
   customImage: boolean;
   color: string;
   fieldWidth: number;
-  hide: boolean;
-  showNameIfSelected: boolean;
+  hide?: boolean;
+  showNameIfSelected?: boolean;
   options: {
     value: number;
     label: string;
@@ -66,18 +78,25 @@ export type CompInputFieldsBoxType = {
   borderLineWidth: number;
   borderRadius: string;
   backgroundColor: string;
-  backgroundColorSelected: string;
+  backgroundColorSelected?: string;
   rotate180only?: boolean;
 } 
 
-export type ComponentInternalConnectionType = {
-  kind: "fuse";
-  fromHandle: string;
-  toHandle: string;
-  fuseId: string;
-  nominalCurrent?: number;
-  nominalCurrentField?: string;
-}
+export type ComponentInternalConnectionType = (
+  {
+    kind: "fuse";
+    fromHandle: string;
+    toHandle: string;
+    fuseId: string;
+    nominalCurrent?: number;
+    nominalCurrentField?: string;
+  } |
+  {
+    kind: "short";
+    fromHandle: string;
+    toHandle: string;
+  }
+)
 
 export type HandleDataType = {
     hid: string;
@@ -95,7 +114,7 @@ export type HandleDataType = {
     postype: HandlePostype; 
     position: Position; // use always left; currently top, bottom and right does nont work correctly
     name: string;
-    description: string;
+    description?: string;
     repeated?: HandleRepeatedType;
     repeatAtFirst?: HandleRepeatAtFirstType;
     repeatIndex?: number;
@@ -104,7 +123,13 @@ export type HandleDataType = {
     tolVmin?: number,
     Vout?: number,
     VoutDependency?: string,
-    functions?: ("dig_in" | "dig_out" | "dig_clock_in" | "dig_clock_out" | "dig_backup_in" | "dig_backup_out" | "not_connected" | "an_in" | "an_out" | "rst" | "suppl_in" | "suppl_out" | "gnd" | "usb_full" | "usb_power_out" | "suppl_conn" | "general_conn" | "pe_in" | "pe_out" | "neutral_in" | "neutral_out" | "line_in" | "line_out" | "an_common" | "audio_in" | "audio_out" | "eth" | "rs485_A" | "rs485_B" | "pwm_in_R" | "pwm_in_G" | "pwm_in_B" | "pwm_in_W" | "pwm_in_WW" | "pwm_out"  )[],
+    Imax?: number,
+    maxCrossSectionAbsolute?: number,
+    maxCrossSectionWarning?: number,
+    relatedToHandle?: string[],
+    controllableBy?: string,
+    internallyProtected?: boolean,
+    functions?: ("dig_in" | "dig_out" | "dig_clock_in" | "dig_clock_out" | "dig_backup_in" | "dig_backup_out" | "not_connected" | "passive" | "an_in" | "an_out" | "rst" | "suppl_in" | "suppl_out" | "gnd" | "usb_full" | "usb_power_out" | "suppl_conn" | "general_conn" | "pe_in" | "pe_out" | "neutral_in" | "neutral_out" | "line_in" | "line_out" | "an_common" | "audio_in" | "audio_out" | "eth" | "rs485_A" | "rs485_B" | "pwm_in_R" | "pwm_in_G" | "pwm_in_B" | "pwm_in_W" | "pwm_in_WW" | "pwm_out"  )[],
     prefferedLineWidth?: number,
     hideConditions?: {selectHID: string, values: number[]}[],
     prefferedLineDirection?: DirectionType, // his can overwrite default behaviour of pathfinding that draw a line from/to handle in direction of closest node bound. Useful for example in case of miniOTO fuse
@@ -121,8 +146,10 @@ export type HandleDataType = {
     description: string;
     technicalID: string;
     technicalVersion: number;
+    componentRef?: ComponentRef;
     group: ComponentGroupType;
     image?: ImageDataType;
+    noBackgroundImageURL?: boolean;
     noBackgroundImage?: boolean
     rotation: number;
     nodeLength?: number;
@@ -135,6 +162,8 @@ export type HandleDataType = {
     repeatedHandleArray?: HandleDataType[];
     physLengths?: PhysLengthType[];
     selectedHid?: "" | null;
+    editorSelectedHandleId?: string;
+    editorOnHandleSelect?: (handleId: string) => void;
     // for Line/box node
     applyNodeResizer?: boolean;
     putToBackground?: boolean;
@@ -155,6 +184,9 @@ export type HandleDataType = {
     inputFields?: CompInputFieldDataType[];
     selectFields?: CompSelectFieldDataType[];
     internalConnections?: ComponentInternalConnectionType[];
+    simdata?: ComponentSimulationDefinition;
+    ledSimulationOptions?: LedStripSimulationOptionSelection;
+    ledSimulationOptionValues?: LedStripSimulationOptionValues;
     // these variables for node that is assigned to a wire and holds information about the wire
     wireInfoForNodeId?: string;
     correspondingWireSelected?: boolean;
@@ -163,6 +195,8 @@ export type HandleDataType = {
     wireInfo_crosssectionUnit?: string;
     wireInfo_color?: string;
     checkHighlighted?: boolean;
+    simulationHighlighted?: boolean;
+    simulationHighlightedHandleIds?: string[];
     // --------------
     // for popover
     popover?: {
@@ -188,6 +222,7 @@ export type HandleDataType = {
     color_selected: string;
     correspondingInfoNodeSelected?: boolean;
     checkHighlighted?: boolean;
+    simulationHighlighted?: boolean;
   }
 
   export type edgePoint = {

@@ -1,14 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { useReactFlow } from '@xyflow/react';
-import { Alert, Button, Collapse, Empty, Flex, List, Space, Tag, Typography, theme, type CollapseProps } from 'antd';
-import { SafetyCertificateOutlined } from '@ant-design/icons';
+import { useReactFlow, type Edge, type Node } from '@xyflow/react';
+import { Alert, Button, Collapse, Empty, Flex, List, Modal, Segmented, Space, Tag, Typography, theme, type CollapseProps } from 'antd';
+import { SafetyCertificateOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 import type { CheckNet } from '../check/checkContext';
 import { createDiagramCheckContextFromJson, runDiagramCheck } from '../check/runDiagramCheck';
-import type { DiagramCheckIssue, DiagramCheckSeverity, DiagramCheckTarget } from '../check/diagramCheckTypes';
+import type { DiagramCheckDeduplicationMode, DiagramCheckIssue, DiagramCheckSeverity, DiagramCheckTarget } from '../check/diagramCheckTypes';
+import { useDiagramCheckResultStore } from '../check/diagramCheckResultStore';
 import { createDiagramExportJson } from '../utils/exportModel';
+import { createDiagramFingerprint } from '../utils/diagramFingerprint';
+import {
+  effectiveSignalRoleDiagnosticsForNet,
+  getDiagramCheckRuleInfos,
+  type EffectiveSignalRoleDiagnostic,
+} from '../check/rules';
+import type { ComponentDataType, EdgeDataType } from '../types';
+import { getComponentDisplayName } from '../utils/componentDisplayName';
+import { readableWireLabel } from '../utils/wireLabel';
 
 const severityColor: Record<DiagramCheckSeverity, string> = {
   error: 'red',
@@ -16,10 +26,7 @@ const severityColor: Record<DiagramCheckSeverity, string> = {
   info: 'blue',
 };
 
-const targetTypeLabel = (target: DiagramCheckTarget) => (
-  target.type === 'node' ? 'Component' : 'Wire'
-);
-
+const SHOW_DIAGRAM_CHECK_DIAGNOSTICS = false;
 const SHOW_NET_DEBUG = false;
 
 const netDebugTargets = (net: CheckNet): DiagramCheckTarget[] => {
@@ -30,7 +37,7 @@ const netDebugTargets = (net: CheckNet): DiagramCheckTarget[] => {
     nodeTargets.set(handle.node.id, {
       type: 'node',
       id: handle.node.id,
-      label: handle.node.data.technicalID || handle.node.data.name || handle.node.id,
+      label: getComponentDisplayName(handle.node.data, handle.node.id),
     });
   });
 
@@ -38,7 +45,7 @@ const netDebugTargets = (net: CheckNet): DiagramCheckTarget[] => {
     edgeTargets.set(edge.id, {
       type: 'edge',
       id: edge.id,
-      label: `${edge.sourceHandle || edge.source} -> ${edge.targetHandle || edge.target}`,
+      label: readableWireLabel(edge, net.handles.map((handle) => handle.node)),
     });
   });
 
@@ -46,8 +53,15 @@ const netDebugTargets = (net: CheckNet): DiagramCheckTarget[] => {
 };
 
 const handleDebugLabel = (handle: CheckNet['handles'][number]) => (
-  `${handle.node.data.technicalID || handle.node.id}.${handle.handle.hid} (${handle.functions.join(', ') || 'none'})`
+  `${getComponentDisplayName(handle.node.data, handle.node.id)}.${handle.handle.hid} (${handle.functions.join(', ') || 'none'})`
 );
+
+const effectiveRoleDebugLabel = (diagnostic: EffectiveSignalRoleDiagnostic) => {
+  const base = `${diagnostic.signalLabel}: ${handleDebugLabel(diagnostic.handle)}`;
+  if (diagnostic.status === 'unclear') return `${base} -> unclear (${diagnostic.reason})`;
+
+  return `${base} -> ${diagnostic.direction} / ${diagnostic.confidence} (${diagnostic.reason})`;
+};
 
 type DiagramCheckPageProps = {
   isOpen: boolean;
@@ -57,9 +71,14 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
   const { t, i18n } = useTranslation(['main']);
   const { token } = theme.useToken();
   const reactFlow = useReactFlow();
+  const diagramCheckResult = useDiagramCheckResultStore((state) => state.result);
+  const setDiagramCheckResult = useDiagramCheckResultStore((state) => state.setResult);
   const [issues, setIssues] = useState<DiagramCheckIssue[] | null>(null);
   const [netDebugNets, setNetDebugNets] = useState<CheckNet[] | null>(null);
+  const [effectiveRoleDebugByNetId, setEffectiveRoleDebugByNetId] = useState<Record<string, EffectiveSignalRoleDiagnostic[]>>({});
   const [activeIssueKeys, setActiveIssueKeys] = useState<string[]>([]);
+  const [rulesModalOpen, setRulesModalOpen] = useState(false);
+  const [deduplicationMode, setDeduplicationMode] = useState<DiagramCheckDeduplicationMode>('user-friendly');
   const previousLanguageRef = useRef(i18n.resolvedLanguage);
 
   const clearHighlights = useCallback(() => {
@@ -103,9 +122,18 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
     })));
   }, [reactFlow]);
 
-  const updateIssues = useCallback((keepActiveIssue = false) => {
+  const updateIssues = useCallback((
+    keepActiveIssue = false,
+    nextDeduplicationMode: DiagramCheckDeduplicationMode = SHOW_DIAGRAM_CHECK_DIAGNOSTICS
+      ? deduplicationMode
+      : 'user-friendly',
+  ) => {
     const jsonData = createDiagramExportJson(reactFlow);
-    const nextIssues = runDiagramCheck(jsonData);
+    const nextIssues = runDiagramCheck(jsonData, { deduplicationMode: nextDeduplicationMode });
+    const fingerprint = createDiagramFingerprint(
+      reactFlow.getNodes() as Node<ComponentDataType>[],
+      reactFlow.getEdges() as Edge<EdgeDataType>[],
+    );
     const debugContext = SHOW_NET_DEBUG ? createDiagramCheckContextFromJson(jsonData) : undefined;
     const activeIssueId = activeIssueKeys[activeIssueKeys.length - 1];
     const activeIssue = keepActiveIssue
@@ -113,13 +141,29 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
       : undefined;
 
     setIssues(nextIssues);
-    setNetDebugNets(debugContext
-      ? [
+    setDiagramCheckResult({
+      fingerprint,
+      issues: nextIssues,
+      checkedAt: Date.now(),
+    });
+    if (debugContext) {
+      const debugNets = [
         ...debugContext.elementaryNets,
         ...debugContext.fusedNets,
         ...debugContext.componentLinkedNets,
-      ]
-      : null);
+        ...debugContext.componentLinkedElementaryBasedNets,
+      ];
+      setNetDebugNets(debugNets);
+      setEffectiveRoleDebugByNetId(Object.fromEntries(
+        debugNets.map((net) => [
+          net.id,
+          effectiveSignalRoleDiagnosticsForNet(debugContext, net),
+        ]),
+      ));
+    } else {
+      setNetDebugNets(null);
+      setEffectiveRoleDebugByNetId({});
+    }
     setActiveIssueKeys(activeIssue ? activeIssueKeys : []);
 
     if (activeIssue) {
@@ -127,11 +171,50 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
     } else {
       clearHighlights();
     }
-  }, [activeIssueKeys, clearHighlights, highlightTargets, reactFlow]);
+  }, [activeIssueKeys, clearHighlights, deduplicationMode, highlightTargets, reactFlow, setDiagramCheckResult]);
 
   const runCheck = () => {
     updateIssues(false);
   };
+
+  const updateDeduplicationMode = (nextDeduplicationMode: DiagramCheckDeduplicationMode) => {
+    setDeduplicationMode(nextDeduplicationMode);
+    if (issues !== null) {
+      updateIssues(true, nextDeduplicationMode);
+    }
+  };
+
+  const targetLabel = useCallback((target: DiagramCheckTarget) => {
+    if (target.type === 'node') {
+      const node = reactFlow.getNode(target.id) as Node<ComponentDataType> | undefined;
+      return node ? getComponentDisplayName(node.data, node.id) : target.label || target.id;
+    }
+
+    const edge = reactFlow.getEdge(target.id) as Edge<EdgeDataType> | undefined;
+    if (!edge) return target.label || target.id;
+
+    const sourceNode = reactFlow.getNode(edge.source) as Node<ComponentDataType> | undefined;
+    const targetNode = reactFlow.getNode(edge.target) as Node<ComponentDataType> | undefined;
+
+    return readableWireLabel(edge, [sourceNode, targetNode].filter((node): node is Node<ComponentDataType> => Boolean(node)));
+  }, [reactFlow]);
+
+  const showAffectedTarget = useCallback((target: DiagramCheckTarget) => {
+    if (target.type !== 'node') return true;
+
+    const node = reactFlow.getNode(target.id) as Node<ComponentDataType> | undefined;
+    return node?.data.technicalID !== 'SolderJoint';
+  }, [reactFlow]);
+
+  useEffect(() => {
+    if (diagramCheckResult !== null) return;
+
+    setIssues(null);
+    setNetDebugNets(null);
+    setEffectiveRoleDebugByNetId({});
+    setActiveIssueKeys([]);
+    clearHighlights();
+  }, [clearHighlights, diagramCheckResult]);
 
   useEffect(() => {
     if (previousLanguageRef.current === i18n.resolvedLanguage) return;
@@ -150,7 +233,10 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
   }, [clearHighlights, isOpen]);
 
   const issueItems: CollapseProps['items'] = useMemo(() => (
-    issues?.map((issue) => ({
+    issues?.map((issue) => {
+      const visibleTargets = issue.targets?.filter(showAffectedTarget) || [];
+
+      return {
       key: issue.id,
       label: (
         <Space size={6} align="start">
@@ -158,10 +244,33 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
             {t(`sidebar.check.severity.${issue.severity}`)}
           </Tag>
           <span>{issue.title}</span>
+          {issue.suppressed &&
+            <Tag color="default" style={{ marginInlineEnd: 0 }}>
+              {t('sidebar.check.diagnostics.suppressedTag')}
+            </Tag>
+          }
         </Space>
       ),
       children: (
         <Flex gap="small" vertical>
+          {deduplicationMode !== 'user-friendly' &&
+            <Flex gap={4} wrap="wrap">
+              <Tag>{t(`sidebar.check.diagnostics.mode.${deduplicationMode}`)}</Tag>
+              {issue.fingerprint &&
+                <Tag>{`${issue.fingerprint.scope}:${issue.fingerprint.problem}`}</Tag>
+              }
+              {typeof issue.specificity === 'number' &&
+                <Tag>{t('sidebar.check.diagnostics.specificity', { value: issue.specificity })}</Tag>
+              }
+              {issue.suppressedByIssueIds && issue.suppressedByIssueIds.length > 0 &&
+                <Tag color="default">
+                  {t('sidebar.check.diagnostics.suppressedBy', {
+                    ids: issue.suppressedByIssueIds.join(', '),
+                  })}
+                </Tag>
+              }
+            </Flex>
+          }
           <Typography.Text>{issue.description}</Typography.Text>
           {issue.recommendation &&
             <Alert
@@ -171,15 +280,15 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
               description={issue.recommendation}
             />
           }
-          {issue.targets && issue.targets.length > 0 &&
+          {visibleTargets.length > 0 &&
             <List
               size="small"
               header={t('sidebar.check.affectedElements')}
-              dataSource={issue.targets}
+              dataSource={visibleTargets}
               renderItem={(target) => (
                 <List.Item>
                   <Typography.Text>
-                    {targetTypeLabel(target)}: {target.label || target.id}
+                    {t(`sidebar.check.targetTypes.${target.type}`)}: {targetLabel(target)}
                   </Typography.Text>
                 </List.Item>
               )}
@@ -192,15 +301,47 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
         borderRadius: 4,
         marginBottom: 6,
       },
-    }))
-  ), [issues, t, token.colorBorder]);
+    };
+    })
+  ), [deduplicationMode, issues, showAffectedTarget, t, targetLabel, token.colorBorder]);
+
+  const ruleInfos = getDiagramCheckRuleInfos();
+  const ruleInfoItems: CollapseProps['items'] = ruleInfos.map((rule) => ({
+    key: rule.id,
+    label: (
+      <Space size={6} align="start">
+        <Typography.Text strong>{rule.title}</Typography.Text>
+        <Tag>{rule.checks.length}</Tag>
+      </Space>
+    ),
+    children: (
+      <Flex gap="small" vertical>
+        <Typography.Text type="secondary">{rule.description}</Typography.Text>
+        <List
+          size="small"
+          dataSource={rule.checks}
+          renderItem={(check) => (
+            <List.Item>
+              <Flex gap={2} vertical>
+                <Typography.Text>{check.title}</Typography.Text>
+                <Typography.Text type="secondary">{check.description}</Typography.Text>
+              </Flex>
+            </List.Item>
+          )}
+        />
+      </Flex>
+    ),
+  }));
 
   const netDebugItems: CollapseProps['items'] = useMemo(() => (
-    netDebugNets?.map((net) => ({
+    netDebugNets?.map((net) => {
+      const roleDiagnostics = effectiveRoleDebugByNetId[net.id] || [];
+
+      return {
       key: net.id,
       label: (
         <Space size={6} align="start" wrap>
-          <Tag color={net.layer === 'elementary' ? 'blue' : net.layer === 'fused' ? 'orange' : 'purple'}>
+          <Tag color={net.layer === 'elementary' ? 'blue' : net.layer === 'fused' ? 'orange' : net.layer === 'component-linked' ? 'purple' : 'cyan'}>
             {net.layer}
           </Tag>
           <Typography.Text>{net.id}</Typography.Text>
@@ -237,7 +378,21 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
               dataSource={net.edges}
               renderItem={(edge) => (
                 <List.Item>
-                  <Typography.Text>{`${edge.id}: ${edge.sourceHandle} -> ${edge.targetHandle}`}</Typography.Text>
+                  <Typography.Text>{`${edge.id}: ${readableWireLabel(edge, net.handles.map((handle) => handle.node))}`}</Typography.Text>
+                </List.Item>
+              )}
+            />
+          }
+          {roleDiagnostics.length > 0 &&
+            <List
+              size="small"
+              header="Effective signal roles"
+              dataSource={roleDiagnostics}
+              renderItem={(diagnostic) => (
+                <List.Item>
+                  <Typography.Text type={diagnostic.status === 'unclear' ? 'warning' : undefined}>
+                    {effectiveRoleDebugLabel(diagnostic)}
+                  </Typography.Text>
                 </List.Item>
               )}
             />
@@ -249,8 +404,9 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
         borderRadius: 4,
         marginBottom: 6,
       },
-    }))
-  ), [highlightTargets, netDebugNets, token.colorBorder]);
+    };
+    })
+  ), [effectiveRoleDebugByNetId, highlightTargets, netDebugNets, token.colorBorder]);
 
   return (
     <Flex gap="small" vertical>
@@ -259,7 +415,33 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
         showIcon
         message={t('sidebar.check.betaNoticeTitle')}
         description={t('sidebar.check.betaNoticeDescription')}
+        action={
+          <Button
+            size="small"
+            icon={<UnorderedListOutlined />}
+            onClick={() => setRulesModalOpen(true)}
+          >
+            {t('sidebar.check.rulesButton')}
+          </Button>
+        }
       />
+
+      <Modal
+        title={t('sidebar.check.rulesModalTitle')}
+        open={rulesModalOpen}
+        onCancel={() => setRulesModalOpen(false)}
+        footer={null}
+      >
+        <Flex gap="small" vertical>
+          <Typography.Text type="secondary">
+            {t('sidebar.check.rulesModalDescription')}
+          </Typography.Text>
+          <Collapse
+            defaultActiveKey={ruleInfos.map((rule) => rule.id)}
+            items={ruleInfoItems}
+          />
+        </Flex>
+      </Modal>
 
       <Button
         type="primary"
@@ -268,6 +450,34 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
       >
         {t('sidebar.check.buttonRun')}
       </Button>
+
+      {SHOW_DIAGRAM_CHECK_DIAGNOSTICS &&
+        <Flex gap={4} vertical>
+          <Typography.Text type="secondary">
+            {t('sidebar.check.diagnostics.modeLabel')}
+          </Typography.Text>
+          <Segmented<DiagramCheckDeduplicationMode>
+            size="small"
+            value={deduplicationMode}
+            options={[
+              {
+                label: t('sidebar.check.diagnostics.mode.user-friendly'),
+                value: 'user-friendly',
+              },
+              {
+                label: t('sidebar.check.diagnostics.mode.diagnostic'),
+                value: 'diagnostic',
+              },
+              {
+                label: t('sidebar.check.diagnostics.mode.diagnostic-with-suppression-markers'),
+                value: 'diagnostic-with-suppression-markers',
+              },
+            ]}
+            onChange={updateDeduplicationMode}
+            block
+          />
+        </Flex>
+      }
 
       {issues === null &&
         <Empty
@@ -292,10 +502,11 @@ export const DiagramCheckPage = ({ isOpen }: DiagramCheckPageProps) => {
           </Typography.Text>
           <Collapse
             ghost
+            accordion
             activeKey={activeIssueKeys}
             items={issueItems}
             onChange={(key) => {
-              const keys = Array.isArray(key) ? key.map(String) : [String(key)];
+              const keys = Array.isArray(key) ? key.map(String) : key ? [String(key)] : [];
               setActiveIssueKeys(keys);
               const activeIssue = issues.find((issue) => issue.id === keys[keys.length - 1]);
               if (activeIssue) {

@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { supportedLngs } from "./../i18n";
 
@@ -14,37 +15,39 @@ const languageToCountryCode: Record<string, string> = {
   zh: "CN",
 };
 
-export default function LocaleSwitcher() {
+function LocaleSwitcher() {
   const { i18n } = useTranslation();
 
-  const handleChange = (value: string) => {
+  const handleChange = useCallback((value: string) => {
     //console.log(`selected ${value}`);
     i18n.changeLanguage(value);
-  };
+  }, [i18n]);
+
+  const languageOptions = useMemo(() => Object.entries(supportedLngs).map(([code, name]) => (
+    {
+      value: code,
+      label: <span>
+              <ReactCountryFlag
+                  countryCode={languageToCountryCode[code] || "GB"}
+                  svg
+                  style={{
+                      width: '1.5em',
+                      height: '1.5em',
+                      marginRight: 4,
+                  }}
+                  title={code}
+              />
+              {name}
+             </span>
+    }
+  )), []);
   
   return (
     <Select
       defaultValue={i18n.resolvedLanguage}
       style={{ width: 150 }}
       onChange={handleChange}
-      options={Object.entries(supportedLngs).map(([code, name]) => (
-        {
-          value: code,
-          label: <span>
-                  <ReactCountryFlag
-                      countryCode={languageToCountryCode[code] || "GB"}
-                      svg
-                      style={{
-                          width: '1.5em',
-                          height: '1.5em',
-                          marginRight: 4,
-                      }}
-                      title={code}
-                  />
-                  {name}
-                 </span>
-        }
-      ))}
+      options={languageOptions}
       />
 
     /*<Form.Select
@@ -63,3 +66,5 @@ export default function LocaleSwitcher() {
     </Form.Select>*/
   );
 }
+
+export default memo(LocaleSwitcher);

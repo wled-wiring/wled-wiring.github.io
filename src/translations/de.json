@@ -1,639 +1,1355 @@
-﻿{
-    "title":  "Willkommen bei WLED Wiring Designer!",
-    "dragComponents":  "Beginne mit dem Ziehen von Komponenten auf die Arbeitsfläche oder lade ein Beispiel",
-    "componentGroupTypes":  {
-                                "controller":  "Controller",
-                                "led":  "LEDs",
-                                "psu":  "Netzteile",
-                                "levelshifter":  "Level Shifter",
-                                "electronics":  "Elektronik/Bauteile",
-                                "others":  "Sonstiges"
-                            },
-    "buttons":  {
-                    "rotate":  "Drehen",
-                    "longer":  "Vergrößern",
-                    "shorter":  "Verkleinern"
-                },
-    "tooltip":  {
-                    "deleteWire":  "Diese Verbindung löschen",
-                    "selectColor":  "Farbe auswählen",
-                    "selectWireLength":  "Kabellänge auswählen (physikalisch)",
-                    "selectWireCrossSection":  "Kabelquerschnitt auswählen (physikalisch)",
-                    "selectWireWidth":  "Kabelbreite auswählen (für Zeichnung)",
-                    "selectWireNetwork":  "Ganzes Netz auswählen",
-                    "clearWireNetwork":  "Netzauswahl aufheben",
-                    "putWireInfoNode":  "Kabel Infobox hinzufügen",
-                    "rerouteWire":  "Wire mit Pathfinder neu routen",
-                    "startConnection":  "Verbindung starten",
-                    "closeConnection":  "Verbindung abschliessen",
-                    "rotateLeft":  "Nach Links drehen",
-                    "rotateRight":  "Nach Rechts drehen",
-                    "delete":  "Löschen",
-                    "copy":  "Kopie erstellen",
-                    "enlarge":  "Verlängern",
-                    "shorten":  "Vrkürzen",
-                    "switchFilled":  "Befüllt / nur mit Rand",
-                    "increaseTextSize":  "Text vergrößern",
-                    "decreaseTextSize":  "Text verkleinern",
-                    "textSize":  "Textgröße",
-                    "selectFont":  "Schriftart auswählen",
-                    "toggleBold":  "Fett umschalten",
-                    "textAlign":  "Textausrichtung",
-                    "selectMulti":  "Mehrfachauswahl",
-                    "deleteSelected":  "Auswahl löschen",
-                    "componentInfo":  "Komponenten-Info anzeigen",
-                    "switchConnLineType":  "Verbindungstyp umschalten",
-                    "switchConnLineTypeHINT":  "TIPP: Verbindungstyp umschalten"
-                },
-    "popover":  {
-                    "selectWireLength":  "Kabellänge auswählen (physikalisch):",
-                    "selectWireCrossSection":  "Kabelquerschnitt auswählen (physikalisch):",
-                    "selectWireWidth":  "Kabelbreite auswählen (für Zeichnung):",
-                    "startConnection":  "Wählen Sie den Start-Pin/Anschluss für die Verbindung:",
-                    "closeConnection":  "Verbindung zu diesem Pin/Anschluss abschliessen:"
-                },
-    "select":  {
-                   "startConnection":  "Pin/Anschluss wählen",
-                   "closeConnection":  "Pin/Anschluss wählen"
-               },
-    "message":  {
-                    "startPinSelected":  "Pin/Anschluss gewählt. Jetzt Ziel-Pin/Anschluss wählen",
-                    "closePinSelected":  "Die Verbindung wurde erstellt.",
-                    "startPinFirst":  "Bitte erst ein Start-Pin/Anschluss wählen!",
-                    "theSamePin":  "Start-Pin/Anschluss und Ziel-Pin/Anschluss sind gleich!",
-                    "compAddSuccess":  "Zum Diagram hinzugefügt!",
-                    "loadModelSuccess":  "Das WLED-Verdrahtungsmodell wurde erfolgreich geladen!",
-                    "loadModelSuccessShort":  "Erfolg",
-                    "loadingModel":  "Verdrahtungsmodell wird aus Dateilink geladen ...",
-                    "loadModelError":  "Das WLED-Verdrahtungsmodell kann nicht geladen werden. Möglicherweise ist dieser Link nicht mehr gültig.",
-                    "loadModelErrorShort":  "Fehler",
-                    "loadModelWrongLink":  "Der Link ist nicht korrekt! Bitte überprüfen.",
-                    "componentUpdatesApplied":  "Die Änderungen wurden angewendet. Bitte überprüfe diese Komponente.",
-                    "componentUpdatesAppliedShort":  "Updates angewendet",
-                    "componentUpdatesAvailableTitle":  "Komponenten-Updates verfügbar",
-                    "componentUpdatesAvailableDescription":  "{{count}} Komponente(n) in diesem Diagramm können auf die aktuelle Vorlage aktualisiert werden. Jetzt alle Komponenten aktualisieren?",
-                    "componentUpdatesApplyAll":  "Alle aktualisieren",
-                    "componentUpdatesSkip":  "Nicht aktualisieren",
-                    "componentUpdatesAllApplied":  "{{count}} Komponenten-Update(s) wurden angewendet."
-                },
-    "sidebar":  {
-                    "components":  {
-                                       "title":  "Komponenten",
-                                       "popoverTitle":  "Komponenten-Info",
-                                       "addButtonText":  "Zum Diagramm zufügen",
-                                       "updateButtonText":  "Diese Komponente aktualisieren",
-                                       "updatePopoverTitle":  "Änderungen an dieser Komponente",
-                                       "applyUpdatesButtonText":  "Änderungen anwenden",
-                                       "updateExplanation":  "Diese im Diagramm verwendete Komponente hat einen älteren Stand als die aktuelle Komponente im Programm. Die folgenden Änderungen können übertragen werden.",
-                                       "noUpdateChanges":  "Keine Änderungen verfügbar.",
-                                       "updateValueMissing":  "Fehlt",
-                                       "updateChangeProperty":  "Eigenschaft",
-                                       "updateChangeCurrent":  "Aktuell",
-                                       "updateChangeTemplate":  "Vorlage",
-                                       "popoverContent":  {
-                                                              "whereToBuy":  "Wo kaufen?",
-                                                              "listOfConnections":  "Liste der Pins/Anschlüsse",
-                                                              "listOfConnectionsHeading1":  "Pin / Anschluss",
-                                                              "listOfConnectionsHeading2":  "Beschreibung"
-                                                          }
-                                   },
-                    "check":  {
-                                  "title":  "Diagramm überprüfen",
-                                  "comingSoon":  "Regel-basierte Überprüfung wird im Laufe 2025 implementiert. Stay tuned!",
-                                  "buttonRun":  "Diagramm jetzt pruefen",
-                                  "betaNoticeTitle":  "Beta-Version",
-                                  "betaNoticeDescription":  "Diese Diagrammpruefung ist noch in Entwicklung. Fehlerkennungen koennen unvollstaendig oder falsch sein.",
-                                  "notChecked":  "Noch keine Pruefung ausgefuehrt.",
-                                  "noIssuesTitle":  "Keine Probleme gefunden",
-                                  "noIssuesDescription":  "Die aktuelle Platzhalter-Pruefung hat keine Hinweise gefunden.",
-                                  "issueCount":  "{{count}} Ergebnis(se) gefunden",
-                                  "recommendation":  "Empfehlung",
-                                  "affectedElements":  "Betroffene Elemente",
-                                  "severity":  {
-                                                   "error":  "Fehler",
-                                                   "warning":  "Warnung",
-                                                   "info":  "Hinweis"
-                                               },
-                                  "classificationLabels":  {
-                                                               "gnd_net_type":  "Ground",
-                                                               "suppl_net_type":  "DC-Versorgung",
-                                                               "digital_net_type":  "Digital",
-                                                               "pwm_net_type":  "PWM",
-                                                               "analog_net_type":  "Analog",
-                                                               "audio_net_type":  "Audio",
-                                                               "eth_net_type":  "Ethernet",
-                                                               "usb_net_type":  "USB",
-                                                               "rs485_a_net_type":  "RS485 A",
-                                                               "rs485_b_net_type":  "RS485 B",
-                                                               "N_net_type":  "Neutralleiter",
-                                                               "L_net_type":  "Line",
-                                                               "PE_net_type":  "Schutzleiter"
-                                                           },
-                                  "signalLabels":  {
-                                                       "digital":  "Digital",
-                                                       "pwm":  "PWM",
-                                                       "analog":  "Analog",
-                                                       "audio":  "Audio",
-                                                       "usb":  "USB"
-                                                   },
-                                  "mainsInputLabels":  {
-                                                           "line":  "Line",
-                                                           "neutral":  "Neutral",
-                                                           "pe":  "PE"
-                                                       },
-                                  "issues":  {
-                                                 "diagramEmpty":  {
-                                                                      "title":  "Diagramm ist leer",
-                                                                      "shortDescription":  "Es sind noch keine Komponenten im Diagramm vorhanden.",
-                                                                      "description":  "Die Prüfung kann erst technische Hinweise liefern, wenn Komponenten und Leitungen im Diagramm vorhanden sind.",
-                                                                      "recommendation":  "Füge zuerst Komponenten hinzu und starte die Prüfung danach erneut."
-                                                                  }
-                                             },
-                                  "rules":  {
-                                                "network-rules":  {
-                                                                      "title":  "Netzregeln",
-                                                                      "description":  "Prueft grundlegende Fehler in component-linked Netzen.",
-                                                                      "issues":  {
-                                                                                     "groundMissing":  {
-                                                                                                           "title":  "Kein Ground-Netz verbunden",
-                                                                                                           "shortDescription":  "Es gibt GND-Pins, aber kein verbundenes Ground-Netz.",
-                                                                                                           "description":  "Mindestens ein GND-Pin ist im Diagramm vorhanden, aber keiner davon ist verdrahtet. Komponenten mit GND-Bezug brauchen eine gemeinsame Ground-Verbindung.",
-                                                                                                           "recommendation":  "Verbinde die GND-Pins der beteiligten Komponenten miteinander."
-                                                                                                       },
-                                                                                     "groundMultiple":  {
-                                                                                                            "title":  "Mehrere getrennte Ground-Netze",
-                                                                                                            "shortDescription":  "Alle GND-Verbindungen muessen zu einem gemeinsamen Ground-Netz gehoeren.",
-                                                                                                            "description":  "Es wurden {{count}} getrennte Ground-Netze gefunden. Dadurch fehlt eine gemeinsame Referenz zwischen Teilen der Schaltung.",
-                                                                                                            "recommendation":  "Verbinde die getrennten GND-Netze miteinander."
-                                                                                                        },
-                                                                                     "mainsLowVoltageMixed":  {
-                                                                                                                  "title":  "Netzspannung und Kleinspannung verbunden",
-                                                                                                                  "shortDescription":  "Ein Netz verbindet L/N mit Kleinspannungs- oder Signalanschluessen.",
-                                                                                                                  "description":  "Das Netz enthaelt {{classifications}}. Netzspannung darf nicht mit GND, DC-Versorgung oder Signalnetzen verbunden werden.",
-                                                                                                                  "recommendation":  "Trenne Netzspannungsleitungen strikt von Kleinspannungs- und Signalverbindungen."
-                                                                                                              },
-                                                                                     "peActiveMixed":  {
-                                                                                                           "title":  "Schutzleiter mit aktiver Leitung verbunden",
-                                                                                                           "shortDescription":  "Ein PE-Netz ist mit aktiver Versorgung oder einem Signalnetz verbunden.",
-                                                                                                           "description":  "Das Netz enthaelt {{classifications}}. PE darf nicht mit L, N, DC-Versorgung oder Signalen verbunden werden.",
-                                                                                                           "recommendation":  "Trenne PE von aktiven Leitern und Signalverbindungen."
-                                                                                                       },
-                                                                                     "rs485Mixed":  {
-                                                                                                        "title":  "RS485 A und B verbunden",
-                                                                                                        "shortDescription":  "Ein Netz verbindet RS485_A mit RS485_B.",
-                                                                                                        "description":  "Die differentiellen RS485-Leitungen A und B duerfen nicht miteinander verbunden werden.",
-                                                                                                        "recommendation":  "Trenne RS485_A und RS485_B in zwei separate Netze."
-                                                                                                    },
-                                                                                     "mixedClassifications":  {
-                                                                                                                  "title":  "Unterschiedliche Ausgangstypen verbunden",
-                                                                                                                  "shortDescription":  "Ein Netz enthaelt mehrere Netzklassen.",
-                                                                                                                  "description":  "Das Netz enthaelt gleichzeitig {{classifications}}. Das bedeutet, dass Ausgaenge unterschiedlicher Typen miteinander verbunden sind.",
-                                                                                                                  "recommendation":  "Trenne die unterschiedlichen Ausgangstypen in separate Netze."
-                                                                                                              },
-                                                                                     "multipleSupplySources":  {
-                                                                                                                   "title":  "Mehrere unabhaengige Spannungsquellen verbunden",
-                                                                                                                   "shortDescription":  "Ein Supply-Netz enthaelt mehrere unabhaengige Spannungsquellen.",
-                                                                                                                   "description":  "Das Netz enthaelt {{count}} unabhaengige Spannungsquellen: {{sources}}.",
-                                                                                                                   "recommendation":  "Trenne die Spannungsquellen oder stelle sicher, dass nur weitergeleitete Ausgaenge im selben Netz liegen."
-                                                                                                               },
-                                                                                     "signalSinkWithoutSource":  {
-                                                                                                                     "title":  "{{signal}}-Eingang ohne Quelle",
-                                                                                                                     "shortDescription":  "Ein {{signal}}-Eingang ist verdrahtet, aber im Netz gibt es keine passende Quelle.",
-                                                                                                                     "description":  "Das Netz enthaelt {{sinks}}, aber keinen passenden Ausgang fuer {{signal}}.",
-                                                                                                                     "recommendation":  "Verbinde den Eingang mit einem passenden Ausgang oder pruefe die Pin-Funktion der beteiligten Komponenten."
-                                                                                                                 },
-                                                                                     "digitalSignalVoltageMismatch":  {
-                                                                                                                          "title":  "Digitalpegel passt nicht",
-                                                                                                                          "shortDescription":  "Ein digitaler Eingang wird mit einer unpassenden Ausgangsspannung angesteuert.",
-                                                                                                                          "description":  "{{input}} erlaubt {{min}} V bis {{max}} V, ist aber mit unpassenden digitalen Ausgaengen verbunden: {{sources}}.",
-                                                                                                                          "recommendation":  "Verwende einen passenden Level Shifter oder verbinde den Eingang mit einem digitalen Ausgang im erlaubten Spannungsbereich."
-                                                                                                                      },
-                                                                                     "multipleSignalSources":  {
-                                                                                                                   "title":  "Mehrere {{signal}}-Quellen verbunden",
-                                                                                                                   "shortDescription":  "Ein {{signal}}-Netz enthaelt mehrere Ausgaenge.",
-                                                                                                                   "description":  "Das Netz verbindet mehrere {{signal}}-Quellen: {{sources}}.",
-                                                                                                                   "recommendation":  "Trenne die Ausgaenge voneinander, sodass pro Signalnetz nur eine Quelle angeschlossen ist."
-                                                                                                               },
-                                                                                     "supplyInputWithoutSource":  {
-                                                                                                                      "title":  "Supply-Eingang ohne Spannungsquelle",
-                                                                                                                      "shortDescription":  "Ein Supply-Eingang ist verdrahtet, aber im Netz gibt es keine Spannungsquelle.",
-                                                                                                                      "description":  "Das Netz enthaelt Supply-Eingaenge ({{inputs}}), aber keinen unabhaengigen suppl_out-Ausgang.",
-                                                                                                                      "recommendation":  "Verbinde das Netz mit einer passenden Spannungsquelle."
-                                                                                                                  },
-                                                                                     "supplySourceWithoutConsumer":  {
-                                                                                                                         "title":  "Supply-Netz ohne Verbraucher",
-                                                                                                                         "shortDescription":  "Ein Supply-Ausgang ist verdrahtet, aber kein Supply-Eingang ist angeschlossen.",
-                                                                                                                         "description":  "Das Netz enthaelt eine Spannungsquelle, aber keinen erkennbaren Supply-Verbraucher.",
-                                                                                                                         "recommendation":  "Pruefe, ob die Versorgung zu einer Komponente mit Supply-Eingang weitergefuehrt werden soll."
-                                                                                                                     },
-                                                                                     "supplyVoltageMismatch":  {
-                                                                                                                   "title":  "Supply-Spannung passt nicht",
-                                                                                                                   "shortDescription":  "Die Spannung der Quelle passt nicht zu allen Supply-Eingaengen im Netz.",
-                                                                                                                   "description":  "Die Quelle liefert {{voltage}} V, aber mindestens ein Supply-Eingang erlaubt diesen Bereich nicht: {{inputs}}.",
-                                                                                                                   "recommendation":  "Passe die Versorgungsspannung an oder trenne Komponenten mit unterschiedlichen Spannungsbereichen."
-                                                                                                               }
-                                                                                 }
-                                                                  },
-                                                "component-rules":  {
-                                                                        "title":  "Komponentenregeln",
-                                                                        "description":  "Prueft grundlegende Anforderungen einzelner Komponenten.",
-                                                                        "issues":  {
-                                                                                       "requiredPinUnconnected":  {
-                                                                                                                      "title":  "Pflicht-Pin nicht verbunden",
-                                                                                                                      "shortDescription":  "Eine Komponente hat einen Pin, der verbunden sein muss.",
-                                                                                                                      "description":  "{{component}} besitzt Pflicht-Pins ohne Verbindung: {{handles}}.",
-                                                                                                                      "recommendation":  "Verbinde alle Pins dieser Komponente, die als Pflichtverbindung markiert sind."
-                                                                                                                  },
-                                                                                       "groundMissing":  {
-                                                                                                             "title":  "Komponente ohne Ground",
-                                                                                                             "shortDescription":  "Eine Komponente mit GND-Pin ist nicht mit Ground verbunden.",
-                                                                                                             "description":  "{{component}} besitzt GND-Pins, aber keiner dieser Pins ist mit einem GND-Netz verbunden.",
-                                                                                                             "recommendation":  "Verbinde mindestens einen GND-Pin dieser Komponente mit dem gemeinsamen Ground-Netz."
-                                                                                                         },
-                                                                                       "powerMissing":  {
-                                                                                                            "title":  "Komponente ohne Versorgung",
-                                                                                                            "shortDescription":  "Eine Komponente mit Versorgungseingang ist nicht versorgt.",
-                                                                                                            "description":  "{{component}} besitzt Supply- oder USB-Eingaenge, aber kein Supply-Eingang ist mit einem Supply-Netz verbunden, das einen suppl_out-Pin einer anderen Komponente enthaelt, und kein USB-Anschluss ist mit einem USB-Netz verbunden.",
-                                                                                                            "recommendation":  "Verbinde einen Supply-Eingang mit einer passenden externen Spannungsquelle oder verbinde den USB-Anschluss mit einer USB-Versorgung."
-                                                                                                        },
-                                                                                       "mainsInputMissing":  {
-                                                                                                                 "title":  "{{label}}-Eingang nicht verbunden",
-                                                                                                                 "shortDescription":  "Eine Komponente mit {{label}}-Eingang ist nicht mit dem passenden Netz verbunden.",
-                                                                                                                 "description":  "{{component}} besitzt {{label}}-Eingaenge, aber mindestens einer davon ist nicht mit einem passenden {{label}}-Netz verbunden.",
-                                                                                                                 "recommendation":  "Verbinde jeden {{label}}-Eingang dieser Komponente mit dem passenden {{label}}-Netz."
-                                                                                                             },
-                                                                                       "sn74Ahct125nUsedChannelInputMissing":  {
-                                                                                                                 "title":  "SN74AHCT125N-Kanal-Eingang wird nicht angesteuert",
-                                                                                                                 "shortDescription":  "Ein verwendeter Buffer-Ausgang hat einen Eingang ohne digitale Ausgangsquelle oder einen /OE-Pin, der weder digital angesteuert noch auf GND gezogen ist.",
-                                                                                                                 "description":  "{{component}} Kanal {{channel}} treibt ueber {{output}} einen digitalen Eingang, aber diese zugehoerigen Pins sind nicht korrekt angebunden: {{handles}}. A muss in einem Netz mit dig_out liegen; /OE darf in einem Netz mit dig_out oder GND liegen.",
-                                                                                                                 "recommendation":  "Verbinde den zugehoerigen A-Pin mit einem passenden digitalen Ausgang und den /OE-Pin mit einem digitalen Ausgang oder GND, oder trenne den unbenutzten Y-Ausgang vom digitalen Eingang."
-                                                                                                             }
-                                                                                   }
-                                                                    }
-                                            }
-                              },
-                    "simulation":  {
-                                       "title":  "Stromfluss simulieren",
-                                       "comingSoon":  "Simulation der Stromverteilung wird später implementiert. Stay tuned!"
-                                   },
-                    "tools":  {
-                                  "title":  "Tools",
-                                  "rerouteAllButton":  "Alle Wires neu routen",
-                                  "rerouteAllTooltip":  "Alle Wires sequenziell mit Pathfinder neu routen",
-                                  "rerouteAllDisabledPF":  "Nur im Auto/PF-Verbindungsmodus verfügbar",
-                                  "rerouteAllDisabledEmpty":  "Keine Wires im Diagramm",
-                                  "rerouteAllDescription":  "Routet kurze Komponentenpaare zuerst und behält Wire-IDs, Verbindungen und Eigenschaften bei.",
-                                  "rerouteAllSuccess":  "Alle Wires wurden neu geroutet."
-                              },
-                    "export":  {
-                                   "title":  "Speichern / Export / Beispiele",
-                                   "buttonSave":  "Modell als JSON Datei speichern",
-                                   "buttonExportPNG":  "Modell nach PNG Datei exportieren",
-                                   "buttonExportJPEG":  "Modell nach JPEG Datei exportieren",
-                                   "buttonExportSVG":  "Modell nach SVG Datei exportieren",
-                                   "buttonOpen":  "Modell aus JSON Datei laden",
-                                   "buttonShare":  "Einen öffentlichen Link zum Modell generieren",
-                                   "dividerSaveOpen":  "Speichern / Öffnen",
-                                   "dividerExport":  "Exportieren",
-                                   "dividerShare":  "Teilen",
-                                   "dividerExamples":  "Beispiele laden",
-                                   "share":  {
-                                                 "modalTitle":  "Modell teilen - Link generieren",
-                                                 "modalLinkText":  "Link:",
-                                                 "modalLinkBeingGeneratedText":  "... wird generiert ... bitte warten",
-                                                 "modalButtonOK":  "OK",
-                                                 "modalButtonClose":  "Schließen",
-                                                 "modalButtonCancel":  "Abbrechen",
-                                                 "modalAttentionText":  "Beim Klicken auf \"OK\" wird Ihr Model mit allen eingegebenen Daten an einen öffentlichen Server (https://github.com) übertragen und dort gespeichert. Für diesen Zweck werden außerdem Ihre Model Daten sowie Ihre IP Adresse an https://wled-api.myhome-control.de/ übertagen. Sie erhalten danach ein Link angezeigt und können mit diesem Link das Modell mit anderen teilen.",
-                                                 "modalLinkError":  "Fehler! Bitte versuchen Sie es ggf. erneut.",
-                                                 "tooltipCopyLink":  "Link in die Zwischenablage kopieren",
-                                                 "messageLinkCopied":  "Link in die Zwischenablage kopiert!"
-                                             },
-                                   "selectExample":  "Beispiel wählen ..."
-                               }
-                },
-    "footRow":  {
-                    "legalNotice":  {
-                                        "title":  "Impressum",
-                                        "responsible":  "Verantwortlicher: Wladislaw Waag",
-                                        "address":  "Adresse: Wasserburger Landstr. 29, 81825 München, Deutschland",
-                                        "contact":  "Kontakt: +49 (0) 176 47 11 5206, info@myhome-control.de",
-                                        "disputeText":  "",
-                                        "disputeSettlmentText":  "Verbraucherstreitbeilegung/Universalschlichtungsstelle: Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
-                                    },
-                    "dataPrivacy":  {
-                                        "title":  "Datenschutzerklärung",
-                                        "text1":  "Diese Seite wird im Rahmen von \u0027Github Pages\u0027 gehostet und betrieben. Es ist möglich und wahrscheinlich, dass Github Ihre personenbezogenen Daten sammelt und verarbeitet. Das betrifft dann auch die Besucher dieser Webseite. Wir haben aber keinerlei Einfluss darauf. Bitte lesen Sie dazu die Datenschutzerklärung von Github:",
-                                        "text2":  "Außerdem sobald Sie die Funktion \u0027Teilen\u0027 nutzen, werden Ihre IP Adresse, Ihr Modell sowie alle von Ihnen eingegebenen Daten an https://myhome-control.de und an https://github.com/wled-development/wled-wiring-store weitergeleitet. Das ist für die Ausführung der Funktion zwingend notwendig. Die Datenschutzerklärung für https://myhome-control.de finden Sie unter",
-                                        "text3":  "Unsere Webseite enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte können wir keine Gewähr und keine Haftung übernehmen. Für die Inhalte der verlinkten Seiten ist immer der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren dabei nicht erkennbar. Sollten uns Rechtsverletzungen bekannt werden, werden wir die entsprechende Verlinkung umgehend entfernen."
-                                    },
-                    "links":  {
-                                  "title":  "Nützliche Links",
-                                  "link1Text":  "Offizielle WLED Dokumentation:",
-                                  "link2Text":  "WLED FAQ:",
-                                  "link3Text":  "WLED Rechner:",
-                                  "link4Text":  "Erweiterter WLED Online Installer:",
-                                  "link5Text":  "WELD online kompilieren:",
-                                  "link6Text":  "WLED Controller kaufen (Deutschland):",
-                                  "link7Text":  "WLED Controller kaufen (Weltweit):"
-                              },
-                    "contribute":  {
-                                       "title":  "Mitentwickeln/GitHub",
-                                       "text":  "Beiträge sind Willkommen! Wenn Sie beitragen möchten, folgen Sie bitte dem GitHub link:"
-                                   }
-                },
-    "examples":  {
-                     "example1":  "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
-                     "example2":  "ABC! WLED Controller + 24V LED Strip",
-                     "example3":  "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
-                     "example4":  "ABC! WLED Controller + Long Range Extension",
-                     "example5":  "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
-                 },
-    "compData":  {
-                     "Router":  {
-                                    "name":  "WAN/LAN Router",
-                                    "description":  "Ein generischer WLAN/LAN Router.",
-                                    "descriptionShort":  "generisch"
-                                },
-                     "Button":  {
-                                    "name":  "Taster",
-                                    "description":  "Ein generischer Taster. Beim Drücken und Halten wird der Kontakt geschlossen. Der Kontakt öffnet sich, sobald der Taster losgelassen wird. Nicht zu verwechseln mit einem Schalter.",
-                                    "descriptionShort":  "generisch"
-                                },
-                     "DC_JACK_FEMALE":  {
-                                            "name":  "DC Verbinder",
-                                            "description":  "Wird verwendet um ein Netzteil mit einem DC Verbinder in eine + und eine - Leitung aufzuteilen.",
-                                            "descriptionShort":  "Für bis zu 3A"
-                                        },
-                     "Elko":  {
-                                  "name":  "Elektrolytkondensator",
-                                  "description":  "Ein Elektrolytkondensator mit wählbarer Kapazität. Auf die Polarität achten! Wird oft eingesetzt, um die Versorgungsspannung von LEDs oder anderen Komponenten zu stabilisieren.",
-                                  "descriptionShort":  "wählbare Kapazität"
-                              },
-                     "ESP32_30P":  {
-                                       "name":  "ESP32 uC 30 Pins",
-                                       "description":  "ESP32 Controller, Version mit 30 Pins. Bekannt auch als NodeMCU.",
-                                       "descriptionShort":  "Controller"
-                                   },
-                     "ESP32_38P":  {
-                                       "name":  "ESP32 uC 38 Pins",
-                                       "description":  "ESP32 Controller, Version mit 38 Pins. Bekannt auch als NodeMCU.",
-                                       "descriptionShort":  "Controller"
-                                   },
-                     "ESP32C3D1mini":  {
-                                           "name":  "ESP32-C3 D1 mini",
-                                           "description":  "ESP32-C3 Controller, Version in D1 mini Format. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
-                                           "descriptionShort":  "Controller"
-                                       },
-                     "ESP32C3_supermini":  {
-                                               "name":  "ESP32-C3 supermini",
-                                               "description":  "ESP32-C3 Controller, supermini. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
-                                               "descriptionShort":  "Controller"
-                                           },
-                     "ESP32D1mini":  {
-                                         "name":  "ESP32 D1 mini",
-                                         "description":  "ESP32 Controller, Version in D1 mini Format.",
-                                         "descriptionShort":  "Controller"
-                                     },
-                     "ESP32S3D1mini":  {
-                                           "name":  "ESP32-S3 D1 mini",
-                                           "description":  "ESP32-S3 Controller, Version in D1 mini Format. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
-                                           "descriptionShort":  "Controller"
-                                       },
-                     "ESP8266D1mini":  {
-                                           "name":  "ESP8266 D1 mini",
-                                           "description":  "ESP8266 Controller, Version in D1 mini Format. Für neue WLED-Projekte nicht mehr empfohlen (zu schwach).",
-                                           "descriptionShort":  "Controller"
-                                       },
-                     "InfoNode":  {
-                                      "name":  "Text",
-                                      "description":  "Ein Textelement um z.B. Beschriftungen dem Diagramm hinzufügen.",
-                                      "descriptionShort":  "für Beschriftungen etc."
-                                  },
-                     "INMP441":  {
-                                     "name":  "INMP441 Mikrofon",
-                                     "description":  "INMP441 Mikrofon. Es ist ein digitales Mikrofon, welches von WLED für Sound Reactive unterstützt wird und eine sehr gute Qualität liefert.",
-                                     "descriptionShort":  "digitales"
-                                 },
-                     "IR_KY022":  {
-                                      "name":  "KY022 IR Empfänger",
-                                      "description":  "KY-022 Infrarot Empfänger, welcher von WLED unterstützt wird und erlaubt WLED mit einer IR-Fernbedienung zu steuern.",
-                                      "descriptionShort":  "Infrarot"
-                                  },
-                     "IR_TSOP38238":  {
-                                          "name":  "TSOP38238 IR Empfänger",
-                                          "description":  "TSOP38238 Infrarot Empfänger, welcher von WLED unterstützt wird und erlaubt WLED mit einer IR-Fernbedienung zu steuern.",
-                                          "descriptionShort":  "Infrarot"
-                                      },
-                     "Kerko":  {
-                                   "name":  "Keramikkondensator",
-                                   "description":  "Keramikkondensator mit wählbarer Kapazität. Wird oft am Eingang von schaltenden elektronischen Schaltungen eingesetzt (zwischen Versorgung und Masse) um Störungen zu vermeiden. Muss über möglichst sehr kurze Leitungen/Leiterbahnen angebunden werden.",
-                                   "descriptionShort":  "wählbare Kapazität"
-                               },
-                     "LineBoxNode":  {
-                                         "name":  "Rechteck",
-                                         "description":  "Ein Element um ein Rechteck (gefüllt oder leer) zu zeichnen.",
-                                         "descriptionShort":  "Zeichnungselement"
-                                     },
-                     "miniOTOFuse":  {
-                                         "name":  "KFZ Sicherung",
-                                         "description":  "Eine Schmelzsicherung aus KFZ-Bereich. Ideal für Einsatz bei Spannungen bis zu 32V. Bitte nur in Fachgeschäften kaufen, es werden auf Marktplätzen viele billige Nachbauten angeboten, welche nicht wie es soll funktionieren. Für die Auslegung kann WLED Rechner (www.wled-calculator.github.io) verwendet werden.",
-                                         "descriptionShort":  "wählbar 4-30A"
-                                     },
-                     "FUSE_Board":  {
-                                        "name":  "Sicherugsboard",
-                                        "description":  "Für Stromverteilung und Sicherungen.",
-                                        "descriptionShort":  "4 Kanäle"
-                                    },
-                     "PIR_HCSR501":  {
-                                         "name":  "HC-SR501 PIR Sensor",
-                                         "description":  "PIR Sensor (Bewegungsmelder) vom Typ HCSR501. Kann mit WLED verwendet werden.",
-                                         "descriptionShort":  "Bewegungsmelder"
-                                     },
-                     "PLUG_LNPE":  {
-                                       "name":  "Stecker",
-                                       "description":  "Stecker für 230V Steckdose. Achtung: Lebensgefahr! Nur zum Aufbau verwenden, wenn Sie geeignete Kenntnisse besitzen.",
-                                       "descriptionShort":  "für 230V AC"
-                                   },
-                     "PSU_HP":  {
-                                    "name":  "Netzteil",
-                                    "description":  "Netzteil mit wählbarer Spannung / Strom (Leistung). Diese Netzteile besitzen typischerweise hohe Leistungen und werden für größere Aufbauten eingesetzt. Netzstecker muss separat angebunden werden.",
-                                    "descriptionShort":  "wählbare V/I"
-                                },
-                     "PSU_USB":  {
-                                     "name":  "USB Netzteil",
-                                     "description":  "USB Netzteil mit 5V Ausgangsspannung und wählbarem Strom bis zu 5A.",
-                                     "descriptionShort":  "5V, wählbarerer I"
-                                 },
-                     "PSU_USB_WIRES":  {
-                                           "name":  "USB Netzteil",
-                                           "description":  "USB Netzteil mit 5V Ausgangsspannung, wählbarem Strom bis zu 5A und separaten +/- Leitungen",
-                                           "descriptionShort":  "5V, separate +/- Leitungen"
-                                       },
-                     "Resistor":  {
-                                      "name":  "Widerstand",
-                                      "description":  "Elektrischer Widerstand wählbarer Größe.",
-                                      "descriptionShort":  "wählbarer Wert"
-                                  },
-                     "SN74AHCT125N":  {
-                                          "name":  "Level Shifter",
-                                          "description":  "Ein für WLED empfohlener Level Shifter Typ. Ein Level Shifter ist notwendig um den Steuersignal vom Microcontroller (3.3V Pegel) auf LED-Dateneingang (5V Pegel) anzupassen (bei adressierbaren LEDs). Ohne ein Level Shifter kommt es oft (und bei 12V und 24V LEDs fast immer) zum Flackern der LEDs.",
-                                          "descriptionShort":  "SN74AHCT125N"
-                                      },
-                     "SolderJoint":  {
-                                         "name":  "Lötverbindung",
-                                         "description":  "Darstellung einer Lötverbindung, um z.B. einzelne Leitungen miteinander zu verbinden.",
-                                         "descriptionShort":  "für Leitungen etc."
-                                     },
-                     "WAGO_2X":  {
-                                     "name":  "WAGO Klemme 2x",
-                                     "description":  "Weit verbreitete Verbindungsklemme mit Federklemmanschluss, zweifach.",
-                                     "descriptionShort":  "Federklemmanschluss"
-                                 },
-                     "WAGO_3X":  {
-                                     "name":  "WAGO Klemme 3x",
-                                     "description":  "Weit verbreitete Verbindungsklemme mit Federklemmanschluss, dreifach.",
-                                     "descriptionShort":  "Federklemmanschluss"
-                                 },
-                     "WireInfoNode":  {
-                                          "name":  "Wire Info",
-                                          "description":  "Information über die Leitung.",
-                                          "descriptionShort":  " "
-                                      },
-                     "WS2812B_5V_30LPM":  {
-                                              "name":  "WS2812B RGB",
-                                              "description":  "WS2812 LED Streifen, 5V, 30 LEDs/Meter, einzeln adressierbare LEDs.",
-                                              "descriptionShort":  "5V, 30 LEDs/Meter"
-                                          },
-                     "MHC_V43":  {
-                                     "name":  "WLED V43 Controller",
-                                     "description":  "Ein professioneller WLED-Controller für 5V, 12V oder 24V adressierbare LEDs. Beinhaltet ESP32 Mikrocontroller, SN74AHCT Level Shifter, Sicherung, Kondensator, EMV Filter. Als optionales Zubehör können Ethernet-Adapter, INMP441 Mikrofon, Line-In Adapter sowie USB Adapter angeschlossen werden.",
-                                     "descriptionShort":  "ESP32 basiert"
-                                 },
-                     "MHC_V63":  {
-                                     "name":  "WLED V63 Shield",
-                                     "description":  "Ein professionelles WLED-Shield für 5V oder 12V adressierbare LEDs. Beinhaltet SN74AHCT Level Shifter, Sicherung, Kondensator. Als optionales Zubehör können INMP441 Mikrofon, Line-In Adapter sowie USB Adapter angeschlossen werden. Kann mit ESP8266, ESP32, ESP32-C3 oder EPS32-S3 in D1 mini Format betrieben werden.",
-                                     "descriptionShort":  "für ESP32-xx, ESP8266"
-                                 },
-                     "MHC_SwitchBoard":  {
-                                             "name":  "WLED Switch Board",
-                                             "description":  "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten. Beinhaltet Überstrom-, Übertemperatur-, Kurzschluss- und Verpolschutz.",
-                                             "descriptionShort":  "universell für 5-24V"
-                                         },
-                     "MHC_PWMBoard":  {
-                                          "name":  "WLED PWM Board",
-                                          "description":  "Das Board verwendet MOSFETs um mit PWM Signal analoge LED Streifen anzusteuern. 3 Kanäle je max. 5A. Überstrom- , Übertemperatur-, Kurzschluss- und Verpolschutz.",
-                                          "descriptionShort":  "universell für 12-48V"
-                                      },
-                     "MHC_RS485_R":  {
-                                         "name":  "RS-485 Empfänger",
-                                         "description":  "RS-485 Empfänger für die Verwendung als Range Extender Empfänger mit dem RS-485 Adapter.",
-                                         "descriptionShort":  "RS-485 Empfänger"
-                                     },
-                     "MHC_Relay5V":  {
-                                         "name":  "5V Relais Board",
-                                         "description":  "Ein professionelles Relais-Board für die Verwendung in Kombination mit 5V adressierbaren LEDs. Es erlaubt die 5V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
-                                         "descriptionShort":  "für 5V LEDs"
-                                     },
-                     "MHC_Relay12V":  {
-                                          "name":  "12V Relais Board",
-                                          "description":  "Ein professionelles Relais-Board für die Verwendung in Kombination mit 12V adressierbaren LEDs. Es erlaubt die 12V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
-                                          "descriptionShort":  "für 12V LEDs"
-                                      },
-                     "MHC_Relay24V":  {
-                                          "name":  "24V Relais Board",
-                                          "description":  "Ein professionelles Relais-Board für die Verwendung in Kombination mit 24V adressierbaren LEDs. Es erlaubt die 24V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
-                                          "descriptionShort":  "für 24V LEDs"
-                                      },
-                     "AUDIO_SOURCE":  {
-                                          "name":  "Audioquelle",
-                                          "description":  "Eine generische Quelle für Audio-Signal.",
-                                          "descriptionShort":  "Line-Out"
-                                      },
-                     "LM2596_PCB":  {
-                                        "name":  "LM2596 DC/DC",
-                                        "description":  "DC/DC (Step-Down) Konverter mit einstellbarer Ausgangsspannung.",
-                                        "descriptionShort":  "einstellbarer Ausg."
-                                    },
-                     "IRLZ44N":  {
-                                     "name":  "IRLZ44N",
-                                     "description":  "MOSFET. Dieser Typ ist für die Verwendung mit WLED empfohlen und kann für die Ansteuerung von analogen LED Streifen verwendet werden.",
-                                     "descriptionShort":  "N-Kanal MOSFET"
-                                 },
-                     "DCDC_mini":  {
-                                       "name":  "DC/DC mini",
-                                       "description":  "DC/DC (Step-Down) Konverter mit einstellbarer Ausgangsspannung.",
-                                       "descriptionShort":  "einstellbarer Ausg."
-                                   },
-                     "WS2814_24V_60LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED Streifen, adressierbare LEDs in 6er Gruppen (1 logische LED = 6 physikalische).",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2813_5V_60LPM":  {
-                                             "name":  "WS2813 RGB",
-                                             "description":  "RGB LED Streifen mit Backup-Line.",
-                                             "descriptionShort":  "5V, 60 LEDs/m"
-                                         },
-                     "WS2815_12V_30LPM":  {
-                                              "name":  "WS2815 RGB",
-                                              "description":  "RGB LED Streifen mit Backup-Line.",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2814_12V_30LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED Streifen, adressierbare LEDs in 3er Gruppen (1 logische LED = 3 physikalische).",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2818_12V_30LPM":  {
-                                              "name":  "WS2818 RGB",
-                                              "description":  "RGB LED Streifen, adressierbare LEDs in 3er Gruppen (1 logische LED = 3 physikalische).",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "FCOB_12V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED Streifen, 720 LEDs/m (240 LEDs jeder Farbe pro Meter, 20 logische LEDs/m)",
-                                             "descriptionShort":  "12V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED Streifen, 720 LEDs/m (240 LEDs jeder Farbe pro Meter, 20 logische LEDs/m)",
-                                             "descriptionShort":  "24V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_784LPM":  {
-                                             "name":  "FCOB RGBW",
-                                             "description":  "FCOB RGBW LED Streifen, 784 LEDs/m (196 LEDs jeder Farbe pro Meter, 14 logische LEDs/m)",
-                                             "descriptionShort":  "24V, 784 LEDs/m"
-                                         },
-                     "APA102_5V_30LPM":  {
-                                             "name":  "APA102 RGB",
-                                             "description":  "APA102 LED Streifen mit Clock Signal, 5V, 30 LEDs/Meter, einzeln adressierbare LEDs.",
-                                             "descriptionShort":  "5V, 30 LEDs/m"
-                                         },
-                     "AN_WHITE_24V_240LPM":  {
-                                                 "name":  "Analog. Weiss",
-                                                 "description":  "Analoges LED Streifen (Weisse 2835 LEDs), 24V, 240 LEDs/Meter, teilbar in 2,5 cm (6 LEDs)",
-                                                 "descriptionShort":  "24V, 240 weisse LEDs/m"
-                                             },
-                     "AN_RGB_CCT_48V_90LPM":  {
-                                                  "name":  "Anal. RGB CCT",
-                                                  "description":  "Analoges RGB CCT LED Streifen (5050 LEDs), 48V, 90 LEDs/Meter, teilbar in 16.65 cm (15 LEDs)",
-                                                  "descriptionShort":  "48V, 90 LEDs/m"
-                                              },
-                     "AN_RGB_24V_120LPM":  {
-                                               "name":  "Anal. RGB ",
-                                               "description":  "Analoges RGB LED Streifen (2835 LEDs), 24V, 120 LEDs/Meter, teilbar in 5 cm (6 LEDs)",
-                                               "descriptionShort":  "24V, 120 LEDs/m"
-                                           },
-                     "WS2805_24V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED Streifen (digital), adressierbare LEDs in 36r Gruppen (1 logische LED = 6 physikalische).",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2805_12V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED Streifen (digital), adressierbare LEDs in 36r Gruppen (1 logische LED = 6 physikalische).",
-                                              "descriptionShort":  "12V, 60 LEDs/m"
-                                          }
-                 }
+{
+  "title": "Willkommen bei WLED Wiring Designer!",
+  "dragComponents": "Beginne mit dem Ziehen von Komponenten auf die Arbeitsfläche oder lade ein Beispiel",
+  "autosave": {
+    "restoreTitle": "Automatisch gespeichertes Diagramm gefunden",
+    "restoreDescription": "Ein lokal automatisch gespeichertes Diagramm ist vorhanden. Moechtest du es fortsetzen oder ein neues Diagramm starten?",
+    "savedAt": "Automatisch gespeichert: {{value}}",
+    "lastManualSaveAt": "Zuletzt manuell gespeichert: {{value}}",
+    "documentFileName": "Dateiname: {{name}}",
+    "continueButton": "Autosave fortsetzen",
+    "newDiagramButton": "Neues Diagramm starten",
+    "saveFailedTitle": "Autosave fehlgeschlagen",
+    "saveFailedDescription": "Das Diagramm konnte in diesem Browser nicht lokal gespeichert werden."
+  },
+  "componentGroupTypes": {
+    "controller": "Controller",
+    "led": "LEDs",
+    "psu": "Netzteile",
+    "levelshifter": "Level Shifter",
+    "electronics": "Elektronik/Bauteile",
+    "others": "Sonstiges"
+  },
+  "buttons": {
+    "rotate": "Drehen",
+    "longer": "Vergrößern",
+    "shorter": "Verkleinern"
+  },
+  "tooltip": {
+    "deleteWire": "Diese Verbindung löschen",
+    "selectColor": "Farbe auswählen",
+    "selectWireLength": "Kabellänge auswählen (physikalisch)",
+    "selectWireCrossSection": "Kabelquerschnitt auswählen (physikalisch)",
+    "selectWireWidth": "Kabelbreite auswählen (für Zeichnung)",
+    "selectWireNetwork": "Ganzes Netz auswählen",
+    "clearWireNetwork": "Netzauswahl aufheben",
+    "putWireInfoNode": "Kabel Infobox hinzufügen",
+    "rerouteWire": "Wire mit Pathfinder neu routen",
+    "startConnection": "Verbindung starten",
+    "closeConnection": "Verbindung abschliessen",
+    "rotateLeft": "Nach Links drehen",
+    "rotateRight": "Nach Rechts drehen",
+    "delete": "Löschen",
+    "copy": "Kopie erstellen",
+    "enlarge": "Verlängern",
+    "shorten": "Verkürzen",
+    "resizeLength": "Länge ändern",
+    "switchFilled": "Befüllt / nur mit Rand",
+    "increaseTextSize": "Text vergrößern",
+    "decreaseTextSize": "Text verkleinern",
+    "textSize": "Textgröße",
+    "selectFont": "Schriftart auswählen",
+    "toggleBold": "Fett umschalten",
+    "textAlign": "Textausrichtung",
+    "selectMulti": "Mehrfachauswahl",
+    "deleteSelected": "Auswahl löschen",
+    "componentInfo": "Komponenten-Info anzeigen",
+    "switchConnLineType": "Verbindungstyp umschalten",
+    "ledSimulationOptions": "LED-Simulation einstellen"
+  },
+  "ledSimulationOptions": {
+    "title": "LED-Simulation",
+    "recommended": "empfohlen",
+    "whyButton": "Warum?",
+    "whyTitle": "Warum gibt es diese Optionen?",
+    "whyExplanation": "Es gibt sehr viele LED-Streifen auf dem Markt. Teilweise haben sie gleiche Bezeichnungen und kommen sogar vom gleichen Hersteller, unterscheiden sich aber deutlich in ihren Eigenschaften. Fuer die Modellierung haben wir viele Streifen vermessen und auf dieser Datenbasis unterschiedliche Optionen eingefuehrt. Wenn du nicht genau weisst, welchen Streifen du hast, starte mit den empfohlenen Einstellungen. Du kannst auch mit den schlechtesten Werten rechnen, um die Robustheit deines Setups zu pruefen.",
+    "unknownOption": "Unbekannte Option. Aktualisiere diese Komponente aus der aktuellen Vorlage.",
+    "fields": {
+      "supplyResistance": "Positiver Pfad / V+ Widerstand",
+      "gndResistance": "Negativer Pfad / GND Widerstand",
+      "currentCurve": "LED-Stromkennlinie"
+    },
+    "resistance": {
+      "typical_5mm": {
+        "name": "Typischer Streifen 5 mm Breite",
+        "description": "Typischer Kupferpfad fuer einen 5-mm-LED-Streifen: 0,12 Ohm pro Meter."
+      },
+      "good_5mm": {
+        "name": "Guter Streifen 5 mm Breite",
+        "description": "Besserer Kupferpfad fuer einen 5-mm-LED-Streifen: 0,09 Ohm pro Meter."
+      },
+      "poor_5mm": {
+        "name": "Schlechter Streifen 5 mm Breite",
+        "description": "Hoeherer Widerstand fuer einen schwachen 5-mm-LED-Streifen: 0,24 Ohm pro Meter."
+      },
+      "narrow_fcob_path_good": {
+        "name": "Guter schmaler FCOB-Pfad",
+        "description": "Guter Kupferpfad fuer einen FCOB-Streifen (schmale Seite, geteilt mit Datenpfad): 0,12 Ohm pro Meter."
+      },
+      "narrow_fcob_path_typical": {
+        "name": "Typischer schmaler FCOB-Pfad",
+        "description": "Typischer Kupferpfad fuer einen FCOB-Streifen (schmale Seite, geteilt mit Datenpfad): 0,16 Ohm pro Meter."
+      },
+      "narrow_fcob_path_bad": {
+        "name": "Schlechter schmaler FCOB-Pfad",
+        "description": "Hoeherer Widerstand fuer einen FCOB-Streifen (schmale Seite, geteilt mit Datenpfad): 0,22 Ohm pro Meter."
+      },
+      "bright_fcob_path_good": {
+        "name": "Guter High-Power-FCOB-Pfad",
+        "description": "Guter Kupferpfad fuer einen FCOB-Streifen (breite, voll genutzte Seite): 0,06 Ohm pro Meter."
+      },
+      "bright_fcob_path_typical": {
+        "name": "Typischer High-Power-FCOB-Pfad",
+        "description": "Typischer Kupferpfad fuer einen FCOB-Streifen (breite, voll genutzte Seite): 0,08 Ohm pro Meter."
+      },
+      "bright_fcob_path_bad": {
+        "name": "Schlechter High-Power-FCOB-Pfad",
+        "description": "Hoeherer Widerstand fuer einen FCOB-Streifen (breite, voll genutzte Seite): 0,20 Ohm pro Meter."
+      }
+    },
+    "currentCurve": {
+      "ws2814_24v_typical": {
+        "name": "Typische WS2814 24 V",
+        "description": "Typische spannungsabhaengige WS2814-24-V-Stromkennlinie."
+      },
+      "ws2812b_5v_typical": {
+        "name": "WS2812B 5 V (typisch)",
+        "description": "WS2812B RGB 5 V, LED-Groesse 5050, typische Version."
+      },
+      "ws2812b_5v_good": {
+        "name": "WS2812B 5 V (gut)",
+        "description": "WS2812B RGB 5 V, LED-Groesse 5050, gute/neue Version (verbesserte Farbstabilitaet)."
+      },
+      "ws2812b_eco_5v_typical": {
+        "name": "WS2812B ECO 5 V (typisch)",
+        "description": "WS2812B RGB ECO 5 V, LED-Groesse 5050, typische Version."
+      },
+      "ws2811_24v_typical": {
+        "name": "WS2811 24 V (typisch)",
+        "description": "WS2811 RGB 24 V, LED-Groesse 5050, typische Version."
+      },
+      "ws2814_12v_typical": {
+        "name": "WS2814 12 V (typisch)",
+        "description": "WS2812B RGBW 12 V, LED-Groesse 5050, typische Version."
+      },
+      "ws28xx_fcob_rgb_24v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 24 V, 720 LEDs/m (typisch)",
+        "description": "WS28xx FCOB RGB 24 V, 720 LEDs/m, 20 logische LEDs/m, typische Version."
+      },
+      "ws28xx_fcob_rgb_12v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 12 V, 720 LEDs/m (typisch)",
+        "description": "WS28xx FCOB RGB 12 V, 720 LEDs/m, 20 logische LEDs/m, typische Version."
+      },
+      "ws28xx_fcob_rgbw_24v_784lpm_typical": {
+        "name": "WS28xx FCOB RGBW 24 V, 784 LEDs/m (typisch)",
+        "description": "WS28xx FCOB RGB 24 V, 784 LEDs/m, 14 logische LEDs/m, typische Version."
+      },
+      "sk6812_fcob_rgb_5v_240lpm_typical": {
+        "name": "SK6812 FCOB RGB 5 V, 240 LEDs/m (typisch)",
+        "description": "SK6812 FCOB RGB 5 V, 240 LEDs/m, 80 logische LEDs/m, typische Version."
+      }
+    }
+  },
+  "componentEditor": {
+    "title": "Komponenten-Editor",
+    "valid": "gueltig",
+    "invalid": "ungueltig",
+    "actions": {
+      "new": "Neu",
+      "openCore": "Eingebaute Komponente oeffnen",
+      "openLocal": "Lokalen Entwurf oeffnen",
+      "saveLocal": "Lokal speichern",
+      "importJson": "JSON importieren",
+      "exportJson": "JSON exportieren",
+      "backToDesigner": "Zurueck zum Designer",
+      "addHandle": "Anschluss hinzufuegen",
+      "deleteHandle": "Anschluss loeschen",
+      "addField": "Feld hinzufuegen",
+      "deleteField": "Feld loeschen",
+      "addOption": "Option hinzufuegen",
+      "addConnection": "Verbindung hinzufuegen",
+      "deleteConnection": "Verbindung loeschen",
+      "addSimulationElement": "Simulationselement hinzufuegen",
+      "deleteSimulationElement": "Simulationselement loeschen"
+    },
+    "tabs": {
+      "basics": "Stammdaten",
+      "geometry": "Geometrie",
+      "handles": "Anschluesse",
+      "fields": "Felder",
+      "connections": "Verbindungen",
+      "simulation": "Simulation",
+      "runtime": "Runtime"
+    },
+    "fields": {
+      "id": "Komponenten-ID",
+      "version": "Version",
+      "name": "Name",
+      "descriptionShort": "Kurzbeschreibung",
+      "description": "Beschreibung",
+      "group": "Gruppe",
+      "showName": "Name anzeigen",
+      "imageUrl": "Bild-URL",
+      "imageWidth": "Bildbreite",
+      "imageHeight": "Bildhoehe",
+      "rotation": "Rotation",
+      "borderWidth": "Randbreite",
+      "lengthStep": "Physikalischer Laengenschritt",
+      "rotatable": "Drehbar",
+      "resizableX": "X skalierbar",
+      "resizableY": "Y skalierbar",
+      "noBackgroundImage": "Kein Hintergrundbild",
+      "handleId": "Anschluss-ID",
+      "handleType": "Anschluss-Typ",
+      "functions": "Funktionen",
+      "relatedToHandle": "Bezogene Anschluesse",
+      "borderColor": "Randfarbe",
+      "borderType": "Randtyp",
+      "borderLineWidth": "Randbreite",
+      "borderRadius": "Randradius",
+      "hideConditions": "Ausblendbedingungen",
+      "fieldId": "Feld-ID",
+      "fieldType": "Feldtyp",
+      "unit": "Einheit",
+      "selectedValue": "Ausgewaehlter Wert",
+      "connectionKind": "Verbindungsart",
+      "fromHandle": "Von Anschluss",
+      "toHandle": "Zu Anschluss",
+      "elementId": "Element-ID",
+      "elementType": "Elementtyp"
+    },
+    "editorModes": {
+      "ui": "UI",
+      "json": "JSON"
+    },
+    "labels": {
+      "unnamed": "Ohne Namen",
+      "terminals": "Terminals",
+      "parameters": "Parameter"
+    },
+    "sections": {
+      "applyHandles": "Anschluesse anwenden",
+      "applyFields": "Felder anwenden",
+      "applyConnections": "Verbindungen anwenden",
+      "applySimulation": "Simulation anwenden",
+      "applyRuntime": "Runtime anwenden",
+      "handlesDescription": "Bearbeite die Anschluesse als Schema-JSON. Die Validierung prueft IDs, Groessen, Funktionen, Hide-Conditions und Referenzen.",
+      "fieldsDescription": "Bearbeite Nummern- und Auswahlfelder als Schema-JSON. Auswahloptionen koennen optionale Bilddefinitionen enthalten.",
+      "connectionsDescription": "Bearbeite interne Short- und Fuse-Verbindungen als Schema-JSON.",
+      "simulationDescription": "Bearbeite die Simulationsdefinition als Schema-JSON, oder nutze null fuer keine Simulationsdaten.",
+      "runtimeDescription": "Bearbeite bestehende reine Runtime-UI-Optionen als Schema-JSON, oder nutze null wenn keine benoetigt werden."
+    },
+    "preview": {
+      "title": "Vorschau",
+      "selectedHandle": "Ausgewaehlter Anschluss",
+      "selectHandle": "Anschluss auswaehlen",
+      "nudge": "Um 1 px verschieben"
+    },
+    "validation": {
+      "title": "Validierung",
+      "noIssues": "Keine Validierungsprobleme."
+    },
+    "messages": {
+      "savedLocal": "Komponentenentwurf lokal gespeichert.",
+      "imported": "Komponentenpaket importiert.",
+      "importFailed": "Komponentenpaket konnte nicht importiert werden.",
+      "invalidJson": "Ungueltiges JSON",
+      "noHandles": "Noch keine Anschluesse vorhanden. Fuege einen Anschluss hinzu, um seine Eigenschaften zu bearbeiten.",
+      "noFields": "Noch keine Felder vorhanden. Fuege ein Feld hinzu, um seine Eigenschaften zu bearbeiten.",
+      "noConnections": "Noch keine Verbindungen vorhanden. Fuege eine Verbindung hinzu, um ihre Eigenschaften zu bearbeiten.",
+      "noSimulationElements": "Noch keine Simulationselemente vorhanden. Fuege ein Simulationselement hinzu, um seine Eigenschaften zu bearbeiten."
+    }
+  },
+  "popover": {
+    "selectWireLength": "Kabellänge auswählen (physikalisch):",
+    "selectWireCrossSection": "Kabelquerschnitt auswählen (physikalisch):",
+    "selectWireWidth": "Kabelbreite auswählen (für Zeichnung):",
+    "startConnection": "Wählen Sie den Start-Pin/Anschluss für die Verbindung:",
+    "closeConnection": "Verbindung zu diesem Pin/Anschluss abschliessen:"
+  },
+  "select": {
+    "startConnection": "Pin/Anschluss wählen",
+    "closeConnection": "Pin/Anschluss wählen"
+  },
+  "message": {
+    "startPinSelected": "Pin/Anschluss gewählt. Jetzt Ziel-Pin/Anschluss wählen",
+    "closePinSelected": "Die Verbindung wurde erstellt.",
+    "startPinFirst": "Bitte erst ein Start-Pin/Anschluss wählen!",
+    "theSamePin": "Start-Pin/Anschluss und Ziel-Pin/Anschluss sind gleich!",
+    "compAddSuccess": "Zum Diagram hinzugefügt!",
+    "loadModelSuccess": "Das WLED-Verdrahtungsmodell wurde erfolgreich geladen!",
+    "loadModelSuccessShort": "Erfolg",
+    "loadingModel": "Verdrahtungsmodell wird aus Dateilink geladen ...",
+    "loadModelError": "Das WLED-Verdrahtungsmodell kann nicht geladen werden. Möglicherweise ist dieser Link nicht mehr gültig.",
+    "loadModelErrorShort": "Fehler",
+    "loadModelWrongLink": "Der Link ist nicht korrekt! Bitte überprüfen.",
+    "saveModelSuccess": "Modell gespeichert.",
+    "saveModelDownloadStarted": "Modelldownload gestartet.",
+    "saveModelError": "Das Modell konnte nicht gespeichert werden.",
+    "componentUpdatesApplied": "Die Änderungen wurden angewendet. Bitte überprüfe diese Komponente.",
+    "componentUpdatesAppliedShort": "Updates angewendet",
+    "componentUpdatesAvailableTitle": "Komponenten-Updates verfügbar",
+    "componentUpdatesAvailableDescription": "{{count}} Komponente(n) in diesem Diagramm können auf die aktuelle Vorlage aktualisiert werden. Jetzt alle Komponenten aktualisieren?",
+    "componentUpdatesApplyAll": "Alle aktualisieren",
+    "componentUpdatesSkip": "Nicht aktualisieren",
+    "componentUpdatesAllApplied": "{{count}} Komponenten-Update(s) wurden angewendet."
+  },
+  "sidebar": {
+    "components": {
+      "title": "Komponenten",
+      "popoverTitle": "Komponenten-Info",
+      "addButtonText": "Zum Diagramm zufügen",
+      "updateButtonText": "Diese Komponente aktualisieren",
+      "updatePopoverTitle": "Änderungen an dieser Komponente",
+      "applyUpdatesButtonText": "Änderungen anwenden",
+      "updateExplanation": "Diese im Diagramm verwendete Komponente hat einen älteren Stand als die aktuelle Komponente im Programm. Die folgenden Änderungen können übertragen werden.",
+      "noUpdateChanges": "Keine Änderungen verfügbar.",
+      "updateValueMissing": "Fehlt",
+      "updateChangeProperty": "Eigenschaft",
+      "updateChangeCurrent": "Aktuell",
+      "updateChangeTemplate": "Vorlage",
+      "popoverContent": {
+        "whereToBuy": "Wo kaufen?",
+        "listOfConnections": "Liste der Pins/Anschlüsse",
+        "listOfConnectionsHeading1": "Pin / Anschluss",
+        "listOfConnectionsHeading2": "Beschreibung"
+      }
+    },
+    "check": {
+      "title": "Diagramm überprüfen",
+      "comingSoon": "Regel-basierte Überprüfung wird im Laufe 2025 implementiert. Stay tuned!",
+      "buttonRun": "Diagramm jetzt pruefen",
+      "betaNoticeTitle": "Beta-Version",
+      "betaNoticeDescription": "Diese Diagrammpruefung ist noch in Entwicklung. Fehlerkennungen koennen unvollstaendig oder falsch sein.",
+      "notChecked": "Noch keine Pruefung ausgefuehrt.",
+      "noIssuesTitle": "Keine Probleme gefunden",
+      "noIssuesDescription": "Die aktuelle Diagrammpruefung hat keine Hinweise gefunden.",
+      "rulesButton": "Regeln",
+      "rulesModalTitle": "Verwendete Pruefregeln",
+      "rulesModalDescription": "Diese Regeln werden aktuell bei der Diagrammpruefung angewendet.",
+      "issueCount": "{{count}} Ergebnis(se) gefunden",
+      "recommendation": "Empfehlung",
+      "affectedElements": "Betroffene Elemente",
+      "targetTypes": {
+        "node": "Komponente",
+        "edge": "Verbindung"
+      },
+      "diagnostics": {
+        "modeLabel": "Diagnosemodus",
+        "suppressedTag": "unterdrueckt",
+        "specificity": "Spezifitaet {{value}}",
+        "suppressedBy": "Unterdrueckt durch: {{ids}}",
+        "mode": {
+          "user-friendly": "Normal",
+          "diagnostic": "Alle Issues",
+          "diagnostic-with-suppression-markers": "Alle + Marker"
+        }
+      },
+      "severity": {
+        "error": "Fehler",
+        "warning": "Warnung",
+        "info": "Hinweis"
+      },
+      "classificationLabels": {
+        "gnd_net_type": "Ground",
+        "suppl_net_type": "DC-Versorgung",
+        "digital_net_type": "Digital",
+        "pwm_net_type": "PWM",
+        "analog_net_type": "Analog",
+        "audio_net_type": "Audio",
+        "eth_net_type": "Ethernet",
+        "usb_net_type": "USB",
+        "rs485_a_net_type": "RS485 A",
+        "rs485_b_net_type": "RS485 B",
+        "N_net_type": "Neutralleiter",
+        "L_net_type": "Line",
+        "PE_net_type": "Schutzleiter"
+      },
+      "signalLabels": {
+        "digital": "Digital",
+        "pwm": "PWM",
+        "analog": "Analog",
+        "audio": "Audio",
+        "usb": "USB"
+      },
+      "analogLedColorLabels": {
+        "red": "Rot",
+        "green": "Gruen",
+        "blue": "Blau",
+        "white": "Weiss",
+        "warmWhite": "Warmweiss"
+      },
+      "mainsInputLabels": {
+        "line": "Line",
+        "neutral": "Neutral",
+        "pe": "PE"
+      },
+      "rulePlaceholders": {
+        "signal": "Signal",
+        "mainsInput": "Netzspannungs"
+      },
+      "invalidWireReasons": {
+        "missing-node": "Komponente fehlt",
+        "missing-handle": "Pin fehlt",
+        "hidden-handle": "Pin ist ausgeblendet"
+      },
+      "issues": {
+        "diagramEmpty": {
+          "title": "Diagramm ist leer",
+          "shortDescription": "Es sind noch keine Komponenten im Diagramm vorhanden.",
+          "description": "Die Prüfung kann erst technische Hinweise liefern, wenn Komponenten und Leitungen im Diagramm vorhanden sind.",
+          "recommendation": "Füge zuerst Komponenten hinzu und starte die Prüfung danach erneut."
+        }
+      },
+      "rules": {
+        "network-rules": {
+          "title": "Netzregeln",
+          "description": "Prueft grundlegende Fehler in component-linked Netzen.",
+          "issues": {
+            "groundMissing": {
+              "title": "Kein Ground-Netz verbunden",
+              "shortDescription": "Es gibt GND-Pins, aber kein verbundenes Ground-Netz.",
+              "description": "Mindestens ein GND-Pin ist im Diagramm vorhanden, aber keiner davon ist verdrahtet. Komponenten mit GND-Bezug brauchen eine gemeinsame Ground-Verbindung.",
+              "recommendation": "Verbinde die GND-Pins der beteiligten Komponenten miteinander."
+            },
+            "groundMultiple": {
+              "title": "Mehrere getrennte Ground-Netze",
+              "shortDescription": "Alle GND-Verbindungen muessen zu einem gemeinsamen Ground-Netz gehoeren.",
+              "description": "Es wurden {{count}} getrennte Ground-Netze gefunden. Dadurch fehlt eine gemeinsame Referenz zwischen Teilen der Schaltung.",
+              "recommendation": "Verbinde die getrennten GND-Netze miteinander."
+            },
+            "mainsLowVoltageMixed": {
+              "title": "Netzspannung und Kleinspannung verbunden",
+              "shortDescription": "Ein Netz verbindet L/N mit Kleinspannungs- oder Signalanschluessen.",
+              "description": "Das Netz enthaelt {{classifications}}. Netzspannung darf nicht mit GND, DC-Versorgung oder Signalnetzen verbunden werden.",
+              "recommendation": "Trenne Netzspannungsleitungen strikt von Kleinspannungs- und Signalverbindungen."
+            },
+            "peActiveMixed": {
+              "title": "Schutzleiter mit aktiver Leitung verbunden",
+              "shortDescription": "Ein PE-Netz ist mit aktiver Versorgung oder einem Signalnetz verbunden.",
+              "description": "Das Netz enthaelt {{classifications}}. PE darf nicht mit L, N, DC-Versorgung oder Signalen verbunden werden.",
+              "recommendation": "Trenne PE von aktiven Leitern und Signalverbindungen."
+            },
+            "rs485Mixed": {
+              "title": "RS485 A und B verbunden",
+              "shortDescription": "Ein Netz verbindet RS485_A mit RS485_B.",
+              "description": "Die differentiellen RS485-Leitungen A und B duerfen nicht miteinander verbunden werden.",
+              "recommendation": "Trenne RS485_A und RS485_B in zwei separate Netze."
+            },
+            "mixedClassifications": {
+              "title": "Unterschiedliche Ausgangstypen verbunden",
+              "shortDescription": "Ein Netz enthaelt mehrere Netzklassen.",
+              "description": "Das Netz enthaelt gleichzeitig {{classifications}}. Das bedeutet, dass Ausgaenge unterschiedlicher Typen miteinander verbunden sind.",
+              "recommendation": "Trenne die unterschiedlichen Ausgangstypen in separate Netze."
+            },
+            "multipleSupplySources": {
+              "title": "Mehrere unabhaengige Spannungsquellen verbunden",
+              "shortDescription": "Ein Supply-Netz enthaelt mehrere unabhaengige Spannungsquellen.",
+              "description": "Das Netz enthaelt {{count}} unabhaengige Spannungsquellen: {{sources}}.",
+              "recommendation": "Trenne die Spannungsquellen oder stelle sicher, dass nur weitergeleitete Ausgaenge im selben Netz liegen."
+            },
+            "signalSinkWithoutSource": {
+              "title": "{{signal}}-Eingang ohne Quelle",
+              "shortDescription": "Ein {{signal}}-Eingang ist verdrahtet, aber im Netz gibt es keine passende Quelle.",
+              "description": "Das Netz enthaelt {{sinks}}, aber keinen passenden Ausgang fuer {{signal}}.",
+              "recommendation": "Verbinde den Eingang mit einem passenden Ausgang oder pruefe die Pin-Funktion der beteiligten Komponenten."
+            },
+            "digitalSignalVoltageMismatch": {
+              "title": "Digitalpegel passt nicht",
+              "shortDescription": "Ein digitaler Eingang wird mit einer unpassenden Ausgangsspannung angesteuert.",
+              "description": "{{input}} erlaubt {{min}} V bis {{max}} V, ist aber mit unpassenden digitalen Ausgaengen verbunden: {{sources}}.",
+              "recommendation": "Verwende einen passenden Level Shifter oder verbinde den Eingang mit einem digitalen Ausgang im erlaubten Spannungsbereich."
+            },
+            "multipleSignalSources": {
+              "title": "Mehrere {{signal}}-Quellen verbunden",
+              "shortDescription": "Ein {{signal}}-Netz enthaelt mehrere Ausgaenge.",
+              "description": "Das Netz verbindet mehrere {{signal}}-Quellen: {{sources}}.",
+              "recommendation": "Trenne die Ausgaenge voneinander, sodass pro Signalnetz nur eine Quelle angeschlossen ist."
+            },
+            "supplyInputWithoutSource": {
+              "title": "Supply-Eingang ohne Spannungsquelle",
+              "shortDescription": "Ein Supply-Eingang ist verdrahtet, aber im Netz gibt es keine Spannungsquelle.",
+              "description": "Das Netz enthaelt Supply-Eingaenge ({{inputs}}), aber keinen unabhaengigen suppl_out-Ausgang.",
+              "recommendation": "Verbinde das Netz mit einer passenden Spannungsquelle."
+            },
+            "supplySourceWithoutConsumer": {
+              "title": "Supply-Netz ohne Verbraucher",
+              "shortDescription": "Ein Supply-Ausgang ist verdrahtet, aber kein Supply-Eingang ist angeschlossen.",
+              "description": "Das Netz enthaelt eine Spannungsquelle, aber keinen erkennbaren Supply-Verbraucher.",
+              "recommendation": "Pruefe, ob die Versorgung zu einer Komponente mit Supply-Eingang weitergefuehrt werden soll."
+            },
+            "supplyVoltageMismatch": {
+              "title": "Supply-Spannung passt nicht",
+              "shortDescription": "Die Spannung der Quelle passt nicht zu allen Pin-Toleranzen im Supply-Netz.",
+              "description": "Die Quelle liefert {{voltage}} V, aber mindestens ein angeschlossener Pin erlaubt diesen Spannungsbereich nicht: {{inputs}}.",
+              "recommendation": "Passe die Versorgungsspannung an oder trenne Komponenten mit unterschiedlichen Spannungsbereichen."
+            },
+            "wireConnectedToHiddenOrMissingHandle": {
+              "title": "Wire zeigt auf fehlenden Pin",
+              "shortDescription": "Eine Verbindung endet an einem fehlenden oder ausgeblendeten Pin.",
+              "description": "Wire {{wire}} hat auf der Seite {{side}} den Pin {{handle}} nicht elektrisch erreicht: {{reason}}.",
+              "recommendation": "Verbinde das Wire neu mit einem sichtbaren, vorhandenen Pin."
+            },
+            "mainsWireConnectedToLowVoltageComponent": {
+              "title": "Netzspannung an ungeeigneter Komponente",
+              "shortDescription": "Ein L/N/PE-Netz ist mit einem Nicht-Netzspannungsanschluss verbunden.",
+              "description": "{{handle}} an {{component}} liegt in einem Netzspannungsnetz, ist aber kein L/N/PE-Anschluss.",
+              "recommendation": "Trenne diese Verbindung und nutze nur dafuer vorgesehene Netzspannungsanschluesse."
+            },
+            "groundAndSupplyPolaritySwapped": {
+              "title": "Plus und GND verbunden",
+              "shortDescription": "Ein Netz enthaelt gleichzeitig Ground und DC-Versorgung.",
+              "description": "In diesem Netz sind GND- und Supply-Anschluesse verbunden. Das ist wahrscheinlich eine vertauschte Polaritaet oder ein Kurzschluss.",
+              "recommendation": "Trenne Plus- und GND-Verbindungen und pruefe die Polung."
+            },
+            "supplyVoltageUnknown": {
+              "title": "Supply-Spannung unbekannt",
+              "shortDescription": "Ein Supply-Netz hat eine Quelle, deren Spannung nicht bestimmt werden kann.",
+              "description": "Die Versorgung aus {{source}} versorgt Eingange, aber der Spannungswert ist nicht aufloesbar.",
+              "recommendation": "Setze den Spannungswert der Quelle oder das abhaengige Feld."
+            },
+            "signalOutputWithoutConsumer": {
+              "title": "{{signal}}-Ausgang ohne Verbraucher",
+              "shortDescription": "Ein Signalausgang ist verdrahtet, erreicht aber keinen passenden Eingang.",
+              "description": "{{source}} ist angeschlossen, aber es wurde kein passender {{signal}}-Eingang gefunden.",
+              "recommendation": "Fuehre das Signal zu einem passenden Eingang oder entferne die ungenutzte Verbindung."
+            },
+            "dataDirectionWrong": {
+              "title": "Data-Richtung unplausibel",
+              "shortDescription": "Ein LED-Datennetz verbindet nur Ausgaenge oder nur Eingaenge.",
+              "description": "Diese Data-Anschluesse bilden keine plausible Quelle-Senke-Verbindung: {{handles}}.",
+              "recommendation": "Verbinde DATA_out mit DATA_in in der korrekten Richtung."
+            },
+            "clockedLedClockMissing": {
+              "title": "Clock-Leitung fehlt oder passt nicht",
+              "shortDescription": "Ein Clock-LED-Streifen hat Data, aber keine passende Clock-Verbindung.",
+              "description": "{{component}} benoetigt zu DATA eine passende Clock-Leitung. Problem: {{reason}}",
+              "recommendation": "Verbinde Clock_in mit einem getrennten passenden digitalen Clock-Signal.",
+              "reasons": {
+                "unconnected": "Clock_in ist nicht verbunden.",
+                "ledChainMismatch": "Bei LED-zu-LED kommt Clock_in nicht vom passenden Clock-Ausgang desselben vorgelagerten Streifens.",
+                "sameAsData": "Clock und Data verwenden denselben Signalpfad.",
+                "supply": "Clock_in ist mit Supply verbunden.",
+                "groundOrBias": "Clock_in ist mit GND oder einem Bias-Netz verbunden.",
+                "noDigitalSource": "Clock_in erreicht keine digitale Ausgangsquelle.",
+                "ledDataOrBackupNet": "Der Clock-Pfad speist zugleich LED-Data_in oder Backup_in.",
+                "differentController": "Data und Clock stammen von unterschiedlichen Controllern.",
+                "noControllerOrigin": "Data stammt von einem Controller, aber Clock hat keinen sicheren Controller-Ursprung."
+              }
+            },
+            "digitalBackupPairMismatch": {
+              "title": "Backup-Datenleitung passt nicht",
+              "shortDescription": "Backup_in kommt nicht vom passenden Backup_out des vorgelagerten LED-Streifens.",
+              "description": "{{component}} wird ueber Data von {{source}} gespeist, aber Backup kommt nicht vom selben Streifen.",
+              "recommendation": "Verbinde Backup_in mit Backup_out desselben vorgelagerten Streifens."
+            },
+            "digitalBackupInputTiedToData": {
+              "title": "Backup_in an Data angeschlossen",
+              "shortDescription": "Backup_in ist toleriert am Data-Netz, empfohlen ist aber GND.",
+              "description": "{{component}} ist kein nachfolgender Streifen. Backup_in liegt am Data-Netz statt an GND.",
+              "recommendation": "Verbinde Backup_in besser mit GND."
+            },
+            "digitalBackupInputNotGrounded": {
+              "title": "Backup_in nicht auf GND",
+              "shortDescription": "Backup_in eines ersten LED-Streifens liegt nicht auf GND.",
+              "description": "{{component}} wird nicht von einem vorherigen LED-Streifen gespeist. Backup_in muss auf GND liegen.",
+              "recommendation": "Verbinde Backup_in mit GND."
+            },
+            "fuseBypassed": {
+              "title": "Sicherung ueberbrueckt",
+              "shortDescription": "Ein Fuse-Eingang und -Ausgang sind extern direkt verbunden.",
+              "description": "Bei {{component}} sind beide Seiten der Sicherung extern im selben Netz. Die Schutzfunktion ist damit aufgehoben.",
+              "recommendation": "Entferne die externe Bruecke ueber die Sicherung."
+            },
+            "usbPowerPairInvalid": {
+              "title": "USB-Power-Verbindung ist ungueltig",
+              "shortDescription": "USB-Power muss genau eine USB-Quelle direkt mit genau einem USB-Geraet verbinden.",
+              "description": "Dieses USB-Power-Netz ist nicht Point-to-Point: {{reason}}.",
+              "recommendation": "Verwende eine direkte USB-Wire von genau einem USB-Power-Ausgang zu genau einem USB-Geraet, ohne Verteiler oder zusaetzliche Anschluesse."
+            },
+            "wireWithoutPhysicalParameters": {
+              "title": "Power-Wire ohne physikalische Daten",
+              "shortDescription": "Eine Power-, GND- oder USB-Leitung hat keine Laenge oder keinen Querschnitt.",
+              "description": "Diese Leitung liegt in einem Versorgungs-, GND- oder USB-Netz, aber Laenge oder Querschnitt fehlen.",
+              "recommendation": "Setze Laenge und Querschnitt fuer diese Leitung."
+            },
+            "sourceWireCrossSectionTooSmall": {
+              "title": "Leitung an Quelle zu klein",
+              "shortDescription": "Eine direkt quellennahe Leitung ist fuer das Stromlimit der Quelle zu klein.",
+              "description": "Die Leitung ist direkt an eine Energiequelle angeschlossen. Die Leitung kann {{ampacity}} A tragen, erforderlich sind {{required}} A.",
+              "recommendation": "Waehlen Sie einen groesseren Querschnitt oder eine Energiequelle mit kleinerem Stromlimit."
+            },
+            "sourceGroundWireCrossSectionTooSmall": {
+              "title": "GND-Leitung an Quelle zu klein",
+              "shortDescription": "Eine direkt quellennahe GND-Leitung ist fuer das Stromlimit der Quelle zu klein.",
+              "description": "Die GND-Leitung ist direkt an eine Energiequelle angeschlossen. Die Leitung kann {{ampacity}} A tragen, erforderlich sind {{required}} A.",
+              "recommendation": "Waehlen Sie einen groesseren Querschnitt oder eine Energiequelle mit kleinerem Stromlimit. Alternativ verlegen oder isolieren Sie die GND-Leitung so, dass ein Kurzschluss mit Versorgungsleitungen auch im Fehlerfall ausgeschlossen ist."
+            },
+            "unfusedSupplyWireCrossSectionTooSmall": {
+              "title": "Ungesicherte Supply-Leitung zu klein",
+              "shortDescription": "Eine Leitung liegt in einem direkt quellenangebundenen Supply-Netz und ist zu klein.",
+              "description": "Diese Leitung liegt in einem Netz, das direkt an eine Energiequelle angeschlossen ist. Die Leitung kann {{ampacity}} A tragen, erforderlich sind {{required}} A.",
+              "recommendation": "Waehlen Sie einen groesseren Querschnitt, eine Energiequelle mit kleinerem Stromlimit oder setzen Sie eine passende Sicherung dazwischen."
+            },
+            "fusedSupplyWireCrossSectionTooSmall": {
+              "title": "Supply-Leitung hinter Sicherung zu klein",
+              "shortDescription": "Der Sicherungsnennstrom passt nicht zum Leitungsquerschnitt.",
+              "description": "Diese Leitung liegt in einem Netz, das ueber eine Sicherung mit der Energiequelle verbunden ist. Der Sicherungsnennstrom ist fuer die Stromtragfaehigkeit von {{ampacity}} A zu hoch.",
+              "recommendation": "Erhoehen Sie den Querschnitt oder verringern Sie den Sicherungsnennwert, wenn der angeschlossene Verbraucher keinen so hohen Strom benoetigt."
+            },
+            "ledSupplyInputNotAdequatelyProtected": {
+              "title": "LED-Versorgungseingang nicht ausreichend geschuetzt",
+              "shortDescription": "Ein digitaler LED-Supply-Eingang ist gegen moeglichen Quellenstrom nicht ausreichend begrenzt.",
+              "description": "{{input}} kann maximal {{limit}} A tragen, ist aber nicht durch Quelle oder Sicherung ausreichend begrenzt.",
+              "recommendation": "Setzen Sie zwischen Quelle und LED-Eingang eine passende Sicherung oder verwenden Sie eine Quelle mit kleinerem Stromlimit."
+            },
+            "componentGroundWireCrossSectionSmallerThanSupply": {
+              "title": "Masseleitung kleiner als Versorgung",
+              "shortDescription": "Eine GND-Leitung an einer Komponente ist kleiner als eine angeschlossene Supply-Leitung.",
+              "description": "Die Masseleitung hat {{crosssection}} mm2, die Referenz-Versorgungsleitung {{required}} mm2.",
+              "recommendation": "Masseleitungen sollten in der Regel mindestens den Querschnitt der zugehoerigen Versorgungsleitungen haben. Pruefen Sie den Aufbau genau."
+            },
+            "ledGroundWireCrossSectionSmallerThanSupply": {
+              "title": "LED-Masseleitung kleiner als Versorgung",
+              "shortDescription": "Eine GND-Leitung an einem LED-Anschlussbereich ist kleiner als die lokale oder naechstliegende Supply-Leitung.",
+              "description": "Die Masseleitung hat {{crosssection}} mm2, die Referenz-Versorgungsleitung {{required}} mm2.",
+              "recommendation": "Masseleitungen sollten in der Regel mindestens den Querschnitt der Versorgungsleitungen haben. Pruefen Sie den Aufbau genau."
+            },
+            "connectorGroundWireCrossSectionSmallerThanBranch": {
+              "title": "Masse-Verteilerleitung kleiner als Abgang",
+              "shortDescription": "Eine GND-Leitung zwischen Verbindungselementen ist kleiner als ein nachgelagerter GND-Abgang.",
+              "description": "Diese Masseleitung hat {{crosssection}} mm2, ein nachgelagerter Abgang erfordert {{required}} mm2.",
+              "recommendation": "Da im Diagramm keine reale Verlegung erfasst ist, kann diese Meldung falsch-positiv sein. Pruefen Sie die Stelle manuell."
+            },
+            "pinWireCrossSectionTooLarge": {
+              "title": "Leitung passt nicht an den Anschluss",
+              "shortDescription": "Der Leitungsquerschnitt ist fuer diesen Pin zu gross.",
+              "description": "An {{handle}} ist eine Leitung mit {{total}} mm2 angeschlossen. Erlaubt sind maximal {{limit}} mm2. Die angeschlossene Leitung hat einen zu hohen Querschnitt und kann nicht sicher angeschraubt oder angeloetet werden.",
+              "recommendation": "Verwende eine Leitung mit kleinerem Querschnitt oder einen geeigneten Verteiler bzw. Adapter. Häufig ist es auch möglich, als Zwischenstück eine kurze Leitung mit kleinerem Querschnitt einzusetzen."
+            },
+            "pinTotalCrossSectionTooLarge": {
+              "title": "Leitungen passen zusammen nicht an den Anschluss",
+              "shortDescription": "Die Summe der Leitungsquerschnitte ist fuer diesen Pin zu gross.",
+              "description": "An {{handle}} sind Leitungen mit zusammen {{total}} mm2 angeschlossen. Erlaubt sind maximal {{limit}} mm2. Die angeschlossenen Leitungen haben in Summe einen zu hohen Querschnitt und koennen zusammen nicht sicher angeschraubt oder angeloetet werden.",
+              "recommendation": "Reduziere die Summe der Querschnitte an diesem Pin oder verwende einen geeigneten Verteiler."
+            },
+            "pinWireCrossSectionDifficult": {
+              "title": "Leitung ist schwer anzuschliessen",
+              "shortDescription": "Der Leitungsquerschnitt ist fuer diesen Pin noch zulaessig, aber kritisch.",
+              "description": "An {{handle}} ist eine Leitung mit {{total}} mm2 angeschlossen. Ab {{limit}} mm2 kann das Anschliessen oder Anloeten an diesem Pin schwierig sein.",
+              "recommendation": "Pruefe, ob die Verbindung gut moeglich ist und ob der Querschnitt wirklich notwendig ist oder verkleinert werden kann. Wenn ein hoher Querschnitt verwendet wird, um den Spannungsabfall zu minimieren, kann oft direkt am Pin ein kurzes, duenneres Stueck als Uebergang angeloetet werden. Beachte dabei aber die Stromtragfaehigkeit und modelliere den Uebergang sauber."
+            },
+            "pinTotalCrossSectionDifficult": {
+              "title": "Leitungen sind schwer zusammen anzuschliessen",
+              "shortDescription": "Die Summe der Leitungsquerschnitte ist fuer diesen Pin noch zulaessig, aber kritisch.",
+              "description": "An {{handle}} sind Leitungen mit zusammen {{total}} mm2 angeschlossen. Ab {{limit}} mm2 kann das gemeinsame Anschliessen oder Anloeten an diesem Pin schwierig sein.",
+              "recommendation": "Pruefe, ob die Verbindung gut moeglich ist und ob die Querschnitte wirklich notwendig sind oder verkleinert werden koennen. Wenn hohe Querschnitte verwendet werden, um den Spannungsabfall zu minimieren, kann oft direkt am Pin ein kurzes, duenneres Stueck als Uebergang angeloetet werden. Beachte dabei aber die Stromtragfaehigkeit und modelliere den Uebergang sauber."
+            },
+            "duplicateParallelWire": {
+              "title": "Doppelte parallele Verbindung",
+              "shortDescription": "Mehrere Wires verbinden dieselben zwei Pins.",
+              "description": "{{count}} Wires verbinden dasselbe Pin-Paar.",
+              "recommendation": "Entferne versehentlich doppelt gezogene Wires."
+            }
+          }
+        },
+        "component-rules": {
+          "title": "Komponentenregeln",
+          "description": "Prueft grundlegende Anforderungen einzelner Komponenten.",
+          "issues": {
+            "requiredPinUnconnected": {
+              "title": "Pflicht-Pin nicht verbunden",
+              "shortDescription": "Eine Komponente hat einen Pin, der verbunden sein muss.",
+              "description": "{{component}} besitzt Pflicht-Pins ohne Verbindung: {{handles}}.",
+              "recommendation": "Verbinde alle Pins dieser Komponente, die als Pflichtverbindung markiert sind."
+            },
+            "groundMissing": {
+              "title": "Komponente ohne Ground",
+              "shortDescription": "Eine Komponente mit GND-Pin ist nicht mit Ground verbunden.",
+              "description": "{{component}} besitzt GND-Pins, aber keiner dieser Pins ist mit einem GND-Netz verbunden.",
+              "recommendation": "Verbinde mindestens einen GND-Pin dieser Komponente mit dem gemeinsamen Ground-Netz."
+            },
+            "powerMissing": {
+              "title": "Komponente ohne Versorgung",
+              "shortDescription": "Eine Komponente mit Versorgungseingang ist nicht versorgt.",
+              "description": "{{component}} besitzt Supply- oder USB-Eingaenge, aber kein Supply-Eingang ist mit einem Supply-Netz verbunden, das einen suppl_out-Pin einer anderen Komponente enthaelt, und kein USB-Anschluss ist mit einem USB-Netz verbunden.",
+              "recommendation": "Verbinde einen Supply-Eingang mit einer passenden externen Spannungsquelle oder verbinde den USB-Anschluss mit einer USB-Versorgung."
+            },
+            "mainsInputMissing": {
+              "title": "{{label}}-Eingang nicht verbunden",
+              "shortDescription": "Eine Komponente mit {{label}}-Eingang ist nicht mit dem passenden Netz verbunden.",
+              "description": "{{component}} besitzt {{label}}-Eingaenge, aber mindestens einer davon ist nicht mit einem passenden {{label}}-Netz verbunden.",
+              "recommendation": "Verbinde jeden {{label}}-Eingang dieser Komponente mit dem passenden {{label}}-Netz."
+            },
+            "unusedRequiredFunctionalGroup": {
+              "title": "Genutzte Funktionsgruppe unvollstaendig",
+              "shortDescription": "Eine LED-Eingangsgruppe ist teilweise angeschlossen.",
+              "description": "{{component}} hat einen genutzten Data-Eingang, aber Versorgung oder GND der Gruppe fehlen.",
+              "recommendation": "Verbinde Data, Versorgung und GND der LED-Eingangsgruppe vollstaendig."
+            },
+            "controlledOutputWithoutControlInput": {
+              "title": "Geschalteter Ausgang ohne Steuersignal",
+              "shortDescription": "Ein genutzter steuerbarer Ausgang hat keinen digitalen Steuereingang.",
+              "description": "{{component}} nutzt {{output}}, aber der zugehoerige Steuereingang {{control}} ist nicht mit einem digitalen Netz verbunden.",
+              "recommendation": "Verbinde den Steuereingang mit einem passenden digitalen Ausgang oder trenne den geschalteten Ausgang, wenn er nicht verwendet wird."
+            },
+            "analogLedColorChannelUnconnected": {
+              "title": "Farbkanal nicht angeschlossen",
+              "shortDescription": "Eine Farbe eines analogen LED-Streifens ist nicht steuerbar.",
+              "description": "{{component}} hat keinen angeschlossenen {{color}}-Kanal. Betroffene Pins: {{handles}}.",
+              "recommendation": "Verbinde mindestens einen {{color}}-Anschluss des Streifens mit einem passenden PWM-Ausgang, wenn diese Farbe steuerbar sein soll."
+            },
+            "analogLedColorChannelMultiplePwmSignals": {
+              "title": "Farbkanal an mehreren PWM-Signalen",
+              "shortDescription": "Eine Farbe eines analogen LED-Streifens ist an unterschiedliche PWM-Ausgaenge angeschlossen.",
+              "description": "{{component}} hat den {{color}}-Kanal an mehrere PWM-Signale angeschlossen: {{signals}}. Betroffene Pins: {{handles}}.",
+              "recommendation": "Verbinde alle Anschluesse desselben Farbkanals mit demselben PWM-Signal. Fuer mehr Leistung teile den analogen Streifen in separate Streifen bzw. getrennte Segmente auf."
+            },
+            "componentHasOnlyOneTerminalConnected": {
+              "title": "Nur ein Anschluss verbunden",
+              "shortDescription": "Eine Zweipol-Komponente hat nur einen angeschlossenen Pin.",
+              "description": "{{component}} ist nur an {{handle}} verbunden.",
+              "recommendation": "Verbinde beide Anschluesse oder entferne die ungenutzte Komponente."
+            },
+            "capacitorPolarityMismatch": {
+              "title": "Kondensator-Polung falsch",
+              "shortDescription": "Ein gepolter Kondensator ist wahrscheinlich verpolt.",
+              "description": "{{component}} hat Plus an GND oder Minus an Supply.",
+              "recommendation": "Verbinde Plus mit der positiven Versorgung und Minus mit GND."
+            },
+            "mainsConnectorIncomplete": {
+              "title": "Netzanschluss unvollstaendig",
+              "shortDescription": "Eine Netzspannungs-Komponente hat nur L oder nur N angeschlossen.",
+              "description": "{{component}} hat einen unvollstaendigen L/N-Anschluss.",
+              "recommendation": "Verbinde L und N korrekt oder trenne den Netzanschluss komplett."
+            },
+            "protectiveEarthMissingForMetalOrMainsDevice": {
+              "title": "Schutzleiter fehlt",
+              "shortDescription": "Eine Netzspannungs-Komponente mit PE-Anschluss ist ohne Schutzleiter.",
+              "description": "{{component}} nutzt Netzspannung, aber PE ist nicht korrekt verbunden.",
+              "recommendation": "Verbinde PE mit dem Schutzleiter-Netz."
+            },
+            "supplyInputOnlyInternallyPowered": {
+              "title": "Supply nur intern weitergereicht",
+              "shortDescription": "Eine Komponente scheint nur ueber interne Supply-Pins verbunden zu sein.",
+              "description": "{{component}} hat Supply-Eingaenge, aber keine externe Spannungsquelle ist erreichbar.",
+              "recommendation": "Verbinde die Versorgung mit einer externen Quelle."
+            },
+            "fuseCurrentMissingOrUnderspecified": {
+              "title": "Sicherungswert fehlt",
+              "shortDescription": "Eine Sicherung hat keinen erkennbaren Nennstrom.",
+              "description": "{{component}} enthaelt eine Sicherung ohne auswertbaren Nennstrom.",
+              "recommendation": "Setze oder pruefe den Sicherungswert."
+            },
+            "isolatedComponent": {
+              "title": "Komponente isoliert",
+              "shortDescription": "Eine technische Komponente hat keine angeschlossenen Wires.",
+              "description": "{{component}} ist im Diagramm nicht verdrahtet.",
+              "recommendation": "Verdrahte die Komponente oder entferne sie, falls sie nicht benoetigt wird."
+            },
+            "componentDefinitionIncompleteForChecks": {
+              "title": "Komponentendefinition unvollstaendig",
+              "shortDescription": "Ein Pin hat fuer Checks unvollstaendige Metadaten.",
+              "description": "{{handle}} an {{component}} hat fehlende oder unvollstaendige Check-Metadaten.",
+              "recommendation": "Ergaenze functions, Spannungsgrenzen oder Ausgangsspannungen in der Komponentendefinition."
+            },
+            "ambiguousMultiFunctionHandle": {
+              "title": "Mehrdeutige Pin-Funktionen",
+              "shortDescription": "Ein Pin hat mehrere checkrelevante Funktionen.",
+              "description": "{{handle}} hat diese Funktionen: {{functions}}.",
+              "recommendation": "Pruefe, ob diese Funktionskombination bewusst und fuer Checks eindeutig ist."
+            },
+            "sn74Ahct125nUsedChannelInputMissing": {
+              "title": "SN74AHCT125N-Kanal-Eingang wird nicht angesteuert",
+              "shortDescription": "Ein verwendeter Buffer-Ausgang hat einen Eingang ohne digitale Ausgangsquelle oder einen /OE-Pin, der weder digital angesteuert noch auf GND gezogen ist.",
+              "description": "{{component}} Kanal {{channel}} treibt ueber {{output}} einen digitalen Eingang, aber diese zugehoerigen Pins sind nicht korrekt angebunden: {{handles}}. A muss in einem Netz mit dig_out liegen; /OE darf in einem Netz mit dig_out oder GND liegen.",
+              "recommendation": "Verbinde den zugehoerigen A-Pin mit einem passenden digitalen Ausgang und den /OE-Pin mit einem digitalen Ausgang oder GND, oder trenne den unbenutzten Y-Ausgang vom digitalen Eingang."
+            },
+            "sn74Ahct125nDirectLedOutputMissingSeriesResistor": {
+              "title": "SN74AHCT125N-Ausgang direkt an LED-Eingang",
+              "shortDescription": "Ein SN74AHCT125N-Ausgang ist direkt mit einem LED-Data- oder Clock-Eingang verbunden.",
+              "description": "{{output}} ist direkt mit {{input}} an {{led}} verbunden. In diesem Signalpfad sollte typischerweise ein Serienwiderstand von ca. 68 Ohm liegen.",
+              "recommendation": "Setze einen Widerstand von ca. 68 Ohm zwischen SN74AHCT125N-Ausgang und LED-Data-/Clock-Eingang."
+            },
+            "digitalLedSignalGroupGroundMissing": {
+              "title": "Digitale LED-Eingangsgruppe ohne GND",
+              "shortDescription": "Ein Data- oder Clock-Eingang ist angeschlossen, aber GND derselben LED-Eingangsgruppe fehlt.",
+              "description": "{{component}} hat angeschlossene digitale Signaleingaenge in Gruppe {{group}} ({{signals}}), aber keine GND-Verbindung in derselben Gruppe.",
+              "recommendation": "Verbinde den GND-Pin derselben LED-Streifen-Gruppe (_start, _end oder _middle_N) mit dem gemeinsamen Ground-Netz."
+            }
+          }
+        }
+      }
+    },
+    "simulation": {
+      "title": "Stromfluss simulieren",
+      "betaNoticeTitle": "Beta-Version",
+      "betaNoticeDescription": "Die Simulation ist noch in Entwicklung. Ergebnisse koennen helfen, die Verdrahtung einzuschaetzen, ersetzen aber keine Messung am echten Aufbau.",
+      "infoButton": "Was wird simuliert?",
+      "infoModalTitle": "Was die Simulation berechnet",
+      "infoModalIntro": "Die Simulation schaetzt ab, wie sich Spannung und Strom in deinem aktuellen Diagramm verteilen.",
+      "infoModalItems": {
+        "power": "Sie nutzt Netzteile, DC/DC-Wandler und Verbraucher aus dem Diagramm.",
+        "wires": "Sie beruecksichtigt Laenge und Querschnitt von Leitungen, damit Spannungsabfaelle sichtbar werden.",
+        "leds": "Bei LED-Streifen werden Helligkeit, Farbmodus und Spannungsverlauf entlang des Streifens ausgewertet.",
+        "protection": "Sie meldet auffaellige Stellen wie zu hohe Stroeme, zu niedrige Spannung oder ueberlastete Sicherungen.",
+        "limits": "Sie simuliert eine Gleichstrom-Momentaufnahme, keine Datenprotokolle, Signalformen, Einschaltspitzen oder Waermeentwicklung."
+      },
+      "infoModalCaution": {
+        "label": "Achtung!",
+        "text": "Hier werden typische Komponenten simuliert. Insbesondere bei Netzteilen und LED-Streifen gibt es eine Vielzahl an Varianten, die sich in ihrem Verhalten deutlich unterscheiden. Ein realer Aufbau hat also immer mehr oder weniger andere Werte als die hier simulierten. Diese Simulation gibt dir aber einen guten Anhaltspunkt fuer deine Auslegung."
+      },
+      "infoModalModelDetails": {
+        "title": "Wie die Modelle vereinfacht werden",
+        "leds": {
+          "title": "LED-Streifen:",
+          "description": "Digitale LED-Streifen werden in kleine Abschnitte zerlegt. Fuer jeden Abschnitt schaetzt die Simulation den Strom aus Helligkeit, Farbmodus und der lokalen Spannung. Die Kupferbahnen im Streifen werden als Widerstaende modelliert, dadurch faellt die Spannung entlang des Streifens ab."
+        },
+        "powerSources": {
+          "title": "Spannungsquellen:",
+          "description": "Netzteile werden als geregelte Gleichspannungsquellen mit Strombegrenzung betrachtet. Bis zum Grenzstrom halten sie ihre Ausgangsspannung naeherungsweise konstant. Bei Ueberlast wird eine Spannungsabsenkung modelliert, statt ein reales Schutzverhalten jedes Netzteils exakt nachzubilden."
+        },
+        "dcdc": {
+          "title": "DC/DC-Wandler:",
+          "description": "DC/DC-Wandler werden als Bauteile betrachtet, die aus einer Eingangsspannung eine geregelte Ausgangsspannung erzeugen. Dabei werden Ausgangsstromgrenzen und begrenzte Eingangsleistung beruecksichtigt. Wirkungsgrad, Temperaturverhalten und schnelles Regelverhalten sind vereinfacht."
+        },
+        "wires": {
+          "title": "Leitungen:",
+          "description": "Leitungen werden als ohmsche Widerstaende berechnet. Je laenger die Leitung und je kleiner der Querschnitt, desto groesser ist der Widerstand. Aus Strom und Widerstand entsteht ein Spannungsabfall, der im Diagramm sichtbar gemacht wird."
+        }
+      },
+      "infoModalNote": "Nutze die Simulation als Plausibilitaetscheck fuer dein Design. Sicherheitskritische Aufbauten und fertige Installationen solltest du trotzdem messen und fachgerecht pruefen.",
+      "inDevelopmentTitle": "Simulationen sind noch in Entwicklung",
+      "comingSoon": "Simulation der Stromverteilung wird später implementiert. Stay tuned!",
+      "settings": "Einstellungen",
+      "brightness": "Helligkeit: {{value}}%",
+      "buttonRun": "Simulieren",
+      "buttonDelete": "Ergebnisse löschen",
+      "displayMode": {
+        "label": "Ergebnisanzeige",
+        "default": "Standard",
+        "extended": "Erweitert",
+        "defaultDescription": "Zeigt relevante Ströme, Versorgungsausgänge, USB-Versorgung und LED-Spannungen.",
+        "extendedDescription": "Zeigt alle verfügbaren Simulationslabels."
+      },
+      "notRun": "Noch keine Simulation ausgeführt.",
+      "running": "Simulation wird ausgeführt...",
+      "invalidated": "Simulationsergebnisse wurden entfernt, weil sich das Diagramm geändert hat.",
+      "blockedTitle": "Simulation nicht gestartet",
+      "blockedDescription": "Fuehre zuerst eine aktuelle Diagrammpruefung ohne Fehler aus.",
+      "diagramCheckDebugBypass": "Debug-Modus: Simulation startet ohne Diagramm-Check-Gating.",
+      "diagramCheckSettingsBypass": "Erweiterte Einstellung aktiv: Simulation startet auch bei Fehlern aus der Diagrammpruefung.",
+      "diagramCheckGate": {
+        "not-checked": {
+          "title": "Diagrammpruefung erforderlich",
+          "description": "Fuehre die Diagrammpruefung aus, bevor du die Simulation startest."
+        },
+        "stale": {
+          "title": "Diagrammpruefung ist veraltet",
+          "description": "Das Diagramm wurde nach der letzten Pruefung geaendert. Fuehre die Diagrammpruefung erneut aus."
+        },
+        "has-errors": {
+          "title": "Diagrammpruefung hat {{count}} Fehler",
+          "description": "Behebe die Fehler aus der Diagrammpruefung, bevor du die Simulation startest. Warnungen blockieren die Simulation nicht."
+        }
+      },
+      "modelReadyTitle": "Simulationsmodell erstellt",
+      "modelReadyDescription": "{{components}} simulierte Komponente(n), {{wires}} simulierte Wire(s).",
+      "failedTitle": "Simulation fehlgeschlagen",
+      "failedDescription": "Das Simulationsmodell konnte nicht erstellt werden. Bitte prüfe die Meldungen unten.",
+      "workerFailedTitle": "Simulations-Worker fehlgeschlagen",
+      "noIssues": "Keine Simulationsmeldungen.",
+      "issueCount": "{{count}} Simulationsmeldung(en)",
+      "affectedElements": "Betroffene Elemente",
+      "targetPin": "{{component}} - {{pin}}",
+      "targetWire": "Wire: {{source}} -> {{target}}",
+      "targetComponent": "{{component}}",
+      "ledVoltagePlot": {
+        "title": "LED-Streifen-Spannungsplot",
+        "openButton": "LED-Spannungsplot anzeigen",
+        "closeButton": "Schliessen",
+        "modalTitle": "LED-Spannung ueber Laenge: {{component}}",
+        "xAxis": "Laenge entlang des Streifens (m)",
+        "yAxis": "VLED (V)",
+        "ledCounts": "Logische LEDs: {{logical}}; physikalische LEDs: {{physical}}",
+        "minVoltage": "Minimum {{voltage}} V bei {{distance}} m",
+        "pointTooltip": "{{distance}} m: {{voltage}} V, Abschnitt {{section}}, LED {{index}}"
+      },
+      "issues": {
+        "dcdcInputPowerAmbiguous": {
+          "title": "DCDC-Eingangsleistungslimit ist mehrdeutig",
+          "description": "Von diesem DCDC-Eingang sind mehrere Eingangsspannungsquellen passiv erreichbar. Das dynamische Eingangsleistungslimit wurde nicht berechnet, weil Stromteilung zwischen Quellen nicht modelliert ist."
+        },
+        "dcdcInputPowerLimited": {
+          "title": "DCDC-Eingangsleistung begrenzt",
+          "description": "Der DCDC-Ausgangsstrom {{current}} A ueberschreitet das dynamische Eingangsleistungslimit {{limit}} A. Die Ausgangsspannung wurde durch das DCDC-Eingangsleistungsmodell reduziert."
+        },
+        "currentLimit": {
+          "title": "Stromlimit ueberschritten",
+          "description": "Der Quellenstrom {{current}} A ueberschreitet das Limit {{limit}} A. Die Ausgangsspannung wurde durch das Ueberlastmodell der Quelle reduziert."
+        },
+        "currentLimitReduced": {
+          "description": "Die Quellenlast hat das Limit {{limit}} A vor der Spannungsreduktion ueberschritten. Der finale Strom nach der Spannungsreduktion ist {{current}} A."
+        },
+        "currentLimitExtreme": {
+          "title": "Stromlimit zu stark ueberschritten",
+          "description": "Der Quellenstrom {{current}} A liegt ueber 150% des Limits {{limit}} A. Die Simulation wurde gestoppt."
+        },
+        "fuseCurrent": {
+          "title": "Sicherungsstrom ueberschritten",
+          "description": "Der Sicherungsstrom {{current}} A ueberschreitet den Nennstrom {{limit}} A."
+        },
+        "pinVoltageLow": {
+          "title": "Versorgungsspannung zu niedrig",
+          "description": "Die Versorgungsspannung ist {{voltage}} V und liegt unter dem Minimum {{limit}} V."
+        },
+        "pinVoltageHigh": {
+          "title": "Versorgungsspannung zu hoch",
+          "description": "Die Versorgungsspannung ist {{voltage}} V und liegt ueber dem Maximum {{limit}} V."
+        },
+        "pinCurrentLimit": {
+          "title": "Pin-Stromgrenze ueberschritten",
+          "description": "Der Pin-Strom {{current}} A ueberschreitet den Maximalwert {{limit}} A."
+        },
+        "wireAmpacityExceeded": {
+          "title": "Leitungsstrom ueberschreitet Stromtragfaehigkeit",
+          "description": "Der simulierte Strom {{current}} A ueberschreitet die Stromtragfaehigkeit {{limit}} A fuer {{crosssection}} {{conductor}}. Fuer handelsuebliche Leitungstypen ist dieser Querschnitt zu gering. Verwende eine besonders temperatur- bzw. stromstabile Leitung oder vergroessere den Querschnitt."
+        },
+        "wireAmpacityFullLoadRequired": {
+          "title": "Volllast-Simulation fuer Leitungsstrom erforderlich",
+          "description": "Die Strombelastbarkeit der Leitungen kann nur nach einer Volllast-Simulation zuverlaessig bewertet werden.",
+          "descriptionRgb": "Die Strombelastbarkeit der Leitungen kann bei RGB-Streifen nur nach einer Simulation mit 100% Helligkeit und RGB-Weiss zuverlaessig bewertet werden. Separates + RGB-Weiss ist fuer reine RGB-Streifen gleichwertig und wird ebenfalls akzeptiert.",
+          "descriptionRgbw": "Die Strombelastbarkeit der Leitungen kann nur nach einer Volllast-Simulation mit 100% Helligkeit und Separates + RGB-Weiss zuverlaessig bewertet werden, weil im Diagramm RGBW-Streifen vorhanden sind."
+        },
+        "ledStripSupplyVoltageLow": {
+          "title": "Versorgungsspannung am LED-Streifen zu niedrig",
+          "description": "VLED an einem angeschlossenen Versorgungspunkt des LED-Streifens ist {{voltage}} V und liegt unter dem Minimum {{limit}} V. Erhoehe die Netzteilspannung oder die verfuegbare Leistung, falls das Netzteil im Stromlimit arbeitet."
+        },
+        "ledStripVoltageDropHigh": {
+          "title": "Spannungsabfall ueber den LED-Streifen zu hoch",
+          "description": "Die angeschlossenen Versorgungspunkte sind im erlaubten Bereich, aber die niedrigste VLED ueber die Laenge des Streifens ist {{voltage}} V und liegt unter dem kritischen Kennlinienwert {{limit}} V. Dadurch kann die Farbwiedergabe deutlich verfaelscht werden. Fuege weitere Einspeisungen entlang des LED-Streifens hinzu."
+        },
+        "ledStripVoltageDropWarning": {
+          "title": "Spannungsabfall ueber den LED-Streifen zu hoch",
+          "description": "Die angeschlossenen Versorgungspunkte sind im erlaubten Bereich, aber die niedrigste VLED ueber die Laenge des Streifens ist {{voltage}} V und liegt unter dem Warnwert {{limit}} V. Dadurch kann die Farbwiedergabe etwas verfaelscht werden. Fuege weitere Einspeisungen entlang des LED-Streifens hinzu."
+        },
+        "ledStripVoltageLow": {
+          "title": "LED-Streifen-Spannung zu niedrig",
+          "description": "Die niedrigste LED-Streifen-Spannung ist {{voltage}} V und liegt unter dem Minimum {{limit}} V."
+        },
+        "ledStripVoltageHigh": {
+          "title": "LED-Streifen-Spannung zu hoch",
+          "description": "Die hoechste LED-Streifen-Spannung ist {{voltage}} V und liegt ueber dem Maximum {{limit}} V."
+        },
+        "unpoweredSubnet": {
+          "title": "Nicht versorgtes Teilnetz ignoriert",
+          "description": "Ein gueltiges Simulationsteilnetz ist von keiner Spannungsquelle erreichbar und wurde ignoriert."
+        },
+        "solverFailed": {
+          "title": "Simulationssolver fehlgeschlagen",
+          "description": "Der Solver hat den Status {{status}} zurueckgegeben."
+        },
+        "solverNotConverged": {
+          "title": "Simulationssolver konvergiert nicht",
+          "description": "Spannungsabhaengige LED-Stroeme sind innerhalb des Iterationslimits nicht konvergiert."
+        }
+      },
+      "severity": {
+        "error": "Fehler",
+        "warning": "Warnung",
+        "info": "Hinweis"
+      },
+      "colorModes": {
+        "rgbWhite": "RGB-Weiss",
+        "separateWhite": "Separates Weiss",
+        "separateAndRgbWhite": "Separates + RGB-Weiss",
+        "red": "Rot",
+        "green": "Gruen",
+        "blue": "Blau"
+      }
+    },
+    "tools": {
+      "title": "Tools",
+      "wireInstallationButton": "Leitungsverlegung",
+      "wireInstallationDescription": "Einstellungen fuer die Leitungsquerschnitt-Pruefung.",
+      "wireInstallationTitle": "Leitungsverlegung",
+      "wireInstallationTypeLabel": "Verlegung",
+      "ambientTemperatureLabel": "Umgebungstemperatur",
+      "wireInstallationTypes": {
+        "surface": "Auf Oberflaeche",
+        "conduit": "In Elektrorohr",
+        "insulatedWall": "In waermegedaemmter Wand"
+      },
+      "rerouteAllButton": "Alle Wires neu routen",
+      "rerouteAllTooltip": "Alle Wires sequenziell mit Pathfinder neu routen",
+      "rerouteAllDisabledPF": "Nur im Auto/PF-Verbindungsmodus verfügbar",
+      "rerouteAllDisabledEmpty": "Keine Wires im Diagramm",
+      "rerouteAllDescription": "Routet kurze Komponentenpaare zuerst und behält Wire-IDs, Verbindungen und Eigenschaften bei.",
+      "rerouteAllSuccess": "Alle Wires wurden neu geroutet."
+    },
+    "advancedSettings": {
+      "title": "Erweiterte Einstellungen",
+      "simulationSettingsButton": "Simulationseinstellungen",
+      "simulationSettingsDescription": "Optionen fuer den Start der elektrischen Simulation.",
+      "simulationSettingsTitle": "Simulationseinstellungen",
+      "allowSimulationWithDiagramCheckErrorsLabel": "Simulation auch bei Fehlern aus Diagrammpruefungen starten",
+      "allowSimulationWithDiagramCheckErrorsDescription": "Nur verwenden, wenn du ein Diagramm bewusst trotz vorhandener Pruefungsfehler untersuchen moechtest. Warnungen blockieren die Simulation nie.",
+      "autosaveEnabledLabel": "Diagramm automatisch lokal speichern",
+      "autosaveEnabledDescription": "Speichert eine Wiederherstellungskopie in diesem Browser. Beim Deaktivieren wird der aktuelle Autosave geloescht."
+    },
+    "export": {
+      "title": "Speichern / Export / Beispiele",
+      "buttonSave": "Modell speichern",
+      "buttonSaveAs": "Modell speichern unter...",
+      "buttonExportPNG": "Modell nach PNG Datei exportieren",
+      "buttonExportJPEG": "Modell nach JPEG Datei exportieren",
+      "buttonExportSVG": "Modell nach SVG Datei exportieren",
+      "buttonOpen": "Modell öffnen...",
+      "buttonShare": "Einen öffentlichen Link zum Modell generieren",
+      "currentFile": "Aktuelle Datei: {{name}}",
+      "saveAsModalTitle": "Modell speichern unter",
+      "saveAsModalOk": "Speichern",
+      "dividerExport": "Exportieren",
+      "dividerSaveOpen": "Speichern / Öffnen",
+      "dividerShare": "Teilen",
+      "dividerExamples": "Beispiele laden",
+      "share": {
+        "modalTitle": "Modell teilen - Link generieren",
+        "modalLinkText": "Link:",
+        "modalLinkBeingGenerated": "... wird generiert ... bitte warten",
+        "modalButtonOK": "OK",
+        "modalButtonClose": "Schließen",
+        "modalButtonCancel": "Abbrechen",
+        "modalAttentionText": "Beim Klicken auf \"OK\" wird Ihr Model mit allen eingegebenen Daten an einen öffentlichen Server (https://github.com) übertragen und dort gespeichert. Für diesen Zweck werden außerdem Ihre Model Daten sowie Ihre IP Adresse an https://wled-api.myhome-control.de/ übertagen. Sie erhalten danach ein Link angezeigt und können mit diesem Link das Modell mit anderen teilen.",
+        "modalLinkError": "Fehler! Bitte versuchen Sie es ggf. erneut.",
+        "tooltipCopyLink": "Link in die Zwischenablage kopieren",
+        "messageLinkCopied": "Link in die Zwischenablage kopiert!"
+      },
+      "selectExample": "Beispiel wählen ..."
+    }
+  },
+  "footRow": {
+    "legalNotice": {
+      "title": "Impressum",
+      "responsible": "Verantwortlicher: Wladislaw Waag",
+      "address": "Adresse: Wasserburger Landstr. 29, 81825 München, Deutschland",
+      "contact": "Kontakt: +49 (0) 176 47 11 5206, info@myhome-control.de",
+      "disputeText": "",
+      "disputeSettlmentText": "Verbraucherstreitbeilegung/Universalschlichtungsstelle: Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen."
+    },
+    "dataPrivacy": {
+      "title": "Datenschutzerklärung",
+      "text1": "Diese Seite wird im Rahmen von 'Github Pages' gehostet und betrieben. Es ist möglich und wahrscheinlich, dass Github Ihre personenbezogenen Daten sammelt und verarbeitet. Das betrifft dann auch die Besucher dieser Webseite. Wir haben aber keinerlei Einfluss darauf. Bitte lesen Sie dazu die Datenschutzerklärung von Github:",
+      "text2": "Außerdem sobald Sie die Funktion 'Teilen' nutzen, werden Ihre IP Adresse, Ihr Modell sowie alle von Ihnen eingegebenen Daten an https://myhome-control.de und an https://github.com/wled-development/wled-wiring-store weitergeleitet. Das ist für die Ausführung der Funktion zwingend notwendig. Die Datenschutzerklärung für https://myhome-control.de finden Sie unter",
+      "text3": "Unsere Webseite enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Für diese fremden Inhalte können wir keine Gewähr und keine Haftung übernehmen. Für die Inhalte der verlinkten Seiten ist immer der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren dabei nicht erkennbar. Sollten uns Rechtsverletzungen bekannt werden, werden wir die entsprechende Verlinkung umgehend entfernen."
+    },
+    "links": {
+      "title": "Nützliche Links",
+      "link1Text": "Offizielle WLED Dokumentation:",
+      "link2Text": "WLED FAQ:",
+      "link3Text": "WLED Rechner:",
+      "link4Text": "Erweiterter WLED Online Installer:",
+      "link5Text": "WELD online kompilieren:",
+      "link6Text": "WLED Controller kaufen (Deutschland):",
+      "link7Text": "WLED Controller kaufen (Weltweit):"
+    },
+    "contribute": {
+      "title": "Mitentwickeln/GitHub",
+      "text": "Beiträge sind Willkommen! Wenn Sie beitragen möchten, folgen Sie bitte dem GitHub link:"
+    }
+  },
+  "examples": {
+    "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
+    "example2": "ABC! WLED Controller + 24V LED Strip",
+    "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
+    "example4": "ABC! WLED Controller + Long Range Extension",
+    "example5": "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
+  },
+  "compData": {
+    "Router": {
+      "name": "WAN/LAN Router",
+      "description": "Ein generischer WLAN/LAN Router.",
+      "descriptionShort": "generisch"
+    },
+    "Button": {
+      "name": "Taster",
+      "description": "Ein generischer Taster. Beim Drücken und Halten wird der Kontakt geschlossen. Der Kontakt öffnet sich, sobald der Taster losgelassen wird. Nicht zu verwechseln mit einem Schalter.",
+      "descriptionShort": "generisch"
+    },
+    "DC_JACK_FEMALE": {
+      "name": "DC Verbinder",
+      "description": "Wird verwendet um ein Netzteil mit einem DC Verbinder in eine + und eine - Leitung aufzuteilen.",
+      "descriptionShort": "Für bis zu 3A"
+    },
+    "Elko": {
+      "name": "Elektrolytkondensator",
+      "description": "Ein Elektrolytkondensator mit wählbarer Kapazität. Auf die Polarität achten! Wird oft eingesetzt, um die Versorgungsspannung von LEDs oder anderen Komponenten zu stabilisieren.",
+      "descriptionShort": "wählbare Kapazität"
+    },
+    "ESP32_30P": {
+      "name": "ESP32 uC 30 Pins",
+      "description": "ESP32 Controller, Version mit 30 Pins. Bekannt auch als NodeMCU.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32_38P": {
+      "name": "ESP32 uC 38 Pins",
+      "description": "ESP32 Controller, Version mit 38 Pins. Bekannt auch als NodeMCU.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32C3D1mini": {
+      "name": "ESP32-C3 D1 mini",
+      "description": "ESP32-C3 Controller, Version in D1 mini Format. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32C3_supermini": {
+      "name": "ESP32-C3 supermini",
+      "description": "ESP32-C3 Controller, supermini. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32D1mini": {
+      "name": "ESP32 D1 mini",
+      "description": "ESP32 Controller, Version in D1 mini Format.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32S3D1mini": {
+      "name": "ESP32-S3 D1 mini",
+      "description": "ESP32-S3 Controller, Version in D1 mini Format. WLED kann auf diesem Controller-Typ mit Einschränkungen laufen.",
+      "descriptionShort": "Controller"
+    },
+    "ESP8266D1mini": {
+      "name": "ESP8266 D1 mini",
+      "description": "ESP8266 Controller, Version in D1 mini Format. Für neue WLED-Projekte nicht mehr empfohlen (zu schwach).",
+      "descriptionShort": "Controller"
+    },
+    "InfoNode": {
+      "name": "Text",
+      "description": "Ein Textelement um z.B. Beschriftungen dem Diagramm hinzufügen.",
+      "descriptionShort": "für Beschriftungen etc."
+    },
+    "INMP441": {
+      "name": "INMP441 Mikrofon",
+      "description": "INMP441 Mikrofon. Es ist ein digitales Mikrofon, welches von WLED für Sound Reactive unterstützt wird und eine sehr gute Qualität liefert.",
+      "descriptionShort": "digitales"
+    },
+    "IR_KY022": {
+      "name": "KY022 IR Empfänger",
+      "description": "KY-022 Infrarot Empfänger, welcher von WLED unterstützt wird und erlaubt WLED mit einer IR-Fernbedienung zu steuern.",
+      "descriptionShort": "Infrarot"
+    },
+    "IR_TSOP38238": {
+      "name": "TSOP38238 IR Empfänger",
+      "description": "TSOP38238 Infrarot Empfänger, welcher von WLED unterstützt wird und erlaubt WLED mit einer IR-Fernbedienung zu steuern.",
+      "descriptionShort": "Infrarot"
+    },
+    "Kerko": {
+      "name": "Keramikkondensator",
+      "description": "Keramikkondensator mit wählbarer Kapazität. Wird oft am Eingang von schaltenden elektronischen Schaltungen eingesetzt (zwischen Versorgung und Masse) um Störungen zu vermeiden. Muss über möglichst sehr kurze Leitungen/Leiterbahnen angebunden werden.",
+      "descriptionShort": "wählbare Kapazität"
+    },
+    "LineBoxNode": {
+      "name": "Rechteck",
+      "description": "Ein Element um ein Rechteck (gefüllt oder leer) zu zeichnen.",
+      "descriptionShort": "Zeichnungselement"
+    },
+    "miniOTOFuse": {
+      "name": "KFZ Sicherung",
+      "description": "Eine Schmelzsicherung aus KFZ-Bereich. Ideal für Einsatz bei Spannungen bis zu 32V. Bitte nur in Fachgeschäften kaufen, es werden auf Marktplätzen viele billige Nachbauten angeboten, welche nicht wie es soll funktionieren. Für die Auslegung kann WLED Rechner (www.wled-calculator.github.io) verwendet werden.",
+      "descriptionShort": "wählbar 4-30A"
+    },
+    "FUSE_Board": {
+      "name": "Sicherugsboard",
+      "description": "Für Stromverteilung und Sicherungen.",
+      "descriptionShort": "4 Kanäle"
+    },
+    "PIR_HCSR501": {
+      "name": "HC-SR501 PIR Sensor",
+      "description": "PIR Sensor (Bewegungsmelder) vom Typ HCSR501. Kann mit WLED verwendet werden.",
+      "descriptionShort": "Bewegungsmelder"
+    },
+    "PLUG_LNPE": {
+      "name": "Stecker",
+      "description": "Stecker für 230V Steckdose. Achtung: Lebensgefahr! Nur zum Aufbau verwenden, wenn Sie geeignete Kenntnisse besitzen.",
+      "descriptionShort": "für 230V AC"
+    },
+    "PSU_HP": {
+      "name": "Netzteil",
+      "description": "Netzteil mit wählbarer Spannung / Strom (Leistung). Diese Netzteile besitzen typischerweise hohe Leistungen und werden für größere Aufbauten eingesetzt. Netzstecker muss separat angebunden werden.",
+      "descriptionShort": "wählbare V/I"
+    },
+    "PSU_USB": {
+      "name": "USB Netzteil",
+      "description": "USB Netzteil mit 5V Ausgangsspannung und wählbarem Strom bis zu 5A.",
+      "descriptionShort": "5V, wählbarerer I"
+    },
+    "PSU_USB_WIRES": {
+      "name": "USB Netzteil",
+      "description": "USB Netzteil mit 5V Ausgangsspannung, wählbarem Strom bis zu 5A und separaten +/- Leitungen",
+      "descriptionShort": "5V, separate +/- Leitungen"
+    },
+    "Resistor": {
+      "name": "Widerstand",
+      "description": "Elektrischer Widerstand wählbarer Größe.",
+      "descriptionShort": "wählbarer Wert"
+    },
+    "SN74AHCT125N": {
+      "name": "Level Shifter",
+      "description": "Ein für WLED empfohlener Level Shifter Typ. Ein Level Shifter ist notwendig um den Steuersignal vom Microcontroller (3.3V Pegel) auf LED-Dateneingang (5V Pegel) anzupassen (bei adressierbaren LEDs). Ohne ein Level Shifter kommt es oft (und bei 12V und 24V LEDs fast immer) zum Flackern der LEDs.",
+      "descriptionShort": "SN74AHCT125N"
+    },
+    "SolderJoint": {
+      "name": "Lötverbindung",
+      "description": "Darstellung einer Lötverbindung, um z.B. einzelne Leitungen miteinander zu verbinden.",
+      "descriptionShort": "für Leitungen etc."
+    },
+    "WAGO_2X": {
+      "name": "WAGO Klemme 2x",
+      "description": "Weit verbreitete Verbindungsklemme mit Federklemmanschluss, zweifach.",
+      "descriptionShort": "Federklemmanschluss"
+    },
+    "WAGO_3X": {
+      "name": "WAGO Klemme 3x",
+      "description": "Weit verbreitete Verbindungsklemme mit Federklemmanschluss, dreifach.",
+      "descriptionShort": "Federklemmanschluss"
+    },
+    "WireInfoNode": {
+      "name": "Wire Info",
+      "description": "Information über die Leitung.",
+      "descriptionShort": " "
+    },
+    "WS2812B_5V_30LPM": {
+      "name": "WS2812B RGB",
+      "description": "WS2812 LED Streifen, 5V, 30 LEDs/Meter, einzeln adressierbare LEDs.",
+      "descriptionShort": "5V, 30 LEDs/Meter"
+    },
+    "MHC_V43": {
+      "name": "WLED V43 Controller",
+      "description": "Ein professioneller WLED-Controller für 5V, 12V oder 24V adressierbare LEDs. Beinhaltet ESP32 Mikrocontroller, SN74AHCT Level Shifter, Sicherung, Kondensator, EMV Filter. Als optionales Zubehör können Ethernet-Adapter, INMP441 Mikrofon, Line-In Adapter sowie USB Adapter angeschlossen werden.",
+      "descriptionShort": "ESP32 basiert"
+    },
+	"MHC_V57": {
+      "name": "WLED PRO V57 Controller",
+      "description": "Ein professioneller WLED-Controller für 5V, 12V oder 24V adressierbare LEDs. Beinhaltet ESP32 Mikrocontroller (mit 8MB Flash  + 2MB PSRAM), SN74AHCT Level Shifter, Sicherung, Kondensator, EMV Filter, iMOSFET. Als optionales Zubehör können Ethernet-Adapter, INMP441 Mikrofon, Line-In Adapter sowie USB Adapter angeschlossen werden.",
+      "descriptionShort": "ESP32 basiert"
+    },
+    "MHC_SwitchBoard": {
+      "name": "WLED Switch Board",
+      "description": "Eine bessere/moderne Alternative für Relais Board um LEDs im OFF Zustand komplett auszuschalten. Beinhaltet Überstrom-, Übertemperatur-, Kurzschluss- und Verpolschutz.",
+      "descriptionShort": "universell für 5-24V"
+    },
+    "MHC_PWMBoard": {
+      "name": "WLED PWM Board",
+      "description": "Das Board verwendet MOSFETs um mit PWM Signal analoge LED Streifen anzusteuern. 3 Kanäle je max. 5A. Überstrom- , Übertemperatur-, Kurzschluss- und Verpolschutz.",
+      "descriptionShort": "universell für 12-48V"
+    },
+    "MHC_RS485_R": {
+      "name": "RS-485 Empfänger",
+      "description": "RS-485 Empfänger für die Verwendung als Range Extender Empfänger mit dem RS-485 Adapter.",
+      "descriptionShort": "RS-485 Empfänger"
+    },
+    "MHC_Relay5V": {
+      "name": "5V Relais Board",
+      "description": "Ein professionelles Relais-Board für die Verwendung in Kombination mit 5V adressierbaren LEDs. Es erlaubt die 5V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
+      "descriptionShort": "für 5V LEDs"
+    },
+    "MHC_Relay12V": {
+      "name": "12V Relais Board",
+      "description": "Ein professionelles Relais-Board für die Verwendung in Kombination mit 12V adressierbaren LEDs. Es erlaubt die 12V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
+      "descriptionShort": "für 12V LEDs"
+    },
+    "MHC_Relay24V": {
+      "name": "24V Relais Board",
+      "description": "Ein professionelles Relais-Board für die Verwendung in Kombination mit 24V adressierbaren LEDs. Es erlaubt die 24V LED Streifen im Off Zustand durch Relais abzuschalten. Das spart Energie, erhöht die Lebensdauer von LED Streifen und bringt zusätzliche Sicherheit. Zwei Pfade ermöglichen zwei separate Steuerungen oder z.B. zwei Einspeisungen zu kontrollieren.",
+      "descriptionShort": "für 24V LEDs"
+    },
+    "AUDIO_SOURCE": {
+      "name": "Audioquelle",
+      "description": "Eine generische Quelle für Audio-Signal.",
+      "descriptionShort": "Line-Out"
+    },
+    "LM2596_PCB": {
+      "name": "LM2596 DC/DC",
+      "description": "DC/DC (Step-Down) Konverter mit einstellbarer Ausgangsspannung.",
+      "descriptionShort": "einstellbarer Ausg."
+    },
+    "IRLZ44N": {
+      "name": "IRLZ44N",
+      "description": "MOSFET. Dieser Typ ist für die Verwendung mit WLED empfohlen und kann für die Ansteuerung von analogen LED Streifen verwendet werden.",
+      "descriptionShort": "N-Kanal MOSFET"
+    },
+    "DCDC_mini": {
+      "name": "DC/DC mini",
+      "description": "DC/DC (Step-Down) Konverter mit einstellbarer Ausgangsspannung.",
+      "descriptionShort": "einstellbarer Ausg."
+    },
+    "WS2814_24V_60LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED Streifen, adressierbare LEDs in 6er Gruppen (1 logische LED = 6 physikalische).",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2813_5V_60LPM": {
+      "name": "WS2813 RGB",
+      "description": "RGB LED Streifen mit Backup-Line.",
+      "descriptionShort": "5V, 60 LEDs/m"
+    },
+    "WS2815_12V_30LPM": {
+      "name": "WS2815 RGB",
+      "description": "RGB LED Streifen mit Backup-Line.",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2814_12V_30LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED Streifen, adressierbare LEDs in 3er Gruppen (1 logische LED = 3 physikalische).",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2818_12V_30LPM": {
+      "name": "WS2818 RGB",
+      "description": "RGB LED Streifen, adressierbare LEDs in 3er Gruppen (1 logische LED = 3 physikalische).",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "FCOB_12V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED Streifen, 720 LEDs/m (240 LEDs jeder Farbe pro Meter, 20 logische LEDs/m)",
+      "descriptionShort": "12V, 720 LEDs/m"
+    },
+    "FCOB_24V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED Streifen, 720 LEDs/m (240 LEDs jeder Farbe pro Meter, 20 logische LEDs/m)",
+      "descriptionShort": "24V, 720 LEDs/m"
+    },
+    "FCOB_24V_784LPM": {
+      "name": "FCOB RGBW",
+      "description": "FCOB RGBW LED Streifen, 784 LEDs/m (196 LEDs jeder Farbe pro Meter, 14 logische LEDs/m)",
+      "descriptionShort": "24V, 784 LEDs/m"
+    },
+    "APA102_5V_30LPM": {
+      "name": "APA102 RGB",
+      "description": "APA102 LED Streifen mit Clock Signal, 5V, 30 LEDs/Meter, einzeln adressierbare LEDs.",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "AN_WHITE_24V_240LPM": {
+      "name": "Analog. Weiss",
+      "description": "Analoges LED Streifen (Weisse 2835 LEDs), 24V, 240 LEDs/Meter, teilbar in 2,5 cm (6 LEDs)",
+      "descriptionShort": "24V, 240 weisse LEDs/m"
+    },
+    "AN_RGB_CCT_48V_90LPM": {
+      "name": "Anal. RGB CCT",
+      "description": "Analoges RGB CCT LED Streifen (5050 LEDs), 48V, 90 LEDs/Meter, teilbar in 16.65 cm (15 LEDs)",
+      "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM": {
+      "name": "Anal. RGB ",
+      "description": "Analoges RGB LED Streifen (2835 LEDs), 24V, 120 LEDs/Meter, teilbar in 5 cm (6 LEDs)",
+      "descriptionShort": "24V, 120 LEDs/m"
+    },
+    "WS2805_24V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED Streifen (digital), adressierbare LEDs in 36r Gruppen (1 logische LED = 6 physikalische).",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2805_12V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED Streifen (digital), adressierbare LEDs in 36r Gruppen (1 logische LED = 6 physikalische).",
+      "descriptionShort": "12V, 60 LEDs/m"
+    }
+  }
 }

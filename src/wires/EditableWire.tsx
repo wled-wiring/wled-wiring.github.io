@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 
 import {
   EdgeProps,
@@ -24,10 +24,10 @@ import CrosssectionSvg from '../icons/crosssection.svg?react';
 import { gray, red, green, blue, cyan, purple, magenta, gold } from '@ant-design/colors';
 
 import "./EditableWire.css";
-import { WireInfoNode } from "../components/ComponentTypes/WireInfoNode.ts";
+import { WireInfoNode } from "../components/catalog/internalTemplates.ts";
 
-import {ComponentDataType, HandleDataType, EdgeDataType, edgePoint, XYPoint, intersectionPoint, segmentData, type EditableWire} from "../types.ts";
-import {canonicalizeColorForCompare, colorNameToRGBString, postypeToAdjustedXY} from "../utils/utils_functions.ts";
+import {ComponentDataType, EdgeDataType, edgePoint, XYPoint, intersectionPoint, segmentData, type EditableWire} from "../types.ts";
+import {canonicalizeColorForCompare, colorNameToRGBString, findHandleData, getRenderedWireEndpoint, postypeToAdjustedXY} from "../utils/utils_functions.ts";
 import { collapseMergeableSolderJoints, getSolderJointEndpointIds } from "../utils/wireMerge.ts";
 import { getSegmentOrientation, moveWireSegment, type SegmentOrientation } from "../utils/wireSegmentMove.ts";
 import { applySolderJointSegmentMove } from "../utils/solderJointSegmentMove.ts";
@@ -37,6 +37,14 @@ import { useSelectedElementsCount } from "../utils/useSelectedElementsCount.ts";
 import { createDiagramCheckContext } from "../check/checkContext.ts";
 import { useZustandStore } from "../utils/pathfinder_functions.ts";
 import { routeWireWithPathfinder } from "../utils/rotateWireRouting.ts";
+import { useSimulationResultStore } from "../simulation/simulationResultStore.ts";
+import {
+  DEFAULT_USB_WIRE_AWG,
+  GENERAL_WIRE_AWG_PRESETS,
+  GENERAL_WIRE_MM2_PRESETS,
+  USB_WIRE_AWG_PRESETS,
+  USB_WIRE_MM2_PRESETS,
+} from "./wireDefaults.ts";
 
 const ROUNDN=1;
 const SEGMENT_DRAG_THRESHOLD = 4;
@@ -64,6 +72,7 @@ const WIRE_JUMP_HALO_COLOR = '#fff';
 const WIRE_JUMP_HALO_WIDTH_EXTRA = 3;
 const WIRE_JUMP_MERGE_GAP = 2;
 const WIRE_JUMP_MERGED_HEIGHT_EXTRA = 1.5;
+const MIXED_WIRE_VALUE_PLACEHOLDER = "-";
 
 let globalSegmentDragSession = 0;
 let globalSegmentDragCleanup: (() => void) | null = null;
@@ -72,6 +81,32 @@ const clamp = (value: number, min: number, max: number) => Math.min(Math.max(val
 
 const finiteNumberOr = (value: unknown, fallback: number) => (
   typeof value === 'number' && Number.isFinite(value) ? value : fallback
+);
+
+type AggregatedWireValue<T> =
+  | {kind: 'empty'}
+  | {kind: 'mixed'}
+  | {kind: 'single'; value: T};
+
+const aggregateWireValue = <T,>(
+  edges: Edge<EdgeDataType>[],
+  getValue: (edge: Edge<EdgeDataType>) => T | null | undefined,
+): AggregatedWireValue<T> => {
+  const rawValues = edges.map(getValue);
+  const values = rawValues.filter((value): value is T => value !== null && value !== undefined);
+  const hasMissingValue = rawValues.length !== values.length;
+
+  if(values.length === 0) return {kind: 'empty'};
+  if(hasMissingValue) return {kind: 'mixed'};
+
+  const first = values[0];
+  return values.every((value) => Object.is(value, first))
+    ? {kind: 'single', value: first}
+    : {kind: 'mixed'};
+};
+
+const aggregatedValueOrUndefined = <T,>(value: AggregatedWireValue<T>) => (
+  value.kind === 'single' ? value.value : undefined
 );
 
 const rectsOverlap = (
@@ -335,6 +370,7 @@ export default function EditableWire ({
   const {t} = useTranslation(['main']);
   const edgeData = data as EdgeDataType;
   const checkHighlighted=Boolean(edgeData.checkHighlighted);
+  const simulationHighlighted=Boolean(edgeData.simulationHighlighted);
 
   const edgePoints = edgeData.edgePoints ?? [];
 
@@ -369,6 +405,7 @@ export default function EditableWire ({
   const reactFlowInstance=useReactFlow();
   const { takeSnapshot } = useUndoRedo();
   const pathFindingEnabled = useZustandStore((state) => state.pathFindingEnabled);
+  const setSimulationWireHover = useSimulationResultStore((state) => state.setWireHover);
   const edgePointDragSnapshotTakenRef = useRef(false);
   const segmentDragCleanupRef = useRef<(() => void) | null>(null);
   const suppressSegmentTouchDragUntilRef = useRef(0);
@@ -435,17 +472,17 @@ export default function EditableWire ({
   //console.log(sourceHandle);
   //console.log("Edge original sourceX, sourceY = ", [sourceX, sourceY])
 
-  let sourceHandleDef = (sourceNode?.data?.handles!=undefined) ? (sourceNode?.data?.handles as Array<HandleDataType>).filter((handleDef)=>handleDef.hid ==sourceHandleId)[0] : undefined;
-  // if undefined, then the handle probably in the repeatedHandleArray
-  if(sourceHandleDef==undefined) {
-    sourceHandleDef = (sourceNode?.data?.handles!=undefined) ? (sourceNode?.data?.repeatedHandleArray as Array<HandleDataType>).filter((handleDef)=>handleDef.hid ==sourceHandleId)[0] : undefined;
-  }
+  const sourceHandleDef = findHandleData(sourceNode, sourceHandleId);
   
   let sourceXadjusted=Math.round(sourceX/ROUNDN)*ROUNDN;
   let sourceYadjusted=Math.round(sourceY/ROUNDN)*ROUNDN;
   const sourceNodeRotation = (sourceNode?.data.rotation as number);
 
-  if(sourceHandleDef!=undefined) {
+  const renderedSourceEndpoint = getRenderedWireEndpoint(sourceNode, sourceHandleId);
+  if(renderedSourceEndpoint) {
+    sourceXadjusted = renderedSourceEndpoint.x;
+    sourceYadjusted = renderedSourceEndpoint.y;
+  } else if(sourceHandleDef!=undefined) {
     [sourceXadjusted, sourceYadjusted] = postypeToAdjustedXY(
       sourceHandleDef.postype,
       sourceX,
@@ -459,18 +496,17 @@ export default function EditableWire ({
   const targetNode = useInternalNode(target);
   const preserveEndPinStub = (targetNode?.data as ComponentDataType | undefined)?.technicalID !== 'SolderJoint';
   const targetHandle=targetNode?.internals.handleBounds?.source?.filter((handle)=>(handle.id==targetHandleId))[0];
-  let targetHandleDef= (targetNode?.data?.handles!=undefined) ? (targetNode?.data?.handles as Array<HandleDataType>).filter((handleDef)=>handleDef.hid ==targetHandleId)[0] : undefined;
- 
-  if(targetHandleDef==undefined) {
-    // if undefined, it is probably in repetaed
-    targetHandleDef= (targetNode?.data?.handles!=undefined) ? (targetNode?.data?.repeatedHandleArray as Array<HandleDataType>).filter((handleDef)=>handleDef.hid ==targetHandleId)[0] : undefined;
-  }
+  const targetHandleDef = findHandleData(targetNode, targetHandleId);
   
   let targetXadjusted=Math.round(targetX/ROUNDN)*ROUNDN;
   let targetYadjusted=Math.round(targetY/ROUNDN)*ROUNDN;
   const targetNodeRotation = (targetNode?.data.rotation as number);
   
-  if(targetHandleDef!=undefined) {
+  const renderedTargetEndpoint = getRenderedWireEndpoint(targetNode, targetHandleId);
+  if(renderedTargetEndpoint) {
+    targetXadjusted = renderedTargetEndpoint.x;
+    targetYadjusted = renderedTargetEndpoint.y;
+  } else if(targetHandleDef!=undefined) {
     [targetXadjusted, targetYadjusted] = postypeToAdjustedXY(
       targetHandleDef.postype,
       targetX,
@@ -1383,7 +1419,9 @@ export default function EditableWire ({
     })));
   };
 
-  const clearSelectedWireNetwork = () => {
+
+
+  const clearSelectedWireNetwork = useCallback(() => {
     setSelectedNetworkEdgeIds(null);
     reactFlowInstance.setNodes((nodes) => nodes.map((node) => (
       node.data.checkHighlighted
@@ -1407,7 +1445,7 @@ export default function EditableWire ({
         }
         : edge
     )));
-  };
+  }, [setSelectedNetworkEdgeIds, reactFlowInstance]);
 
   const getSolderJointHandleIdsForEdges = (
     nodes: Node<ComponentDataType>[],
@@ -1583,6 +1621,18 @@ export default function EditableWire ({
   const selectedNetworkActive = Boolean(selectedNetworkEdgeIds?.length);
   const selectableNetworkEdgeCount = findElementaryNetForWire()?.edges.length ?? 0;
   const showWireNetworkButton = selectedNetworkActive || selectableNetworkEdgeCount > 1;
+  const activeWireEdges = selectedNetworkActive
+    ? (reactFlowInstance.getEdges() as Edge<EdgeDataType>[]).filter((edge) => (
+      selectedNetworkEdgeIds?.includes(edge.id)
+    ))
+    : (reactFlowInstance.getEdge(id) ? [reactFlowInstance.getEdge(id) as Edge<EdgeDataType>] : []);
+  const activeWireWidth = aggregateWireValue(activeWireEdges, (edge) => edge.data?.width);
+  const activeWireCrosssection = aggregateWireValue(activeWireEdges, (edge) => edge.data?.physCrosssection);
+  const activeWireCrosssectionUnit = aggregateWireValue(activeWireEdges, (edge) => edge.data?.physCrosssectionUnit);
+  const activeWireScopeUsesOnlyUsbPresets = (
+    activeWireEdges.length > 0 &&
+    activeWireEdges.every((edge) => edge.data?.physType === "usb")
+  );
   const updateActiveWireScope = (
     patch: Partial<EdgeDataType>,
     wireInfoPatch?: Partial<ComponentDataType>,
@@ -1621,7 +1671,7 @@ export default function EditableWire ({
   const contentLineWidth = (
     <>
     <Radio.Group
-      value={edgeData.width}
+      value={aggregatedValueOrUndefined(activeWireWidth)}
       options={[
         { value: 1, label: "1px" },
         { value: 2, label: "2px" },
@@ -1637,16 +1687,21 @@ export default function EditableWire ({
     </>
   );
 
-  const crosssectionsMM2=[0.25, 0.34, 0.5, 0.75, 1, 1.5, 2.5, 4, 6];
-  const crosssectionsAWG=[24, 22, 20, 18, 16, 14, 12, 10, 8];
+  const crosssectionsMM2 = activeWireScopeUsesOnlyUsbPresets ? [...USB_WIRE_MM2_PRESETS] : [...GENERAL_WIRE_MM2_PRESETS];
+  const crosssectionsAWG = activeWireScopeUsesOnlyUsbPresets ? [...USB_WIRE_AWG_PRESETS] : [...GENERAL_WIRE_AWG_PRESETS];
+  const activeCrosssectionUnit = aggregatedValueOrUndefined(activeWireCrosssectionUnit);
+  const activeCrosssectionOptions = activeCrosssectionUnit === "AWG" ? crosssectionsAWG : crosssectionsMM2;
+  const activeCrosssectionValue = activeCrosssectionUnit
+    ? aggregatedValueOrUndefined(activeWireCrosssection)
+    : undefined;
 
   const contentPhysLineCrosssection = (
     <>
     <Select
-      key={"CS"+edgeData.physCrosssectionUnit+String(edgeData.physCrosssection)}
-      defaultValue={typeof(edgeData.physCrosssection)==="number"?edgeData.physCrosssection:crosssectionsMM2[3]}
-      //value={typeof(edgeData.physCrosssection)==="number"?edgeData.physCrosssection:crosssectionsMM2[3]}
-      options={(typeof(edgeData.physCrosssectionUnit)==="string"?(edgeData.physCrosssectionUnit==="mm2"?crosssectionsMM2:crosssectionsAWG):crosssectionsMM2).map(val=>({label: String(val), value: val}))}
+      value={activeCrosssectionValue}
+      placeholder={activeWireCrosssection.kind === 'mixed' ? MIXED_WIRE_VALUE_PLACEHOLDER : undefined}
+      disabled={!activeCrosssectionUnit}
+      options={activeCrosssectionOptions.map(val=>({label: String(val), value: val}))}
       style={{width:100}}
       onChange={(value)=>{
         updateActiveWireScope(
@@ -1658,16 +1713,19 @@ export default function EditableWire ({
     />
     &nbsp;
     <Select
-      key={"CSU"+edgeData.physCrosssectionUnit+String(edgeData.physCrosssection)}
-      defaultValue={typeof(edgeData.physCrosssectionUnit)==="string"?edgeData.physCrosssectionUnit:"mm2"}
-      //value={typeof(edgeData.physCrosssectionUnit)==="string"?edgeData.physCrosssectionUnit:"mm2"}
+      value={aggregatedValueOrUndefined(activeWireCrosssectionUnit)}
+      placeholder={activeWireCrosssectionUnit.kind === 'mixed' ? MIXED_WIRE_VALUE_PLACEHOLDER : undefined}
       options={[
         {value: "mm2", label: "mm2"},
         {value: "AWG", label: "AWG"},
       ]}
       style={{width:70}}
       onChange={(value)=>{
-        const physCrosssectionvalue=(value==="mm2"?crosssectionsMM2[3]:crosssectionsAWG[3]);
+        const physCrosssectionvalue = value === "mm2"
+          ? crosssectionsMM2[0]
+          : activeWireScopeUsesOnlyUsbPresets
+            ? DEFAULT_USB_WIRE_AWG
+            : crosssectionsAWG[3];
         updateActiveWireScope(
           {physCrosssection: physCrosssectionvalue, physCrosssectionUnit: value},
           {wireInfo_crosssectionUnit: value, wireInfo_crosssection: physCrosssectionvalue},
@@ -1691,7 +1749,7 @@ export default function EditableWire ({
     if(!selected && selectedNetworkEdgeIds) {
       clearSelectedWireNetwork();
     }
-  }, [selected, selectedNetworkEdgeIds]);
+  }, [selected, selectedNetworkEdgeIds, clearSelectedWireNetwork]);
 
   useEffect(() => () => {
     if(segmentDragRef.current) {
@@ -1762,11 +1820,15 @@ export default function EditableWire ({
             interactionWidth={0}
             style = {{
               stroke: selected ? `${edgeData.color_selected}` : `${edgeData?.color}`,
-              strokeWidth: checkHighlighted ? edgeData.width + 3 : edgeData.width,
+              strokeWidth: (checkHighlighted || simulationHighlighted) ? edgeData.width + 3 : edgeData.width,
               strokeLinecap: "round",
               strokeLinejoin: "round",
               //fill: "none",
-              filter: checkHighlighted?"drop-shadow(0px 0px 4px #faad14)":(edgeData.correspondingInfoNodeSelected?"drop-shadow(0px 0px 2px)":""), //url(/filters.svg#double)
+              filter: simulationHighlighted
+                ? "drop-shadow(0px 0px 4px #1677ff)"
+                : checkHighlighted
+                  ? "drop-shadow(0px 0px 4px #faad14)"
+                  : (edgeData.correspondingInfoNodeSelected?"drop-shadow(0px 0px 2px)":""), //url(/filters.svg#double)
             }}
           />
           <path
@@ -1776,8 +1838,23 @@ export default function EditableWire ({
             strokeWidth={10}
             strokeLinecap="round"
             className="react-flow__edge-interaction"
+            onMouseMove={(event) => {
+              const flowPosition = reactFlowInstance.screenToFlowPosition({
+                x: event.clientX,
+                y: event.clientY,
+              });
+              setSimulationWireHover({
+                edgeId: id,
+                x: flowPosition.x,
+                y: flowPosition.y,
+              });
+            }}
+            onMouseLeave={() => {
+              setSimulationWireHover(null);
+            }}
             onMouseDown={(event) => {
               if(event.button !== 0) return;
+              setSimulationWireHover(null);
               setWireToolbarAnchorFromPointer(event.clientX, event.clientY, index);
             }}
             onTouchStart={(event) => {
@@ -1793,15 +1870,17 @@ export default function EditableWire ({
           key={`edge${id}_corner${index}`}
           cx={x}
           cy={y}
-          r={(checkHighlighted ? edgeData.width + 3 : edgeData.width) / 2}
+          r={((checkHighlighted || simulationHighlighted) ? edgeData.width + 3 : edgeData.width) / 2}
           fill={selected ? `${edgeData.color_selected}` : `${edgeData.color}`}
           stroke={selected ? `${edgeData.color_selected}` : `${edgeData.color}`}
           strokeWidth={0}
           pointerEvents="none"
           style={{
-            filter: checkHighlighted
-              ? "drop-shadow(0px 0px 4px #faad14)"
-              : (edgeData.correspondingInfoNodeSelected ? "drop-shadow(0px 0px 2px)" : ""),
+            filter: simulationHighlighted
+              ? "drop-shadow(0px 0px 4px #1677ff)"
+              : checkHighlighted
+                ? "drop-shadow(0px 0px 4px #faad14)"
+                : (edgeData.correspondingInfoNodeSelected ? "drop-shadow(0px 0px 2px)" : ""),
           }}
         />
       ))}

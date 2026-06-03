@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -164,14 +165,17 @@ export const useUndoRedoController = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [redo, undo]);
 
-  return {
-    canUndo: pastRef.current.length > 0,
-    canRedo: futureRef.current.length > 0,
+  const canUndo = pastRef.current.length > 0;
+  const canRedo = futureRef.current.length > 0;
+
+  return useMemo(() => ({
+    canUndo,
+    canRedo,
     takeSnapshot,
     undo,
     redo,
     clearHistory,
-  };
+  }), [canRedo, canUndo, clearHistory, redo, takeSnapshot, undo]);
 };
 
 export const UndoRedoProvider = ({

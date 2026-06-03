@@ -1,0 +1,1 @@
+export const ENABLE_COMPONENT_EDITOR_FOOTER_LINK = true;

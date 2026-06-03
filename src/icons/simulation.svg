@@ -1,0 +1,20 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hintergrund -->
+  <rect x="10" y="10" width="108" height="108" rx="18" fill="black"/>
+
+  <!-- Leiterbahnen -->
+  <path d="M26 40H54" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <path d="M74 88H102" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <path d="M102 40H74" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <path d="M54 88H26" stroke="white" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Knoten -->
+  <circle cx="26" cy="40" r="6" fill="white"/>
+  <circle cx="102" cy="40" r="6" fill="white"/>
+  <circle cx="26" cy="88" r="6" fill="white"/>
+  <circle cx="102" cy="88" r="6" fill="white"/>
+
+  <!-- Zentraler Blitz -->
+  <path d="M68 20L38 66H58L48 108L92 52H70L68 20Z"
+        fill="white"/>
+</svg>

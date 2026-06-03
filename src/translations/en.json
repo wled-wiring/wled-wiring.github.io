@@ -1,639 +1,1355 @@
-﻿{
-    "title":  "Welcome to WLED wiring designer!",
-    "dragComponents":  "Start by dragging components onto the workspace or load one of example diagramms",
-    "componentGroupTypes":  {
-                                "controller":  "Controller",
-                                "led":  "LEDs",
-                                "psu":  "Power sources",
-                                "levelshifter":  "Level shifter",
-                                "electronics":  "Electronics/Parts",
-                                "others":  "Other components"
-                            },
-    "buttons":  {
-                    "rotate":  "rotate",
-                    "longer":  "larger",
-                    "shorter":  "smaller"
-                },
-    "tooltip":  {
-                    "deleteWire":  "Delete this connection",
-                    "selectColor":  "Select color",
-                    "selectWireLength":  "Select wire length (physically)",
-                    "selectWireCrossSection":  "Select wire cross section (physically)",
-                    "selectWireWidth":  "Select wire width (for drawing)",
-                    "selectWireNetwork":  "Select whole network",
-                    "clearWireNetwork":  "Clear network selection",
-                    "putWireInfoNode":  "Add cable info box",
-                    "rerouteWire":  "Re-route wire with Pathfinder",
-                    "startConnection":  "Start connection",
-                    "closeConnection":  "Finish connectionn",
-                    "rotateLeft":  "Rotate left",
-                    "rotateRight":  "Rotate right",
-                    "delete":  "Delete",
-                    "copy":  "Copy",
-                    "enlarge":  "Enlarge",
-                    "shorten":  "Shorten",
-                    "switchFilled":  "Filled / border only",
-                    "increaseTextSize":  "Increase text size",
-                    "decreaseTextSize":  "Decrease text size",
-                    "textSize":  "Text size",
-                    "selectFont":  "Select font",
-                    "toggleBold":  "Toggle bold",
-                    "textAlign":  "Text alignment",
-                    "selectMulti":  "multiple select",
-                    "deleteSelected":  "delete selected",
-                    "componentInfo":  "Component info",
-                    "switchConnLineType":  "change connection type",
-                    "switchConnLineTypeHINT":  "TIP: change connection type"
-                },
-    "popover":  {
-                    "selectWireLength":  "Select wire length (physically):",
-                    "selectWireCrossSection":  "Select wire cross section (physically):",
-                    "selectWireWidth":  "Select wire width (for drawing):",
-                    "startConnection":  "Please select the pin/connector to start from:",
-                    "closeConnection":  "Please select the pin/connector to finish:"
-                },
-    "select":  {
-                   "startConnection":  "Select pin / connector",
-                   "closeConnection":  "Select pin / connector"
-               },
-    "message":  {
-                    "startPinSelected":  "Source pin/connector is selected. Now please select the target pin/connector.",
-                    "closePinSelected":  "The connection is ready.",
-                    "startPinFirst":  "Please first select starting pin/connector!",
-                    "theSamePin":  "Starting pin/connector is the same as end pin/connector!",
-                    "compAddSuccess":  "Added to the diagramm!",
-                    "loadModelSuccess":  "The WLED wiring model is successfully loaded!",
-                    "loadModelSuccessShort":  "Success",
-                    "loadingModel":  "Loading wiring model from file link ...",
-                    "loadModelError":  "The WLED wiring model cannot be loaded. Eventually this link is not valid any more.",
-                    "loadModelErrorShort":  "Error",
-                    "loadModelWrongLink":  "The link is wrong! Please check it.",
-                    "componentUpdatesApplied":  "The updates were applied. Please check this component.",
-                    "componentUpdatesAppliedShort":  "Updates applied",
-                    "componentUpdatesAvailableTitle":  "Component updates available",
-                    "componentUpdatesAvailableDescription":  "{{count}} component(s) in this diagram can be updated to the current template. Update all components now?",
-                    "componentUpdatesApplyAll":  "Update all",
-                    "componentUpdatesSkip":  "Do not update",
-                    "componentUpdatesAllApplied":  "{{count}} component update(s) were applied."
-                },
-    "sidebar":  {
-                    "components":  {
-                                       "title":  "Components",
-                                       "popoverTitle":  "Component info",
-                                       "addButtonText":  "Add to diagramm",
-                                       "updateButtonText":  "Update this component",
-                                       "updatePopoverTitle":  "Changes for this component",
-                                       "applyUpdatesButtonText":  "Apply updates",
-                                       "updateExplanation":  "This component in the diagram is older than the current component in the app. The following changes can be transferred.",
-                                       "noUpdateChanges":  "No updates available.",
-                                       "updateValueMissing":  "Missing",
-                                       "updateChangeProperty":  "Property",
-                                       "updateChangeCurrent":  "Current",
-                                       "updateChangeTemplate":  "Template",
-                                       "popoverContent":  {
-                                                              "whereToBuy":  "Where to buy?",
-                                                              "listOfConnections":  "List of pins/terminals",
-                                                              "listOfConnectionsHeading1":  "Pin / Terminal",
-                                                              "listOfConnectionsHeading2":  "Description"
-                                                          }
-                                   },
-                    "check":  {
-                                  "title":  "Check wiring diagramm",
-                                  "comingSoon":  "Rule-based check will be implemented in next months. Stay tuned!",
-                                  "buttonRun":  "Check diagram now",
-                                  "betaNoticeTitle":  "Beta version",
-                                  "betaNoticeDescription":  "This diagram check is still under development. Issue detection may be incomplete or incorrect.",
-                                  "notChecked":  "No check has been run yet.",
-                                  "noIssuesTitle":  "No issues found",
-                                  "noIssuesDescription":  "The current placeholder check did not find any hints.",
-                                  "issueCount":  "{{count}} result(s) found",
-                                  "recommendation":  "Recommendation",
-                                  "affectedElements":  "Affected elements",
-                                  "severity":  {
-                                                   "error":  "Error",
-                                                   "warning":  "Warning",
-                                                   "info":  "Info"
-                                               },
-                                  "classificationLabels":  {
-                                                               "gnd_net_type":  "ground",
-                                                               "suppl_net_type":  "DC supply",
-                                                               "digital_net_type":  "digital",
-                                                               "pwm_net_type":  "PWM",
-                                                               "analog_net_type":  "analog",
-                                                               "audio_net_type":  "audio",
-                                                               "eth_net_type":  "Ethernet",
-                                                               "usb_net_type":  "USB",
-                                                               "rs485_a_net_type":  "RS485 A",
-                                                               "rs485_b_net_type":  "RS485 B",
-                                                               "N_net_type":  "neutral",
-                                                               "L_net_type":  "line",
-                                                               "PE_net_type":  "protective earth"
-                                                           },
-                                  "signalLabels":  {
-                                                       "digital":  "digital",
-                                                       "pwm":  "PWM",
-                                                       "analog":  "analog",
-                                                       "audio":  "audio",
-                                                       "usb":  "USB"
-                                                   },
-                                  "mainsInputLabels":  {
-                                                           "line":  "line",
-                                                           "neutral":  "neutral",
-                                                           "pe":  "PE"
-                                                       },
-                                  "issues":  {
-                                                 "diagramEmpty":  {
-                                                                      "title":  "Diagram is empty",
-                                                                      "shortDescription":  "There are no components in the diagram yet.",
-                                                                      "description":  "The check can only provide technical guidance once components and wires are present in the diagram.",
-                                                                      "recommendation":  "Add components first, then run the check again."
-                                                                  }
-                                             },
-                                  "rules":  {
-                                                "network-rules":  {
-                                                                      "title":  "Network rules",
-                                                                      "description":  "Checks fundamental issues in component-linked nets.",
-                                                                      "issues":  {
-                                                                                     "groundMissing":  {
-                                                                                                           "title":  "No ground net is connected",
-                                                                                                           "shortDescription":  "GND pins exist, but no connected ground net was found.",
-                                                                                                           "description":  "At least one GND pin exists in the diagram, but none of them is wired. Components with a ground reference need a common ground connection.",
-                                                                                                           "recommendation":  "Connect the GND pins of the involved components together."
-                                                                                                       },
-                                                                                     "groundMultiple":  {
-                                                                                                            "title":  "Multiple separate ground nets",
-                                                                                                            "shortDescription":  "All GND connections must belong to one common ground net.",
-                                                                                                            "description":  "{{count}} separate ground nets were found. Parts of the circuit therefore do not share a common reference.",
-                                                                                                            "recommendation":  "Connect the separate ground nets together."
-                                                                                                        },
-                                                                                     "mainsLowVoltageMixed":  {
-                                                                                                                  "title":  "Mains voltage and low voltage are connected",
-                                                                                                                  "shortDescription":  "A net connects L/N to low-voltage or signal terminals.",
-                                                                                                                  "description":  "The net contains {{classifications}}. Mains voltage must not be connected to GND, DC supply, or signal nets.",
-                                                                                                                  "recommendation":  "Keep mains wiring strictly separated from low-voltage and signal wiring."
-                                                                                                              },
-                                                                                     "peActiveMixed":  {
-                                                                                                           "title":  "Protective earth is connected to an active conductor",
-                                                                                                           "shortDescription":  "A PE net is connected to active supply or a signal net.",
-                                                                                                           "description":  "The net contains {{classifications}}. PE must not be connected to L, N, DC supply, or signals.",
-                                                                                                           "recommendation":  "Separate PE from active conductors and signal connections."
-                                                                                                       },
-                                                                                     "rs485Mixed":  {
-                                                                                                        "title":  "RS485 A and B are connected",
-                                                                                                        "shortDescription":  "A net connects RS485_A to RS485_B.",
-                                                                                                        "description":  "The differential RS485 lines A and B must not be connected to each other.",
-                                                                                                        "recommendation":  "Separate RS485_A and RS485_B into two distinct nets."
-                                                                                                    },
-                                                                                     "mixedClassifications":  {
-                                                                                                                  "title":  "Different output types are connected",
-                                                                                                                  "shortDescription":  "A net contains multiple net classes.",
-                                                                                                                  "description":  "The net contains {{classifications}} at the same time. This means outputs of different types are connected together.",
-                                                                                                                  "recommendation":  "Separate the different output types into distinct nets."
-                                                                                                              },
-                                                                                     "multipleSupplySources":  {
-                                                                                                                   "title":  "Multiple independent voltage sources are connected",
-                                                                                                                   "shortDescription":  "A supply net contains multiple independent voltage sources.",
-                                                                                                                   "description":  "The net contains {{count}} independent voltage sources: {{sources}}.",
-                                                                                                                   "recommendation":  "Separate the voltage sources or make sure only forwarded outputs share the same net."
-                                                                                                               },
-                                                                                     "signalSinkWithoutSource":  {
-                                                                                                                     "title":  "{{signal}} input without source",
-                                                                                                                     "shortDescription":  "A {{signal}} input is wired, but the net has no matching source.",
-                                                                                                                     "description":  "The net contains {{sinks}}, but no matching {{signal}} output.",
-                                                                                                                     "recommendation":  "Connect the input to a matching output or check the pin function of the involved components."
-                                                                                                                 },
-                                                                                     "digitalSignalVoltageMismatch":  {
-                                                                                                                          "title":  "Digital level does not match",
-                                                                                                                          "shortDescription":  "A digital input is driven with an incompatible output voltage.",
-                                                                                                                          "description":  "{{input}} allows {{min}} V to {{max}} V, but is connected to incompatible digital outputs: {{sources}}.",
-                                                                                                                          "recommendation":  "Use a suitable level shifter or connect the input to a digital output within the allowed voltage range."
-                                                                                                                      },
-                                                                                     "multipleSignalSources":  {
-                                                                                                                   "title":  "Multiple {{signal}} sources are connected",
-                                                                                                                   "shortDescription":  "A {{signal}} net contains multiple outputs.",
-                                                                                                                   "description":  "The net connects multiple {{signal}} sources: {{sources}}.",
-                                                                                                                   "recommendation":  "Separate the outputs so each signal net has only one source."
-                                                                                                               },
-                                                                                     "supplyInputWithoutSource":  {
-                                                                                                                      "title":  "Supply input without voltage source",
-                                                                                                                      "shortDescription":  "A supply input is wired, but the net has no voltage source.",
-                                                                                                                      "description":  "The net contains supply inputs ({{inputs}}), but no independent suppl_out output.",
-                                                                                                                      "recommendation":  "Connect the net to a suitable voltage source."
-                                                                                                                  },
-                                                                                     "supplySourceWithoutConsumer":  {
-                                                                                                                         "title":  "Supply net without consumer",
-                                                                                                                         "shortDescription":  "A supply output is wired, but no supply input is connected.",
-                                                                                                                         "description":  "The net contains a voltage source, but no recognizable supply consumer.",
-                                                                                                                         "recommendation":  "Check whether the supply should be routed to a component with a supply input."
-                                                                                                                     },
-                                                                                     "supplyVoltageMismatch":  {
-                                                                                                                   "title":  "Supply voltage does not match",
-                                                                                                                   "shortDescription":  "The source voltage does not match all supply inputs in the net.",
-                                                                                                                   "description":  "The source provides {{voltage}} V, but at least one supply input does not allow this range: {{inputs}}.",
-                                                                                                                   "recommendation":  "Adjust the supply voltage or separate components with different voltage ranges."
-                                                                                                               }
-                                                                                 }
-                                                                  },
-                                                "component-rules":  {
-                                                                        "title":  "Component rules",
-                                                                        "description":  "Checks fundamental requirements of individual components.",
-                                                                        "issues":  {
-                                                                                       "requiredPinUnconnected":  {
-                                                                                                                      "title":  "Required pin is not connected",
-                                                                                                                      "shortDescription":  "A component has a pin that must be connected.",
-                                                                                                                      "description":  "{{component}} has required pins without a connection: {{handles}}.",
-                                                                                                                      "recommendation":  "Connect all pins of this component that are marked as required connections."
-                                                                                                                  },
-                                                                                       "groundMissing":  {
-                                                                                                             "title":  "Component without ground",
-                                                                                                             "shortDescription":  "A component with a GND pin is not connected to ground.",
-                                                                                                             "description":  "{{component}} has GND pins, but none of them is connected to a ground net.",
-                                                                                                             "recommendation":  "Connect at least one GND pin of this component to the common ground net."
-                                                                                                         },
-                                                                                       "powerMissing":  {
-                                                                                                            "title":  "Component without supply",
-                                                                                                            "shortDescription":  "A component with a supply input is not powered.",
-                                                                                                            "description":  "{{component}} has supply or USB inputs, but no supply input is connected to a supply net containing a suppl_out pin of another component, and no USB terminal is connected to a USB net.",
-                                                                                                            "recommendation":  "Connect a supply input to a suitable external voltage source or connect the USB terminal to a USB supply."
-                                                                                                        },
-                                                                                       "mainsInputMissing":  {
-                                                                                                                 "title":  "{{label}} input is not connected",
-                                                                                                                 "shortDescription":  "A component with a {{label}} input is not connected to the matching net.",
-                                                                                                                 "description":  "{{component}} has {{label}} inputs, but at least one of them is not connected to a matching {{label}} net.",
-                                                                                                                 "recommendation":  "Connect every {{label}} input of this component to the matching {{label}} net."
-                                                                                                             },
-                                                                                       "sn74Ahct125nUsedChannelInputMissing":  {
-                                                                                                                 "title":  "SN74AHCT125N channel input is not driven",
-                                                                                                                 "shortDescription":  "A used buffer output has an input without a digital output source or an /OE pin that is neither digitally driven nor tied to GND.",
-                                                                                                                 "description":  "{{component}} channel {{channel}} drives a digital input via {{output}}, but these related pins are not connected correctly: {{handles}}. A must be on a net with dig_out; /OE may be on a net with dig_out or GND.",
-                                                                                                                 "recommendation":  "Connect the related A pin to a suitable digital output and the /OE pin to a digital output or GND, or disconnect the unused Y output from the digital input."
-                                                                                                             }
-                                                                                   }
-                                                                    }
-                                            }
-                              },
-                    "simulation":  {
-                                       "title":  "Simulate current flow",
-                                       "comingSoon":  "Simulation of power distribution will be implemented in future. Stay tuned!"
-                                   },
-                    "tools":  {
-                                  "title":  "Tools",
-                                  "rerouteAllButton":  "Re-route all wires",
-                                  "rerouteAllTooltip":  "Sequentially re-route all wires with Pathfinder",
-                                  "rerouteAllDisabledPF":  "Only available in Auto/PF connection mode",
-                                  "rerouteAllDisabledEmpty":  "There are no wires in the diagram",
-                                  "rerouteAllDescription":  "Routes short component pairs first and keeps wire IDs, connections, and properties.",
-                                  "rerouteAllSuccess":  "All wires were re-routed."
-                              },
-                    "export":  {
-                                   "title":  "Save / export / examples",
-                                   "buttonSave":  "Save model as JSON file",
-                                   "buttonExportPNG":  "Export model to PNG file",
-                                   "buttonExportJPEG":  "Export model to JPEG file",
-                                   "buttonExportSVG":  "Export model to SVG file",
-                                   "buttonOpen":  "Load model from JSON file",
-                                   "buttonShare":  "Generate public link to the model",
-                                   "dividerExport":  "Export",
-                                   "dividerSaveOpen":  "Save / Open",
-                                   "dividerShare":  "Share",
-                                   "dividerExamples":  "Load examples",
-                                   "share":  {
-                                                 "modalTitle":  "Share model - generate link",
-                                                 "modalLinkText":  "Link:",
-                                                 "modalLinkBeingGenerated":  "... generating ... please wait ...",
-                                                 "modalButtonOK":  "OK",
-                                                 "modalButtonClose":  "Close",
-                                                 "modalButtonCancel":  "Cancel",
-                                                 "modalAttentionText":  "When you click \"OK\" your model, along with all the entered data, will be transferred to a public server (https://github.com) and saved there. For this purpose, your model data and your IP address will also be transferred to https://wled-api.myhome-control.de/. You will then be shown a link that you can use to share the model with others.",
-                                                 "modalLinkError":  "An error occurred! Please try again if necessary.",
-                                                 "tooltipCopyLink":  "Copy link to clipboard",
-                                                 "messageLinkCopied":  "Link copied to clipboard!"
-                                             },
-                                   "selectExample":  "Select example ..."
-                               }
-                },
-    "footRow":  {
-                    "legalNotice":  {
-                                        "title":  "Legal notice",
-                                        "responsible":  "Responsible: Wladislaw Waag",
-                                        "address":  "Address: Wasserburger Landstr. 29, 81825 Munich, Germany",
-                                        "contact":  "Contact: +49 (0) 176 47 11 5206, info@myhome-control.de",
-                                        "disputeText":  "",
-                                        "disputeSettlmentText":  "Consumer dispute settlement / universal arbitration board: We are neither willing nor obliged to participate in dispute settlement proceedings before a consumer arbitration board."
-                                    },
-                    "dataPrivacy":  {
-                                        "title":  "Data privacy",
-                                        "text1":  "This page is hosted and operated as part of \u0027Github Pages\u0027. It is possible and probable that Github collects and processes personal data, which then also affects visitors of the wled-compile.github.io web page. We have, however, no influence on it. Please read the Github privacy statement:",
-                                        "text2":  "In addition, as soon as you use \u0027Share\u0027 functionality, your IP address, the model you created and all the data you entered forwarded to https://myhome-control.de and to https://github.com/wled-development/wled-wiring-store. This is absolutely necessary for this functionality. The data protection declaration for https://myhome-control.de can be found at",
-                                        "text3":  "Our website contains links to external websites over which we have no control. We cannot accept any liability for this third-party content. The respective provider or operator of the pages is always responsible for the content of the linked pages. The linked pages were checked for possible legal violations at the time of linking. Illegal content was not recognizable at that time. If we become aware of any legal violations, we will remove the relevant link immediately."
-                                    },
-                    "links":  {
-                                  "title":  "Useful links",
-                                  "link1Text":  "Official WLED documentation:",
-                                  "link2Text":  "WLED FAQ:",
-                                  "link3Text":  "WLED Calculator:",
-                                  "link4Text":  "Extended WLED Online Installer:",
-                                  "link5Text":  "Compile your own WELD SW online:",
-                                  "link6Text":  "Buy WLED Controller (Germany):",
-                                  "link7Text":  "Buy WLED Controller (worldwide):"
-                              },
-                    "contribute":  {
-                                       "title":  "Contribute/GitHub",
-                                       "text":  "Contributions are highly appreciated! If you\u0027d like to contribute, please follow the project\u0027s GitHub link:"
-                                   }
-                },
-    "examples":  {
-                     "example1":  "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
-                     "example2":  "ABC! WLED Controller + 24V LED Strip",
-                     "example3":  "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
-                     "example4":  "ABC! WLED Controller + Long Range Extension",
-                     "example5":  "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
-                 },
-    "compData":  {
-                     "Router":  {
-                                    "name":  "WAN/LAN Router",
-                                    "description":  "A generic WLAN/LAN router.",
-                                    "descriptionShort":  "generic"
-                                },
-                     "Button":  {
-                                    "name":  "Push Button",
-                                    "description":  "A generic push button. When pressed and held, the contact is closed. The contact opens as soon as the button is released. Not to be confused with a switch.",
-                                    "descriptionShort":  "generic"
-                                },
-                     "DC_JACK_FEMALE":  {
-                                            "name":  "DC Connector",
-                                            "description":  "Used to split a power supply with a DC connector into a + and - wire.",
-                                            "descriptionShort":  "for up to 3A"
-                                        },
-                     "Elko":  {
-                                  "name":  "Electrolytic Capacitor",
-                                  "description":  "An electrolytic capacitor with selectable capacitance. Pay attention to polarity! Often used to stabilize the power supply for LEDs or other components.",
-                                  "descriptionShort":  "selectable capacitance"
-                              },
-                     "ESP32_30P":  {
-                                       "name":  "ESP32 uC 30 Pins",
-                                       "description":  "ESP32 controller, version with 30 pins. Also known as NodeMCU.",
-                                       "descriptionShort":  "controller"
-                                   },
-                     "ESP32_38P":  {
-                                       "name":  "ESP32 uC 38 Pins",
-                                       "description":  "ESP32 controller, version with 38 pins. Also known as NodeMCU.",
-                                       "descriptionShort":  "controller"
-                                   },
-                     "ESP32C3D1mini":  {
-                                           "name":  "ESP32-C3 D1 mini",
-                                           "description":  "ESP32-C3 controller in D1 mini format. WLED can run on this controller type with limitations.",
-                                           "descriptionShort":  "controller"
-                                       },
-                     "ESP32C3_supermini":  {
-                                               "name":  "ESP32-C3 supermini",
-                                               "description":  "ESP32-C3 controller, supermini. WLED can run on this controller type with limitations.",
-                                               "descriptionShort":  "Controller"
-                                           },
-                     "ESP32D1mini":  {
-                                         "name":  "ESP32 D1 mini",
-                                         "description":  "ESP32 controller in D1 mini format.",
-                                         "descriptionShort":  "controller"
-                                     },
-                     "ESP32S3D1mini":  {
-                                           "name":  "ESP32-S3 D1 mini",
-                                           "description":  "ESP32-S3 controller in D1 mini format. WLED can run on this controller type with limitations.",
-                                           "descriptionShort":  "controller"
-                                       },
-                     "ESP8266D1mini":  {
-                                           "name":  "ESP8266 D1 mini",
-                                           "description":  "ESP8266 controller in D1 mini format. No longer recommended for new WLED projects (too weak).",
-                                           "descriptionShort":  "controller"
-                                       },
-                     "InfoNode":  {
-                                      "name":  "Text",
-                                      "description":  "A text element to add labels or notes to the diagram.",
-                                      "descriptionShort":  "for notes etc."
-                                  },
-                     "INMP441":  {
-                                     "name":  "INMP441 microphone",
-                                     "description":  "INMP441 microphone. It is a digital microphone supported by WLED for sound-reactive effects and delivers high quality.",
-                                     "descriptionShort":  "digital"
-                                 },
-                     "IR_KY022":  {
-                                      "name":  "KY022 IR receiver",
-                                      "description":  "KY-022 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
-                                      "descriptionShort":  "infrared"
-                                  },
-                     "IR_TSOP38238":  {
-                                          "name":  "TSOP38238 IR Receiver",
-                                          "description":  "TSOP38238 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
-                                          "descriptionShort":  "infrared"
-                                      },
-                     "Kerko":  {
-                                   "name":  "Ceramic Capacitor",
-                                   "description":  "Ceramic capacitor with selectable capacitance. Commonly used at the input of switching electronic circuits (between power and ground) to suppress noise. Should be connected using the shortest possible leads/traces.",
-                                   "descriptionShort":  "selectable capacitance"
-                               },
-                     "LineBoxNode":  {
-                                         "name":  "Rectangle",
-                                         "description":  "An element to draw a rectangle (filled or empty).",
-                                         "descriptionShort":  "drawing element"
-                                     },
-                     "miniOTOFuse":  {
-                                         "name":  "Melting Fuse",
-                                         "description":  "A fuse from the automotive sector. Ideal for voltages up to 32V. Only buy from specialized dealers, as many cheap copies on marketplaces do not function properly. WLED calculator (www.wled-calculator.github.io) can be used for dimensioning.",
-                                         "descriptionShort":  "selectable 4-30A"
-                                     },
-                     "FUSE_Board":  {
-                                        "name":  "Fuse board",
-                                        "description":  "For power distribution and fusing.",
-                                        "descriptionShort":  "4 channels"
-                                    },
-                     "PIR_HCSR501":  {
-                                         "name":  "HC-SR501 PIR Sensor",
-                                         "description":  "PIR motion sensor of type HCSR501. Can be used with WLED.",
-                                         "descriptionShort":  "motion detector"
-                                     },
-                     "PLUG_LNPE":  {
-                                       "name":  "Power Plug",
-                                       "description":  "Plug for 230V power outlets. Warning: Risk of death! Only use if you have appropriate knowledge.",
-                                       "descriptionShort":  "for 230V AC"
-                                   },
-                     "PSU_HP":  {
-                                    "name":  "Power supply",
-                                    "description":  "Power supply with selectable voltage/current (power). These are typically high-performance supplies used for larger setups. Power plug must be connected separately.",
-                                    "descriptionShort":  "selectable V/I"
-                                },
-                     "PSU_USB":  {
-                                     "name":  "USB Power Supply",
-                                     "description":  "USB power supply with 5V output voltage and selectable current up to 5A.",
-                                     "descriptionShort":  "5V, selectable I"
-                                 },
-                     "PSU_USB_WIRES":  {
-                                           "name":  "USB Power Supply",
-                                           "description":  "USB power supply with 5V output voltage, selectable current up to 5A, and separate +/- wires.",
-                                           "descriptionShort":  "5V, separate +/- wires"
-                                       },
-                     "Resistor":  {
-                                      "name":  "Resistor",
-                                      "description":  "Electrical resistor of selectable value.",
-                                      "descriptionShort":  "selectable value"
-                                  },
-                     "SN74AHCT125N":  {
-                                          "name":  "Level Shifter",
-                                          "description":  "A level shifter type recommended for WLED. A level shifter is necessary to convert the microcontroller\u0027s control signal (3.3V) to the LED data input (5V) level for addressable LEDs. Without a level shifter, flickering often occurs (almost always with 12V and 24V LEDs).",
-                                          "descriptionShort":  "SN74AHCT125N"
-                                      },
-                     "SolderJoint":  {
-                                         "name":  "Solder Joint",
-                                         "description":  "Representation of a solder joint, e.g., to connect wires together.",
-                                         "descriptionShort":  "for wires etc."
-                                     },
-                     "WAGO_2X":  {
-                                     "name":  "WAGO Connector 2x",
-                                     "description":  "Widely used spring clamp connector, two-way.",
-                                     "descriptionShort":  "spring clamp"
-                                 },
-                     "WAGO_3X":  {
-                                     "name":  "WAGO Connector 3x",
-                                     "description":  "Widely used spring clamp connector, three-way.",
-                                     "descriptionShort":  "spring clamp"
-                                 },
-                     "WireInfoNode":  {
-                                          "name":  "Wire Info",
-                                          "description":  "Information about the wire.",
-                                          "descriptionShort":  " "
-                                      },
-                     "WS2812B_5V_30LPM":  {
-                                              "name":  "WS2812B RGB",
-                                              "description":  "WS2812 RGB LED strip, 5V, 30 LEDs per meter, individually addressable LEDs.",
-                                              "descriptionShort":  "5V, 30 LEDs/m"
-                                          },
-                     "MHC_V43":  {
-                                     "name":  "WLED V43 Controller",
-                                     "description":  "A professional WLED controller for 5V, 12V or 24V addressable LEDs. Includes ESP32 microcontroller, SN74AHCT level shifter, fuse, capacitor, EMI filter. Optional accessories include Ethernet adapter, INMP441 microphone, line-in adapter, and USB adapter.",
-                                     "descriptionShort":  "ESP32 based"
-                                 },
-                     "MHC_V63":  {
-                                     "name":  "WLED V63 Shield",
-                                     "description":  "A professional WLED shield for 5V or 12V addressable LEDs. Includes SN74AHCT level shifter, fuse, capacitor. Optional accessories include INMP441 microphone, line-in adapter, and USB adapter. Can be used with ESP8266, ESP32, ESP32-C3, or ESP32-S3 in D1 mini format.",
-                                     "descriptionShort":  "for ESP32-xx, ESP8266"
-                                 },
-                     "MHC_SwitchBoard":  {
-                                             "name":  "WLED switch board",
-                                             "description":  "A better/modern alternative to relais board for switching LEDs completely off. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
-                                             "descriptionShort":  "universal for 5-24V"
-                                         },
-                     "MHC_PWMBoard":  {
-                                          "name":  "WLED PWM board",
-                                          "description":  "The board uses MOSFETs to control analog LED strips with PWM signals. 3 channels, each max. 5A. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
-                                          "descriptionShort":  "universal for 12-48V"
-                                      },
-                     "MHC_RS485_R":  {
-                                         "name":  "RS-485 receiver",
-                                         "description":  "RS-485 receiver for use as a range extender receiver with the RS-485 adapter.",
-                                         "descriptionShort":  "RS-485 receiver"
-                                     },
-                     "MHC_Relay5V":  {
-                                         "name":  "5V Relay Board",
-                                         "description":  "A professional relay board for use with 5V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
-                                         "descriptionShort":  "for 5V LEDs"
-                                     },
-                     "MHC_Relay12V":  {
-                                          "name":  "12V Relay Board",
-                                          "description":  "A professional relay board for use with 12V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
-                                          "descriptionShort":  "for 12V LEDs"
-                                      },
-                     "MHC_Relay24V":  {
-                                          "name":  "24V Relay Board",
-                                          "description":  "A professional relay board for use with 24V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
-                                          "descriptionShort":  "for 24V LEDs"
-                                      },
-                     "AUDIO_SOURCE":  {
-                                          "name":  "Audio Source",
-                                          "description":  "A generic audio signal source.",
-                                          "descriptionShort":  "Line-out"
-                                      },
-                     "LM2596_PCB":  {
-                                        "name":  "LM2596 DC/DC",
-                                        "description":  "DC/DC (step-down) converter with adjustable output voltage.",
-                                        "descriptionShort":  "adjustable output"
-                                    },
-                     "IRLZ44N":  {
-                                     "name":  "IRLZ44N",
-                                     "description":  "MOSFET. This type is recommended for use with WLED and can be used to control analog LED strips.",
-                                     "descriptionShort":  "N-Ch MOSFET"
-                                 },
-                     "DCDC_mini":  {
-                                       "name":  "DC/DC Mini",
-                                       "description":  "DC/DC (step-down) converter with adjustable output voltage.",
-                                       "descriptionShort":  "adjustable output"
-                                   },
-                     "WS2814_24V_60LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED strip, individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2813_5V_60LPM":  {
-                                             "name":  "WS2813 RGB",
-                                             "description":  "RGB LED strip with backup-line.",
-                                             "descriptionShort":  "5V, 60 LEDs/m"
-                                         },
-                     "WS2815_12V_30LPM":  {
-                                              "name":  "WS2815 RGB",
-                                              "description":  "RGB LED strip with backup-line.",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2814_12V_30LPM":  {
-                                              "name":  "WS2814 RGBW",
-                                              "description":  "RGBW LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "WS2818_12V_30LPM":  {
-                                              "name":  "WS2818 RGB",
-                                              "description":  "RGB LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
-                                              "descriptionShort":  "12V, 30 LEDs/m"
-                                          },
-                     "FCOB_12V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
-                                             "descriptionShort":  "12V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_720LPM":  {
-                                             "name":  "FCOB RGB",
-                                             "description":  "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
-                                             "descriptionShort":  "24V, 720 LEDs/m"
-                                         },
-                     "FCOB_24V_784LPM":  {
-                                             "name":  "FCOB RGBW",
-                                             "description":  "FCOB RGBW LED strip, 784 LEDs/m (196 LEDs each color per meter, 14 logical LEDs/m)",
-                                             "descriptionShort":  "24V, 784 LEDs/m"
-                                         },
-                     "APA102_5V_30LPM":  {
-                                             "name":  "APA102 RGB",
-                                             "description":  "APA102 LED strip with clock signal, 5V, 30 LEDs/Meter, individually addressable LEDs.",
-                                             "descriptionShort":  "5V, 30 LEDs/m"
-                                         },
-                     "AN_WHITE_24V_240LPM":  {
-                                                 "name":  "Analogue white",
-                                                 "description":  "Analogues LED strip (white 2835 LEDs), 24V, 240 LEDs/m, 2.5 cm segments (6 LEDs)",
-                                                 "descriptionShort":  "24V, 240 white LEDs/m"
-                                             },
-                     "AN_RGB_CCT_48V_90LPM":  {
-                                                  "name":  "Anal. RGB CCT",
-                                                  "description":  "Analogues RGB CCT LED strip (5050 LEDs), 48V, 90 LEDs/m, segemnts of 16.65 cm (15 LEDs)",
-                                                  "descriptionShort":  "48V, 90 LEDs/m"
-                                              },
-                     "AN_RGB_24V_120LPM":  {
-                                               "name":  "Anal. RGB ",
-                                               "description":  "Analogues RGB LED strip (2835 LEDs), 24V, 120 LEDs/m, segments of 5 cm (6 LEDs)",
-                                               "descriptionShort":  "24V, 120 LEDs/m"
-                                           },
-                     "WS2805_24V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
-                                              "descriptionShort":  "24V, 60 LEDs/m"
-                                          },
-                     "WS2805_12V_60LPM":  {
-                                              "name":  "WS2805 RGBW CCT",
-                                              "description":  "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
-                                              "descriptionShort":  "12V, 60 LEDs/m"
-                                          }
-                 }
+{
+  "title": "Welcome to WLED wiring designer!",
+  "dragComponents": "Start by dragging components onto the workspace or load one of example diagramms",
+  "autosave": {
+    "restoreTitle": "Autosaved diagram found",
+    "restoreDescription": "A locally autosaved diagram is available. Do you want to continue it or start a new diagram?",
+    "savedAt": "Autosaved: {{value}}",
+    "lastManualSaveAt": "Last manually saved: {{value}}",
+    "documentFileName": "File name: {{name}}",
+    "continueButton": "Continue autosave",
+    "newDiagramButton": "Start new diagram",
+    "saveFailedTitle": "Autosave failed",
+    "saveFailedDescription": "The diagram could not be stored locally in this browser."
+  },
+  "componentGroupTypes": {
+    "controller": "Controller",
+    "led": "LEDs",
+    "psu": "Power sources",
+    "levelshifter": "Level shifter",
+    "electronics": "Electronics/Parts",
+    "others": "Other components"
+  },
+  "buttons": {
+    "rotate": "rotate",
+    "longer": "larger",
+    "shorter": "smaller"
+  },
+  "tooltip": {
+    "deleteWire": "Delete this connection",
+    "selectColor": "Select color",
+    "selectWireLength": "Select wire length (physically)",
+    "selectWireCrossSection": "Select wire cross section (physically)",
+    "selectWireWidth": "Select wire width (for drawing)",
+    "selectWireNetwork": "Select whole network",
+    "clearWireNetwork": "Clear network selection",
+    "putWireInfoNode": "Add cable info box",
+    "rerouteWire": "Re-route wire with Pathfinder",
+    "startConnection": "Start connection",
+    "closeConnection": "Finish connectionn",
+    "rotateLeft": "Rotate left",
+    "rotateRight": "Rotate right",
+    "delete": "Delete",
+    "copy": "Copy",
+    "enlarge": "Enlarge",
+    "shorten": "Shorten",
+    "resizeLength": "Resize length",
+    "switchFilled": "Filled / border only",
+    "increaseTextSize": "Increase text size",
+    "decreaseTextSize": "Decrease text size",
+    "textSize": "Text size",
+    "selectFont": "Select font",
+    "toggleBold": "Toggle bold",
+    "textAlign": "Text alignment",
+    "selectMulti": "multiple select",
+    "deleteSelected": "delete selected",
+    "componentInfo": "Component info",
+    "switchConnLineType": "change connection type",
+    "ledSimulationOptions": "LED simulation settings"
+  },
+  "ledSimulationOptions": {
+    "title": "LED simulation",
+    "recommended": "recommended",
+    "whyButton": "Why?",
+    "whyTitle": "Why are there options?",
+    "whyExplanation": "There are many LED strips on the market. Some share the same product names and may even come from the same manufacturer, but still differ significantly in their electrical properties. For the model, we measured many strips and introduced different options based on that data. If you are not sure which strip you have, start with the recommended settings. You can also calculate with the worst values to check how robust your setup is.",
+    "unknownOption": "Unknown option. Update this component from the current template.",
+    "fields": {
+      "supplyResistance": "Positive path / V+ resistance",
+      "gndResistance": "Negative path / GND resistance",
+      "currentCurve": "LED current curve"
+    },
+    "resistance": {
+      "typical_5mm": {
+        "name": "Typical 5 mm strip",
+        "description": "Typical copper path for a 5 mm LED strip: 0.12 Ohm per meter."
+      },
+      "good_5mm": {
+        "name": "Good 5 mm strip",
+        "description": "Better copper path for a 5 mm LED strip: 0.09 Ohm per meter."
+      },
+      "poor_5mm": {
+        "name": "Poor 5 mm strip",
+        "description": "Higher-resistance copper path for a weak 5 mm LED strip: 0.24 Ohm per meter."
+      },
+      "narrow_fcob_path_good": {
+        "name": "Good narrow FCOB path",
+        "description": "Good copper path for an FCOB strip (narrow side, shared with the data path): 0.12 Ohm per meter."
+      },
+      "narrow_fcob_path_typical": {
+        "name": "Typical narrow FCOB path",
+        "description": "Typical copper path for an FCOB strip (narrow side, shared with the data path): 0.16 Ohm per meter."
+      },
+      "narrow_fcob_path_bad": {
+        "name": "Poor narrow FCOB path",
+        "description": "Higher-resistance copper path for an FCOB strip (narrow side, shared with the data path): 0.22 Ohm per meter."
+      },
+      "bright_fcob_path_good": {
+        "name": "Good high-power FCOB path",
+        "description": "Good copper path for an FCOB strip (wide, fully used side): 0.06 Ohm per meter."
+      },
+      "bright_fcob_path_typical": {
+        "name": "Typical high-power FCOB path",
+        "description": "Typical copper path for an FCOB strip (wide, fully used side): 0.08 Ohm per meter."
+      },
+      "bright_fcob_path_bad": {
+        "name": "Poor high-power FCOB path",
+        "description": "Higher-resistance copper path for an FCOB strip (wide, fully used side): 0.20 Ohm per meter."
+      }
+    },
+    "currentCurve": {
+      "ws2814_24v_typical": {
+        "name": "Typical WS2814 24 V",
+        "description": "Typical voltage-dependent WS2814 24 V current curve."
+      },
+      "ws2812b_5v_typical": {
+        "name": "WS2812B 5 V (typical)",
+        "description": "WS2812B RGB 5 V, 5050 LED size, typical version."
+      },
+      "ws2812b_5v_good": {
+        "name": "WS2812B 5 V (good)",
+        "description": "WS2812B RGB 5 V, 5050 LED size, good/new version (improved color stability)."
+      },
+      "ws2812b_eco_5v_typical": {
+        "name": "WS2812B ECO 5 V (typical)",
+        "description": "WS2812B RGB ECO 5 V, 5050 LED size, typical version."
+      },
+      "ws2811_24v_typical": {
+        "name": "WS2811 24 V (typical)",
+        "description": "WS2811 RGB 24 V, 5050 LED size, typical version."
+      },
+      "ws2814_12v_typical": {
+        "name": "WS2814 12 V (typical)",
+        "description": "WS2812B RGBW 12 V, 5050 LED size, typical version."
+      },
+      "ws28xx_fcob_rgb_24v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 24 V, 720 LEDs/m (typical)",
+        "description": "WS28xx FCOB RGB 24 V, 720 LEDs/m, 20 logical LEDs/m, typical version."
+      },
+      "ws28xx_fcob_rgb_12v_720lpm_typical": {
+        "name": "WS28xx FCOB RGB 12 V, 720 LEDs/m (typical)",
+        "description": "WS28xx FCOB RGB 12 V, 720 LEDs/m, 20 logical LEDs/m, typical version."
+      },
+      "ws28xx_fcob_rgbw_24v_784lpm_typical": {
+        "name": "WS28xx FCOB RGBW 24 V, 784 LEDs/m (typical)",
+        "description": "WS28xx FCOB RGB 24 V, 784 LEDs/m, 14 logical LEDs/m, typical version."
+      },
+      "sk6812_fcob_rgb_5v_240lpm_typical": {
+        "name": "SK6812 FCOB RGB 5 V, 240 LEDs/m (typical)",
+        "description": "SK6812 FCOB RGB 5 V, 240 LEDs/m, 80 logical LEDs/m, typical version."
+      }
+    }
+  },
+  "componentEditor": {
+    "title": "Component editor",
+    "valid": "valid",
+    "invalid": "invalid",
+    "actions": {
+      "new": "New",
+      "openCore": "Open built-in component",
+      "openLocal": "Open local draft",
+      "saveLocal": "Save locally",
+      "importJson": "Import JSON",
+      "exportJson": "Export JSON",
+      "backToDesigner": "Back to designer",
+      "addHandle": "Add handle",
+      "deleteHandle": "Delete handle",
+      "addField": "Add field",
+      "deleteField": "Delete field",
+      "addOption": "Add option",
+      "addConnection": "Add connection",
+      "deleteConnection": "Delete connection",
+      "addSimulationElement": "Add simulation element",
+      "deleteSimulationElement": "Delete simulation element"
+    },
+    "tabs": {
+      "basics": "Basics",
+      "geometry": "Geometry",
+      "handles": "Handles",
+      "fields": "Fields",
+      "connections": "Connections",
+      "simulation": "Simulation",
+      "runtime": "Runtime"
+    },
+    "fields": {
+      "id": "Component ID",
+      "version": "Version",
+      "name": "Name",
+      "descriptionShort": "Short description",
+      "description": "Description",
+      "group": "Group",
+      "showName": "Show name",
+      "imageUrl": "Image URL",
+      "imageWidth": "Image width",
+      "imageHeight": "Image height",
+      "rotation": "Rotation",
+      "borderWidth": "Border width",
+      "lengthStep": "Physical length step",
+      "rotatable": "Rotatable",
+      "resizableX": "Resizable X",
+      "resizableY": "Resizable Y",
+      "noBackgroundImage": "No background image",
+      "handleId": "Handle ID",
+      "handleType": "Handle type",
+      "functions": "Functions",
+      "relatedToHandle": "Related handles",
+      "borderColor": "Border color",
+      "borderType": "Border type",
+      "borderLineWidth": "Border line width",
+      "borderRadius": "Border radius",
+      "hideConditions": "Hide conditions",
+      "fieldId": "Field ID",
+      "fieldType": "Field type",
+      "unit": "Unit",
+      "selectedValue": "Selected value",
+      "connectionKind": "Connection kind",
+      "fromHandle": "From handle",
+      "toHandle": "To handle",
+      "elementId": "Element ID",
+      "elementType": "Element type"
+    },
+    "editorModes": {
+      "ui": "UI",
+      "json": "JSON"
+    },
+    "labels": {
+      "unnamed": "Unnamed",
+      "terminals": "Terminals",
+      "parameters": "Parameters"
+    },
+    "sections": {
+      "applyHandles": "Apply handles",
+      "applyFields": "Apply fields",
+      "applyConnections": "Apply connections",
+      "applySimulation": "Apply simulation",
+      "applyRuntime": "Apply runtime",
+      "handlesDescription": "Edit the component handles as schema JSON. The validator checks IDs, sizes, functions, hide conditions, and references.",
+      "fieldsDescription": "Edit number and select fields as schema JSON. Select options may include optional image definitions.",
+      "connectionsDescription": "Edit internal short and fuse connections as schema JSON.",
+      "simulationDescription": "Edit the simulation definition as schema JSON, or use null for no simulation data.",
+      "runtimeDescription": "Edit existing runtime-only UI options as schema JSON, or use null when none are needed."
+    },
+    "preview": {
+      "title": "Preview",
+      "selectedHandle": "Selected handle",
+      "selectHandle": "Select handle",
+      "nudge": "Move by 1 px"
+    },
+    "validation": {
+      "title": "Validation",
+      "noIssues": "No validation issues."
+    },
+    "messages": {
+      "savedLocal": "Component draft saved locally.",
+      "imported": "Component package imported.",
+      "importFailed": "Component package could not be imported.",
+      "invalidJson": "Invalid JSON",
+      "noHandles": "No handles yet. Add one to edit its properties.",
+      "noFields": "No fields yet. Add one to edit its properties.",
+      "noConnections": "No connections yet. Add one to edit its properties.",
+      "noSimulationElements": "No simulation elements yet. Add one to edit its properties."
+    }
+  },
+  "popover": {
+    "selectWireLength": "Select wire length (physically):",
+    "selectWireCrossSection": "Select wire cross section (physically):",
+    "selectWireWidth": "Select wire width (for drawing):",
+    "startConnection": "Please select the pin/connector to start from:",
+    "closeConnection": "Please select the pin/connector to finish:"
+  },
+  "select": {
+    "startConnection": "Select pin / connector",
+    "closeConnection": "Select pin / connector"
+  },
+  "message": {
+    "startPinSelected": "Source pin/connector is selected. Now please select the target pin/connector.",
+    "closePinSelected": "The connection is ready.",
+    "startPinFirst": "Please first select starting pin/connector!",
+    "theSamePin": "Starting pin/connector is the same as end pin/connector!",
+    "compAddSuccess": "Added to the diagramm!",
+    "loadModelSuccess": "The WLED wiring model is successfully loaded!",
+    "loadModelSuccessShort": "Success",
+    "loadingModel": "Loading wiring model from file link ...",
+    "loadModelError": "The WLED wiring model cannot be loaded. Eventually this link is not valid any more.",
+    "loadModelErrorShort": "Error",
+    "loadModelWrongLink": "The link is wrong! Please check it.",
+    "saveModelSuccess": "Model saved.",
+    "saveModelDownloadStarted": "Model download started.",
+    "saveModelError": "The model could not be saved.",
+    "componentUpdatesApplied": "The updates were applied. Please check this component.",
+    "componentUpdatesAppliedShort": "Updates applied",
+    "componentUpdatesAvailableTitle": "Component updates available",
+    "componentUpdatesAvailableDescription": "{{count}} component(s) in this diagram can be updated to the current template. Update all components now?",
+    "componentUpdatesApplyAll": "Update all",
+    "componentUpdatesSkip": "Do not update",
+    "componentUpdatesAllApplied": "{{count}} component update(s) were applied."
+  },
+  "sidebar": {
+    "components": {
+      "title": "Components",
+      "popoverTitle": "Component info",
+      "addButtonText": "Add to diagramm",
+      "updateButtonText": "Update this component",
+      "updatePopoverTitle": "Changes for this component",
+      "applyUpdatesButtonText": "Apply updates",
+      "updateExplanation": "This component in the diagram is older than the current component in the app. The following changes can be transferred.",
+      "noUpdateChanges": "No updates available.",
+      "updateValueMissing": "Missing",
+      "updateChangeProperty": "Property",
+      "updateChangeCurrent": "Current",
+      "updateChangeTemplate": "Template",
+      "popoverContent": {
+        "whereToBuy": "Where to buy?",
+        "listOfConnections": "List of pins/terminals",
+        "listOfConnectionsHeading1": "Pin / Terminal",
+        "listOfConnectionsHeading2": "Description"
+      }
+    },
+    "check": {
+      "title": "Check wiring diagramm",
+      "comingSoon": "Rule-based check will be implemented in next months. Stay tuned!",
+      "buttonRun": "Check diagram now",
+      "betaNoticeTitle": "Beta version",
+      "betaNoticeDescription": "This diagram check is still under development. Issue detection may be incomplete or incorrect.",
+      "notChecked": "No check has been run yet.",
+      "noIssuesTitle": "No issues found",
+      "noIssuesDescription": "The current diagram check did not find any issues.",
+      "rulesButton": "Rules",
+      "rulesModalTitle": "Applied check rules",
+      "rulesModalDescription": "These rules are currently applied when checking the wiring diagram.",
+      "issueCount": "{{count}} result(s) found",
+      "recommendation": "Recommendation",
+      "affectedElements": "Affected elements",
+      "targetTypes": {
+        "node": "Component",
+        "edge": "Wire"
+      },
+      "diagnostics": {
+        "modeLabel": "Diagnostics mode",
+        "suppressedTag": "suppressed",
+        "specificity": "Specificity {{value}}",
+        "suppressedBy": "Suppressed by: {{ids}}",
+        "mode": {
+          "user-friendly": "Normal",
+          "diagnostic": "All issues",
+          "diagnostic-with-suppression-markers": "All + markers"
+        }
+      },
+      "severity": {
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Info"
+      },
+      "classificationLabels": {
+        "gnd_net_type": "ground",
+        "suppl_net_type": "DC supply",
+        "digital_net_type": "digital",
+        "pwm_net_type": "PWM",
+        "analog_net_type": "analog",
+        "audio_net_type": "audio",
+        "eth_net_type": "Ethernet",
+        "usb_net_type": "USB",
+        "rs485_a_net_type": "RS485 A",
+        "rs485_b_net_type": "RS485 B",
+        "N_net_type": "neutral",
+        "L_net_type": "line",
+        "PE_net_type": "protective earth"
+      },
+      "signalLabels": {
+        "digital": "digital",
+        "pwm": "PWM",
+        "analog": "analog",
+        "audio": "audio",
+        "usb": "USB"
+      },
+      "analogLedColorLabels": {
+        "red": "red",
+        "green": "green",
+        "blue": "blue",
+        "white": "white",
+        "warmWhite": "warm white"
+      },
+      "mainsInputLabels": {
+        "line": "line",
+        "neutral": "neutral",
+        "pe": "PE"
+      },
+      "rulePlaceholders": {
+        "signal": "signal",
+        "mainsInput": "mains"
+      },
+      "invalidWireReasons": {
+        "missing-node": "component is missing",
+        "missing-handle": "pin is missing",
+        "hidden-handle": "pin is hidden"
+      },
+      "issues": {
+        "diagramEmpty": {
+          "title": "Diagram is empty",
+          "shortDescription": "There are no components in the diagram yet.",
+          "description": "The check can only provide technical guidance once components and wires are present in the diagram.",
+          "recommendation": "Add components first, then run the check again."
+        }
+      },
+      "rules": {
+        "network-rules": {
+          "title": "Network rules",
+          "description": "Checks fundamental issues in component-linked nets.",
+          "issues": {
+            "groundMissing": {
+              "title": "No ground net is connected",
+              "shortDescription": "GND pins exist, but no connected ground net was found.",
+              "description": "At least one GND pin exists in the diagram, but none of them is wired. Components with a ground reference need a common ground connection.",
+              "recommendation": "Connect the GND pins of the involved components together."
+            },
+            "groundMultiple": {
+              "title": "Multiple separate ground nets",
+              "shortDescription": "All GND connections must belong to one common ground net.",
+              "description": "{{count}} separate ground nets were found. Parts of the circuit therefore do not share a common reference.",
+              "recommendation": "Connect the separate ground nets together."
+            },
+            "mainsLowVoltageMixed": {
+              "title": "Mains voltage and low voltage are connected",
+              "shortDescription": "A net connects L/N to low-voltage or signal terminals.",
+              "description": "The net contains {{classifications}}. Mains voltage must not be connected to GND, DC supply, or signal nets.",
+              "recommendation": "Keep mains wiring strictly separated from low-voltage and signal wiring."
+            },
+            "peActiveMixed": {
+              "title": "Protective earth is connected to an active conductor",
+              "shortDescription": "A PE net is connected to active supply or a signal net.",
+              "description": "The net contains {{classifications}}. PE must not be connected to L, N, DC supply, or signals.",
+              "recommendation": "Separate PE from active conductors and signal connections."
+            },
+            "rs485Mixed": {
+              "title": "RS485 A and B are connected",
+              "shortDescription": "A net connects RS485_A to RS485_B.",
+              "description": "The differential RS485 lines A and B must not be connected to each other.",
+              "recommendation": "Separate RS485_A and RS485_B into two distinct nets."
+            },
+            "mixedClassifications": {
+              "title": "Different output types are connected",
+              "shortDescription": "A net contains multiple net classes.",
+              "description": "The net contains {{classifications}} at the same time. This means outputs of different types are connected together.",
+              "recommendation": "Separate the different output types into distinct nets."
+            },
+            "multipleSupplySources": {
+              "title": "Multiple independent voltage sources are connected",
+              "shortDescription": "A supply net contains multiple independent voltage sources.",
+              "description": "The net contains {{count}} independent voltage sources: {{sources}}.",
+              "recommendation": "Separate the voltage sources or make sure only forwarded outputs share the same net."
+            },
+            "signalSinkWithoutSource": {
+              "title": "{{signal}} input without source",
+              "shortDescription": "A {{signal}} input is wired, but the net has no matching source.",
+              "description": "The net contains {{sinks}}, but no matching {{signal}} output.",
+              "recommendation": "Connect the input to a matching output or check the pin function of the involved components."
+            },
+            "digitalSignalVoltageMismatch": {
+              "title": "Digital level does not match",
+              "shortDescription": "A digital input is driven with an incompatible output voltage.",
+              "description": "{{input}} allows {{min}} V to {{max}} V, but is connected to incompatible digital outputs: {{sources}}.",
+              "recommendation": "Use a suitable level shifter or connect the input to a digital output within the allowed voltage range."
+            },
+            "multipleSignalSources": {
+              "title": "Multiple {{signal}} sources are connected",
+              "shortDescription": "A {{signal}} net contains multiple outputs.",
+              "description": "The net connects multiple {{signal}} sources: {{sources}}.",
+              "recommendation": "Separate the outputs so each signal net has only one source."
+            },
+            "supplyInputWithoutSource": {
+              "title": "Supply input without voltage source",
+              "shortDescription": "A supply input is wired, but the net has no voltage source.",
+              "description": "The net contains supply inputs ({{inputs}}), but no independent suppl_out output.",
+              "recommendation": "Connect the net to a suitable voltage source."
+            },
+            "supplySourceWithoutConsumer": {
+              "title": "Supply net without consumer",
+              "shortDescription": "A supply output is wired, but no supply input is connected.",
+              "description": "The net contains a voltage source, but no recognizable supply consumer.",
+              "recommendation": "Check whether the supply should be routed to a component with a supply input."
+            },
+            "supplyVoltageMismatch": {
+              "title": "Supply voltage does not match",
+              "shortDescription": "The source voltage does not match all pin tolerances in the supply net.",
+              "description": "The source provides {{voltage}} V, but at least one connected pin does not allow this voltage range: {{inputs}}.",
+              "recommendation": "Adjust the supply voltage or separate components with different voltage ranges."
+            },
+            "wireConnectedToHiddenOrMissingHandle": {
+              "title": "Wire points to a missing pin",
+              "shortDescription": "A wire ends at a missing or hidden pin.",
+              "description": "Wire {{wire}} cannot electrically reach pin {{handle}} on the {{side}} side: {{reason}}.",
+              "recommendation": "Reconnect the wire to a visible, existing pin."
+            },
+            "mainsWireConnectedToLowVoltageComponent": {
+              "title": "Mains connected to unsuitable component",
+              "shortDescription": "An L/N/PE net is connected to a non-mains terminal.",
+              "description": "{{handle}} on {{component}} is in a mains net, but is not an L/N/PE terminal.",
+              "recommendation": "Remove this connection and use only terminals intended for mains voltage."
+            },
+            "groundAndSupplyPolaritySwapped": {
+              "title": "Positive supply and GND are connected",
+              "shortDescription": "A net contains both ground and DC supply.",
+              "description": "GND and supply terminals are connected in this net. This is likely reversed polarity or a short circuit.",
+              "recommendation": "Separate positive supply and GND connections and check polarity."
+            },
+            "supplyVoltageUnknown": {
+              "title": "Supply voltage is unknown",
+              "shortDescription": "A supply net has a source whose voltage cannot be resolved.",
+              "description": "The supply from {{source}} feeds inputs, but the voltage value cannot be resolved.",
+              "recommendation": "Set the voltage value on the source or dependent field."
+            },
+            "signalOutputWithoutConsumer": {
+              "title": "{{signal}} output without consumer",
+              "shortDescription": "A signal output is wired but reaches no matching input.",
+              "description": "{{source}} is connected, but no matching {{signal}} input was found.",
+              "recommendation": "Route the signal to a matching input or remove the unused connection."
+            },
+            "dataDirectionWrong": {
+              "title": "Data direction is implausible",
+              "shortDescription": "An LED data net connects only outputs or only inputs.",
+              "description": "These data terminals do not form a plausible source-to-sink connection: {{handles}}.",
+              "recommendation": "Connect DATA_out to DATA_in in the correct direction."
+            },
+            "clockedLedClockMissing": {
+              "title": "Clock line is missing or mismatched",
+              "shortDescription": "A clocked LED strip has data but no matching clock connection.",
+              "description": "{{component}} needs a matching clock line for DATA. Problem: {{reason}}",
+              "recommendation": "Connect Clock_in to a separate matching digital clock signal.",
+              "reasons": {
+                "unconnected": "Clock_in is not connected.",
+                "ledChainMismatch": "In LED-to-LED chaining, Clock_in does not come from the matching clock output of the same upstream strip.",
+                "sameAsData": "Clock and Data use the same signal path.",
+                "supply": "Clock_in is connected to supply voltage.",
+                "groundOrBias": "Clock_in is connected to GND or a bias net.",
+                "noDigitalSource": "Clock_in has no reachable digital output source.",
+                "ledDataOrBackupNet": "The clock path also feeds LED Data_in or Backup_in.",
+                "differentController": "Data and Clock come from different controllers.",
+                "noControllerOrigin": "Data comes from a controller, but Clock does not have a safe controller origin."
+              }
+            },
+            "digitalBackupPairMismatch": {
+              "title": "Backup data line does not match",
+              "shortDescription": "Backup_in does not come from the matching Backup_out of the upstream LED strip.",
+              "description": "{{component}} is fed by data from {{source}}, but backup does not come from the same strip.",
+              "recommendation": "Connect Backup_in to Backup_out of the same upstream strip."
+            },
+            "digitalBackupInputTiedToData": {
+              "title": "Backup_in is tied to data",
+              "shortDescription": "Backup_in is tolerated on the data net, but GND is recommended.",
+              "description": "{{component}} is not a downstream strip. Backup_in is on the data net instead of GND.",
+              "recommendation": "Prefer connecting Backup_in to GND."
+            },
+            "digitalBackupInputNotGrounded": {
+              "title": "Backup_in is not tied to GND",
+              "shortDescription": "Backup_in of a first LED strip is not connected to GND.",
+              "description": "{{component}} is not fed by a previous LED strip. Backup_in must be tied to GND.",
+              "recommendation": "Connect Backup_in to GND."
+            },
+            "fuseBypassed": {
+              "title": "Fuse is bypassed",
+              "shortDescription": "A fuse input and output are directly connected externally.",
+              "description": "Both sides of the fuse in {{component}} are externally in the same net. The protection function is bypassed.",
+              "recommendation": "Remove the external bridge across the fuse."
+            },
+            "usbPowerPairInvalid": {
+              "title": "USB power connection is invalid",
+              "shortDescription": "USB power must connect exactly one USB source to exactly one USB device.",
+              "description": "This USB power net is not point-to-point: {{reason}}.",
+              "recommendation": "Use one direct USB wire from one USB power output to one USB device, without splitters or extra terminals."
+            },
+            "wireWithoutPhysicalParameters": {
+              "title": "Power wire has no physical data",
+              "shortDescription": "A power, GND, or USB wire has no length or cross section.",
+              "description": "This wire is in a supply, GND, or USB net, but length or cross section is missing.",
+              "recommendation": "Set length and cross section for this wire."
+            },
+            "sourceWireCrossSectionTooSmall": {
+              "title": "Wire at source is too small",
+              "shortDescription": "A wire directly at an energy source is too small for the source current limit.",
+              "description": "This wire is directly connected to an energy source. The wire can carry {{ampacity}} A; {{required}} A is required.",
+              "recommendation": "Choose a larger cross section or an energy source with a lower current limit."
+            },
+            "sourceGroundWireCrossSectionTooSmall": {
+              "title": "Ground wire at source is too small",
+              "shortDescription": "A ground wire directly at an energy source is too small for the source current limit.",
+              "description": "This ground wire is directly connected to an energy source. The wire can carry {{ampacity}} A; {{required}} A is required.",
+              "recommendation": "Choose a larger cross section or an energy source with a lower current limit. Alternatively, route or insulate the ground wire so that a short circuit with supply wires is excluded even under fault conditions."
+            },
+            "unfusedSupplyWireCrossSectionTooSmall": {
+              "title": "Unfused supply wire is too small",
+              "shortDescription": "A wire in a directly source-connected supply net is too small.",
+              "description": "This wire is in a net directly connected to an energy source. The wire can carry {{ampacity}} A; {{required}} A is required.",
+              "recommendation": "Choose a larger cross section, a source with a lower current limit, or add a suitable fuse in between."
+            },
+            "fusedSupplyWireCrossSectionTooSmall": {
+              "title": "Fused supply wire is too small",
+              "shortDescription": "The fuse rating does not match the wire cross section.",
+              "description": "This wire is in a net connected to the energy source through a fuse. The fuse rating is too high for the wire ampacity of {{ampacity}} A.",
+              "recommendation": "Increase the cross section or reduce the fuse rating if the connected load does not need that much current."
+            },
+            "ledSupplyInputNotAdequatelyProtected": {
+              "title": "LED supply input is not adequately protected",
+              "shortDescription": "A digital LED supply input is not adequately limited against possible source current.",
+              "description": "{{input}} can carry up to {{limit}} A, but it is not adequately limited by the source or a fuse.",
+              "recommendation": "Add a suitable fuse between the source and LED input or use a source with a lower current limit."
+            },
+            "componentGroundWireCrossSectionSmallerThanSupply": {
+              "title": "Ground wire smaller than supply",
+              "shortDescription": "A ground wire at a component is smaller than a connected supply wire.",
+              "description": "The ground wire is {{crosssection}} mm2; the reference supply wire is {{required}} mm2.",
+              "recommendation": "Ground wires should generally have at least the cross section of the associated supply wires. Check the build carefully."
+            },
+            "ledGroundWireCrossSectionSmallerThanSupply": {
+              "title": "LED ground wire smaller than supply",
+              "shortDescription": "A ground wire at an LED connection area is smaller than the local or nearest supply wire.",
+              "description": "The ground wire is {{crosssection}} mm2; the reference supply wire is {{required}} mm2.",
+              "recommendation": "Ground wires should generally have at least the cross section of the supply wires. Check the build carefully."
+            },
+            "connectorGroundWireCrossSectionSmallerThanBranch": {
+              "title": "Ground backbone smaller than branch",
+              "shortDescription": "A ground wire between connector components is smaller than a downstream ground branch.",
+              "description": "This ground wire is {{crosssection}} mm2; a downstream branch requires {{required}} mm2.",
+              "recommendation": "Because the diagram does not describe the real cable routing, this warning can be a false positive. Check this point manually."
+            },
+            "pinWireCrossSectionTooLarge": {
+              "title": "Wire does not fit the terminal",
+              "shortDescription": "The wire cross section is too large for this pin.",
+              "description": "{{handle}} has one connected wire with {{total}} mm2. The maximum is {{limit}} mm2. The connected wire has too much cross section and cannot be safely screwed down or soldered.",
+              "recommendation": "Use a cable with a smaller cross-sectional area or a suitable distributor/splitter or adapter. In many cases, it is also possible to use a short cable with a smaller cross-sectional area as an intermediate section."
+            },
+            "pinTotalCrossSectionTooLarge": {
+              "title": "Wires do not fit the terminal together",
+              "shortDescription": "The total connected wire cross section is too large for this pin.",
+              "description": "{{handle}} has connected wires with {{total}} mm2 in total. The maximum is {{limit}} mm2. The connected wires have too much total cross section and cannot be safely screwed down or soldered together.",
+              "recommendation": "Reduce the total cross section on this pin or use a suitable splitter."
+            },
+            "pinWireCrossSectionDifficult": {
+              "title": "Wire may be difficult to connect",
+              "shortDescription": "The wire cross section is still allowed for this pin, but critical.",
+              "description": "{{handle}} has one connected wire with {{total}} mm2. From {{limit}} mm2 upward, connecting or soldering this wire to the pin may be difficult.",
+              "recommendation": "Check whether the connection is practical and whether this cross section is really necessary or can be reduced. If a large cross section is used to minimize voltage drop, it is often possible to solder a short, thinner transition piece directly at the pin. Still consider the ampacity and model the transition accurately."
+            },
+            "pinTotalCrossSectionDifficult": {
+              "title": "Wires may be difficult to connect together",
+              "shortDescription": "The total connected wire cross section is still allowed for this pin, but critical.",
+              "description": "{{handle}} has connected wires with {{total}} mm2 in total. From {{limit}} mm2 upward, connecting or soldering these wires together to the pin may be difficult.",
+              "recommendation": "Check whether the connection is practical and whether these cross sections are really necessary or can be reduced. If large cross sections are used to minimize voltage drop, it is often possible to solder a short, thinner transition piece directly at the pin. Still consider the ampacity and model the transition accurately."
+            },
+            "duplicateParallelWire": {
+              "title": "Duplicate parallel connection",
+              "shortDescription": "Multiple wires connect the same two pins.",
+              "description": "{{count}} wires connect the same pin pair.",
+              "recommendation": "Remove accidentally duplicated wires."
+            }
+          }
+        },
+        "component-rules": {
+          "title": "Component rules",
+          "description": "Checks fundamental requirements of individual components.",
+          "issues": {
+            "requiredPinUnconnected": {
+              "title": "Required pin is not connected",
+              "shortDescription": "A component has a pin that must be connected.",
+              "description": "{{component}} has required pins without a connection: {{handles}}.",
+              "recommendation": "Connect all pins of this component that are marked as required connections."
+            },
+            "groundMissing": {
+              "title": "Component without ground",
+              "shortDescription": "A component with a GND pin is not connected to ground.",
+              "description": "{{component}} has GND pins, but none of them is connected to a ground net.",
+              "recommendation": "Connect at least one GND pin of this component to the common ground net."
+            },
+            "powerMissing": {
+              "title": "Component without supply",
+              "shortDescription": "A component with a supply input is not powered.",
+              "description": "{{component}} has supply or USB inputs, but no supply input is connected to a supply net containing a suppl_out pin of another component, and no USB terminal is connected to a USB net.",
+              "recommendation": "Connect a supply input to a suitable external voltage source or connect the USB terminal to a USB supply."
+            },
+            "mainsInputMissing": {
+              "title": "{{label}} input is not connected",
+              "shortDescription": "A component with a {{label}} input is not connected to the matching net.",
+              "description": "{{component}} has {{label}} inputs, but at least one of them is not connected to a matching {{label}} net.",
+              "recommendation": "Connect every {{label}} input of this component to the matching {{label}} net."
+            },
+            "unusedRequiredFunctionalGroup": {
+              "title": "Used functional group is incomplete",
+              "shortDescription": "An LED input group is only partially connected.",
+              "description": "{{component}} has a used data input, but supply or GND for that group is missing.",
+              "recommendation": "Connect data, supply, and GND for the LED input group."
+            },
+            "controlledOutputWithoutControlInput": {
+              "title": "Switched output has no control signal",
+              "shortDescription": "A used controllable output has no digital control input.",
+              "description": "{{component}} uses {{output}}, but the related control input {{control}} is not connected to a digital net.",
+              "recommendation": "Connect the control input to a suitable digital output, or disconnect the switched output if it is not used."
+            },
+            "analogLedColorChannelUnconnected": {
+              "title": "Color channel is not connected",
+              "shortDescription": "A color of an analog LED strip cannot be controlled.",
+              "description": "{{component}} has no connected {{color}} channel. Affected pins: {{handles}}.",
+              "recommendation": "Connect at least one {{color}} terminal of the strip to a suitable PWM output if this color should be controllable."
+            },
+            "analogLedColorChannelMultiplePwmSignals": {
+              "title": "Color channel uses multiple PWM signals",
+              "shortDescription": "One color of an analog LED strip is connected to different PWM outputs.",
+              "description": "{{component}} has its {{color}} channel connected to multiple PWM signals: {{signals}}. Affected pins: {{handles}}.",
+              "recommendation": "Connect all terminals of the same color channel to the same PWM signal. For higher power, split the analog strip into separate strips or isolated segments."
+            },
+            "componentHasOnlyOneTerminalConnected": {
+              "title": "Only one terminal is connected",
+              "shortDescription": "A two-terminal component has only one connected pin.",
+              "description": "{{component}} is connected only at {{handle}}.",
+              "recommendation": "Connect both terminals or remove the unused component."
+            },
+            "capacitorPolarityMismatch": {
+              "title": "Capacitor polarity is wrong",
+              "shortDescription": "A polarized capacitor is likely reversed.",
+              "description": "{{component}} has plus on GND or minus on supply.",
+              "recommendation": "Connect plus to positive supply and minus to GND."
+            },
+            "mainsConnectorIncomplete": {
+              "title": "Mains connection is incomplete",
+              "shortDescription": "A mains component has only L or only N connected.",
+              "description": "{{component}} has an incomplete L/N connection.",
+              "recommendation": "Connect L and N correctly or disconnect mains completely."
+            },
+            "protectiveEarthMissingForMetalOrMainsDevice": {
+              "title": "Protective earth is missing",
+              "shortDescription": "A mains component with PE is missing protective earth.",
+              "description": "{{component}} uses mains voltage, but PE is not connected correctly.",
+              "recommendation": "Connect PE to the protective earth net."
+            },
+            "supplyInputOnlyInternallyPowered": {
+              "title": "Supply is only internally forwarded",
+              "shortDescription": "A component appears connected only through internal supply pins.",
+              "description": "{{component}} has supply inputs, but no external voltage source is reachable.",
+              "recommendation": "Connect the supply to an external source."
+            },
+            "fuseCurrentMissingOrUnderspecified": {
+              "title": "Fuse rating is missing",
+              "shortDescription": "A fuse has no recognizable nominal current.",
+              "description": "{{component}} contains a fuse without an evaluable nominal current.",
+              "recommendation": "Set or check the fuse rating."
+            },
+            "isolatedComponent": {
+              "title": "Component is isolated",
+              "shortDescription": "A technical component has no connected wires.",
+              "description": "{{component}} is not wired in the diagram.",
+              "recommendation": "Wire the component or remove it if it is not needed."
+            },
+            "componentDefinitionIncompleteForChecks": {
+              "title": "Component definition is incomplete",
+              "shortDescription": "A pin has incomplete metadata for checks.",
+              "description": "{{handle}} on {{component}} has missing or incomplete check metadata.",
+              "recommendation": "Add functions, voltage limits, or output voltage data in the component definition."
+            },
+            "ambiguousMultiFunctionHandle": {
+              "title": "Ambiguous pin functions",
+              "shortDescription": "A pin has multiple check-relevant functions.",
+              "description": "{{handle}} has these functions: {{functions}}.",
+              "recommendation": "Check whether this function combination is intentional and unambiguous for checks."
+            },
+            "sn74Ahct125nUsedChannelInputMissing": {
+              "title": "SN74AHCT125N channel input is not driven",
+              "shortDescription": "A used buffer output has an input without a digital output source or an /OE pin that is neither digitally driven nor tied to GND.",
+              "description": "{{component}} channel {{channel}} drives a digital input via {{output}}, but these related pins are not connected correctly: {{handles}}. A must be on a net with dig_out; /OE may be on a net with dig_out or GND.",
+              "recommendation": "Connect the related A pin to a suitable digital output and the /OE pin to a digital output or GND, or disconnect the unused Y output from the digital input."
+            },
+            "sn74Ahct125nDirectLedOutputMissingSeriesResistor": {
+              "title": "SN74AHCT125N output directly connected to LED input",
+              "shortDescription": "An SN74AHCT125N output is directly connected to an LED data or clock input.",
+              "description": "{{output}} is directly connected to {{input}} on {{led}}. This signal path should typically include a series resistor of about 68 ohms.",
+              "recommendation": "Place a resistor of about 68 ohms between the SN74AHCT125N output and the LED data/clock input."
+            },
+            "digitalLedSignalGroupGroundMissing": {
+              "title": "Digital LED input group has no GND",
+              "shortDescription": "A data or clock input is connected, but the GND of the same LED input group is not connected.",
+              "description": "{{component}} has connected digital signal inputs in group {{group}} ({{signals}}), but no GND connection in the same group.",
+              "recommendation": "Connect the GND pin of the same LED strip group (_start, _end, or _middle_N) to the common ground net."
+            }
+          }
+        }
+      }
+    },
+    "simulation": {
+      "title": "Simulate current flow",
+      "betaNoticeTitle": "Beta version",
+      "betaNoticeDescription": "The simulation is still under development. Results can help you judge the wiring, but they do not replace measuring the real build.",
+      "infoButton": "What is simulated?",
+      "infoModalTitle": "What the simulation calculates",
+      "infoModalIntro": "The simulation estimates how voltage and current are distributed in your current diagram.",
+      "infoModalItems": {
+        "power": "It uses power supplies, DC/DC converters and loads from the diagram.",
+        "wires": "It takes wire length and cross-section into account so voltage drops become visible.",
+        "leds": "For LED strips, brightness, color mode and voltage along the strip are evaluated.",
+        "protection": "It reports suspicious points such as high current, low voltage or overloaded fuses.",
+        "limits": "It simulates a DC snapshot, not data protocols, signal waveforms, inrush current or heat buildup."
+      },
+      "infoModalCaution": {
+        "label": "Important!",
+        "text": "Typical components are simulated here. Especially for power supplies and LED strips, there are many variants whose behavior can differ significantly. A real build will therefore always have values that are more or less different from the simulated ones. Even so, this simulation gives you a good reference point for your design."
+      },
+      "infoModalModelDetails": {
+        "title": "How the models are simplified",
+        "leds": {
+          "title": "LED strips:",
+          "description": "Digital LED strips are split into small sections. For each section, the simulation estimates current from brightness, color mode and local voltage. The copper traces in the strip are modeled as resistors, which makes the voltage drop along the strip visible."
+        },
+        "powerSources": {
+          "title": "Voltage sources:",
+          "description": "Power supplies are treated as regulated DC voltage sources with current limits. Up to the current limit they approximately hold their output voltage. During overload, a voltage drop is modeled instead of reproducing the exact protection behavior of every real power supply."
+        },
+        "dcdc": {
+          "title": "DC/DC converters:",
+          "description": "DC/DC converters are treated as components that create a regulated output voltage from an input voltage. Output current limits and limited input power are taken into account. Efficiency, temperature effects and fast control behavior are simplified."
+        },
+        "wires": {
+          "title": "Wires:",
+          "description": "Wires are calculated as ohmic resistors. The longer the wire and the smaller the cross-section, the higher the resistance. Current through that resistance creates a voltage drop, which is shown in the diagram."
+        }
+      },
+      "infoModalNote": "Use the simulation as a plausibility check for your design. Safety-critical builds and finished installations should still be measured and checked properly.",
+      "inDevelopmentTitle": "Simulations are still in development",
+      "comingSoon": "Simulation of power distribution will be implemented in future. Stay tuned!",
+      "settings": "Settings",
+      "brightness": "Brightness: {{value}}%",
+      "buttonRun": "Simulate",
+      "buttonDelete": "Delete results",
+      "displayMode": {
+        "label": "Result display",
+        "default": "Default",
+        "extended": "Extended",
+        "defaultDescription": "Shows relevant currents, supply outputs, USB supply voltage and LED voltages.",
+        "extendedDescription": "Shows all available simulation labels."
+      },
+      "notRun": "No simulation has been run yet.",
+      "running": "Simulation is running...",
+      "invalidated": "Simulation results were removed because the diagram changed.",
+      "blockedTitle": "Simulation not started",
+      "blockedDescription": "Run a current diagram check without errors before starting the simulation.",
+      "diagramCheckDebugBypass": "Debug mode: simulation starts without diagram-check gating.",
+      "diagramCheckSettingsBypass": "Advanced setting enabled: simulation starts even if diagram-check errors exist.",
+      "diagramCheckGate": {
+        "not-checked": {
+          "title": "Diagram check required",
+          "description": "Run the diagram check before starting the simulation."
+        },
+        "stale": {
+          "title": "Diagram check is outdated",
+          "description": "The diagram changed after the last check. Run the diagram check again."
+        },
+        "has-errors": {
+          "title": "Diagram check has {{count}} error(s)",
+          "description": "Fix the diagram-check errors before starting the simulation. Warnings do not block simulation."
+        }
+      },
+      "modelReadyTitle": "Simulation model created",
+      "modelReadyDescription": "{{components}} simulated component(s), {{wires}} simulated wire(s).",
+      "failedTitle": "Simulation failed",
+      "failedDescription": "The simulation model could not be created. Check the messages below.",
+      "workerFailedTitle": "Simulation worker failed",
+      "noIssues": "No simulation messages.",
+      "issueCount": "{{count}} simulation message(s)",
+      "affectedElements": "Affected elements",
+      "targetPin": "{{component}} - {{pin}}",
+      "targetWire": "Wire: {{source}} -> {{target}}",
+      "targetComponent": "{{component}}",
+      "ledVoltagePlot": {
+        "title": "LED strip voltage plot",
+        "openButton": "Show LED voltage plot",
+        "closeButton": "Close",
+        "modalTitle": "LED voltage over length: {{component}}",
+        "xAxis": "Length along strip (m)",
+        "yAxis": "VLED (V)",
+        "ledCounts": "Logical LEDs: {{logical}}; physical LEDs: {{physical}}",
+        "minVoltage": "Minimum {{voltage}} V at {{distance}} m",
+        "pointTooltip": "{{distance}} m: {{voltage}} V, section {{section}}, LED {{index}}"
+      },
+      "issues": {
+        "dcdcInputPowerAmbiguous": {
+          "title": "DCDC input power limit is ambiguous",
+          "description": "Multiple input voltage sources are passively reachable from this DCDC input. The dynamic input-power limit was not calculated because source sharing is not modeled."
+        },
+        "dcdcInputPowerLimited": {
+          "title": "DCDC input power limited",
+          "description": "DCDC output current {{current}} A exceeds the dynamic input-power limit {{limit}} A. The output voltage was reduced by the DCDC input power model."
+        },
+        "currentLimit": {
+          "title": "Current limit exceeded",
+          "description": "Voltage source current {{current}} A exceeds limit {{limit}} A. The output voltage was reduced by the source overload model."
+        },
+        "currentLimitReduced": {
+          "description": "Voltage source load exceeded limit {{limit}} A before output voltage reduction. Final current is {{current}} A after output voltage reduction."
+        },
+        "currentLimitExtreme": {
+          "title": "Current limit exceeded too far",
+          "description": "Voltage source current {{current}} A is above 150% of the limit {{limit}} A. Simulation was stopped."
+        },
+        "fuseCurrent": {
+          "title": "Fuse current exceeded",
+          "description": "Fuse current {{current}} A exceeds nominal current {{limit}} A."
+        },
+        "pinVoltageLow": {
+          "title": "Supply voltage is too low",
+          "description": "Supply voltage is {{voltage}} V, below the minimum {{limit}} V."
+        },
+        "pinVoltageHigh": {
+          "title": "Supply voltage is too high",
+          "description": "Supply voltage is {{voltage}} V, above the maximum {{limit}} V."
+        },
+        "pinCurrentLimit": {
+          "title": "Pin current limit exceeded",
+          "description": "Pin current {{current}} A exceeds the maximum {{limit}} A."
+        },
+        "wireAmpacityExceeded": {
+          "title": "Wire current exceeds ampacity",
+          "description": "The simulated current {{current}} A exceeds the wire ampacity {{limit}} A for {{crosssection}} {{conductor}}. For common wire types this cross-section is too small. Use a wire type rated for higher temperature/current or increase the cross-section."
+        },
+        "wireAmpacityFullLoadRequired": {
+          "title": "Full-load simulation required for wire ampacity",
+          "description": "Wire ampacity can only be evaluated reliably after a full-load simulation.",
+          "descriptionRgb": "For RGB strips, wire ampacity can only be evaluated reliably after a simulation at 100% brightness with RGB white. Separate + RGB white is equivalent for RGB-only strips and is also accepted.",
+          "descriptionRgbw": "Wire ampacity can only be evaluated reliably after a full-load simulation at 100% brightness with Separate + RGB white, because the diagram contains RGBW strips."
+        },
+        "ledStripSupplyVoltageLow": {
+          "title": "LED strip supply voltage is too low",
+          "description": "VLED at a connected LED strip supply point is {{voltage}} V, below the minimum {{limit}} V. Increase the power supply voltage, or increase the available power if the power supply is current-limiting."
+        },
+        "ledStripVoltageDropHigh": {
+          "title": "LED strip voltage drop is too high",
+          "description": "The connected supply points are within range, but the lowest VLED along the strip is {{voltage}} V, below the critical curve value {{limit}} V. Color rendering may be noticeably distorted. Add more power injection points along the LED strip."
+        },
+        "ledStripVoltageDropWarning": {
+          "title": "LED strip voltage drop is too high",
+          "description": "The connected supply points are within range, but the lowest VLED along the strip is {{voltage}} V, below the warning value {{limit}} V. Color rendering may be slightly distorted. Add more power injection points along the LED strip."
+        },
+        "ledStripVoltageLow": {
+          "title": "LED strip voltage is too low",
+          "description": "Lowest LED strip voltage is {{voltage}} V, below the minimum {{limit}} V."
+        },
+        "ledStripVoltageHigh": {
+          "title": "LED strip voltage is too high",
+          "description": "Highest LED strip voltage is {{voltage}} V, above the maximum {{limit}} V."
+        },
+        "unpoweredSubnet": {
+          "title": "Unpowered subcircuit ignored",
+          "description": "A valid simulation subcircuit is not reachable from a voltage source and was ignored."
+        },
+        "solverFailed": {
+          "title": "Simulation solver failed",
+          "description": "Solver returned status {{status}}."
+        },
+        "solverNotConverged": {
+          "title": "Simulation solver did not converge",
+          "description": "Voltage-dependent LED currents did not converge within the iteration limit."
+        }
+      },
+      "severity": {
+        "error": "Error",
+        "warning": "Warning",
+        "info": "Info"
+      },
+      "colorModes": {
+        "rgbWhite": "RGB white",
+        "separateWhite": "Separate white",
+        "separateAndRgbWhite": "Separate + RGB white",
+        "red": "Red",
+        "green": "Green",
+        "blue": "Blue"
+      }
+    },
+    "tools": {
+      "title": "Tools",
+      "wireInstallationButton": "Wire installation",
+      "wireInstallationDescription": "Settings for the wire cross-section check.",
+      "wireInstallationTitle": "Wire installation",
+      "wireInstallationTypeLabel": "Installation",
+      "ambientTemperatureLabel": "Ambient temperature",
+      "wireInstallationTypes": {
+        "surface": "On surface",
+        "conduit": "In conduit",
+        "insulatedWall": "In insulated wall"
+      },
+      "rerouteAllButton": "Re-route all wires",
+      "rerouteAllTooltip": "Sequentially re-route all wires with Pathfinder",
+      "rerouteAllDisabledPF": "Only available in Auto/PF connection mode",
+      "rerouteAllDisabledEmpty": "There are no wires in the diagram",
+      "rerouteAllDescription": "Routes short component pairs first and keeps wire IDs, connections, and properties.",
+      "rerouteAllSuccess": "All wires were re-routed."
+    },
+    "advancedSettings": {
+      "title": "Advanced settings",
+      "simulationSettingsButton": "Simulation settings",
+      "simulationSettingsDescription": "Options for starting the electrical simulation.",
+      "simulationSettingsTitle": "Simulation settings",
+      "allowSimulationWithDiagramCheckErrorsLabel": "Start simulation even when diagram checks report errors",
+      "allowSimulationWithDiagramCheckErrorsDescription": "Use this only when you deliberately want to inspect a diagram that still has check errors. Warnings never block simulation.",
+      "autosaveEnabledLabel": "Automatically save diagram locally",
+      "autosaveEnabledDescription": "Keeps one recovery copy in this browser. Turning this off deletes the current autosave."
+    },
+    "export": {
+      "title": "Save / export / examples",
+      "buttonSave": "Save model",
+      "buttonSaveAs": "Save model as...",
+      "buttonExportPNG": "Export model to PNG file",
+      "buttonExportJPEG": "Export model to JPEG file",
+      "buttonExportSVG": "Export model to SVG file",
+      "buttonOpen": "Open model...",
+      "buttonShare": "Generate public link to the model",
+      "currentFile": "Current file: {{name}}",
+      "saveAsModalTitle": "Save model as",
+      "saveAsModalOk": "Save",
+      "dividerExport": "Export",
+      "dividerSaveOpen": "Save / Open",
+      "dividerShare": "Share",
+      "dividerExamples": "Load examples",
+      "share": {
+        "modalTitle": "Share model - generate link",
+        "modalLinkText": "Link:",
+        "modalLinkBeingGenerated": "... generating ... please wait ...",
+        "modalButtonOK": "OK",
+        "modalButtonClose": "Close",
+        "modalButtonCancel": "Cancel",
+        "modalAttentionText": "When you click \"OK\" your model, along with all the entered data, will be transferred to a public server (https://github.com) and saved there. For this purpose, your model data and your IP address will also be transferred to https://wled-api.myhome-control.de/. You will then be shown a link that you can use to share the model with others.",
+        "modalLinkError": "An error occurred! Please try again if necessary.",
+        "tooltipCopyLink": "Copy link to clipboard",
+        "messageLinkCopied": "Link copied to clipboard!"
+      },
+      "selectExample": "Select example ..."
+    }
+  },
+  "footRow": {
+    "legalNotice": {
+      "title": "Legal notice",
+      "responsible": "Responsible: Wladislaw Waag",
+      "address": "Address: Wasserburger Landstr. 29, 81825 Munich, Germany",
+      "contact": "Contact: +49 (0) 176 47 11 5206, info@myhome-control.de",
+      "disputeText": "",
+      "disputeSettlmentText": "Consumer dispute settlement / universal arbitration board: We are neither willing nor obliged to participate in dispute settlement proceedings before a consumer arbitration board."
+    },
+    "dataPrivacy": {
+      "title": "Data privacy",
+      "text1": "This page is hosted and operated as part of 'Github Pages'. It is possible and probable that Github collects and processes personal data, which then also affects visitors of the wled-compile.github.io web page. We have, however, no influence on it. Please read the Github privacy statement:",
+      "text2": "In addition, as soon as you use 'Share' functionality, your IP address, the model you created and all the data you entered forwarded to https://myhome-control.de and to https://github.com/wled-development/wled-wiring-store. This is absolutely necessary for this functionality. The data protection declaration for https://myhome-control.de can be found at",
+      "text3": "Our website contains links to external websites over which we have no control. We cannot accept any liability for this third-party content. The respective provider or operator of the pages is always responsible for the content of the linked pages. The linked pages were checked for possible legal violations at the time of linking. Illegal content was not recognizable at that time. If we become aware of any legal violations, we will remove the relevant link immediately."
+    },
+    "links": {
+      "title": "Useful links",
+      "link1Text": "Official WLED documentation:",
+      "link2Text": "WLED FAQ:",
+      "link3Text": "WLED Calculator:",
+      "link4Text": "Extended WLED Online Installer:",
+      "link5Text": "Compile your own WELD SW online:",
+      "link6Text": "Buy WLED Controller (Germany):",
+      "link7Text": "Buy WLED Controller (worldwide):"
+    },
+    "contribute": {
+      "title": "Contribute/GitHub",
+      "text": "Contributions are highly appreciated! If you'd like to contribute, please follow the project's GitHub link:"
+    }
+  },
+  "examples": {
+    "example1": "ESP32 uC + Level Shifter + DC/DC + 24V LED strip",
+    "example2": "ABC! WLED Controller + 24V LED Strip",
+    "example3": "ABC! WLED Controller + long 24V LED Strip + LineIn + Ethernet",
+    "example4": "ABC! WLED Controller + Long Range Extension",
+    "example5": "ABC! WLED Controller + Anal. 24V LED Strip + PWM Board"
+  },
+  "compData": {
+    "Router": {
+      "name": "WAN/LAN Router",
+      "description": "A generic WLAN/LAN router.",
+      "descriptionShort": "generic"
+    },
+    "Button": {
+      "name": "Push Button",
+      "description": "A generic push button. When pressed and held, the contact is closed. The contact opens as soon as the button is released. Not to be confused with a switch.",
+      "descriptionShort": "generic"
+    },
+    "DC_JACK_FEMALE": {
+      "name": "DC Connector",
+      "description": "Used to split a power supply with a DC connector into a + and - wire.",
+      "descriptionShort": "for up to 3A"
+    },
+    "Elko": {
+      "name": "Electrolytic Capacitor",
+      "description": "An electrolytic capacitor with selectable capacitance. Pay attention to polarity! Often used to stabilize the power supply for LEDs or other components.",
+      "descriptionShort": "selectable capacitance"
+    },
+    "ESP32_30P": {
+      "name": "ESP32 uC 30 Pins",
+      "description": "ESP32 controller, version with 30 pins. Also known as NodeMCU.",
+      "descriptionShort": "controller"
+    },
+    "ESP32_38P": {
+      "name": "ESP32 uC 38 Pins",
+      "description": "ESP32 controller, version with 38 pins. Also known as NodeMCU.",
+      "descriptionShort": "controller"
+    },
+    "ESP32C3D1mini": {
+      "name": "ESP32-C3 D1 mini",
+      "description": "ESP32-C3 controller in D1 mini format. WLED can run on this controller type with limitations.",
+      "descriptionShort": "controller"
+    },
+    "ESP32C3_supermini": {
+      "name": "ESP32-C3 supermini",
+      "description": "ESP32-C3 controller, supermini. WLED can run on this controller type with limitations.",
+      "descriptionShort": "Controller"
+    },
+    "ESP32D1mini": {
+      "name": "ESP32 D1 mini",
+      "description": "ESP32 controller in D1 mini format.",
+      "descriptionShort": "controller"
+    },
+    "ESP32S3D1mini": {
+      "name": "ESP32-S3 D1 mini",
+      "description": "ESP32-S3 controller in D1 mini format. WLED can run on this controller type with limitations.",
+      "descriptionShort": "controller"
+    },
+    "ESP8266D1mini": {
+      "name": "ESP8266 D1 mini",
+      "description": "ESP8266 controller in D1 mini format. No longer recommended for new WLED projects (too weak).",
+      "descriptionShort": "controller"
+    },
+    "InfoNode": {
+      "name": "Text",
+      "description": "A text element to add labels or notes to the diagram.",
+      "descriptionShort": "for notes etc."
+    },
+    "INMP441": {
+      "name": "INMP441 microphone",
+      "description": "INMP441 microphone. It is a digital microphone supported by WLED for sound-reactive effects and delivers high quality.",
+      "descriptionShort": "digital"
+    },
+    "IR_KY022": {
+      "name": "KY022 IR receiver",
+      "description": "KY-022 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
+      "descriptionShort": "infrared"
+    },
+    "IR_TSOP38238": {
+      "name": "TSOP38238 IR Receiver",
+      "description": "TSOP38238 infrared receiver, supported by WLED, allows controlling WLED with an IR remote.",
+      "descriptionShort": "infrared"
+    },
+    "Kerko": {
+      "name": "Ceramic Capacitor",
+      "description": "Ceramic capacitor with selectable capacitance. Commonly used at the input of switching electronic circuits (between power and ground) to suppress noise. Should be connected using the shortest possible leads/traces.",
+      "descriptionShort": "selectable capacitance"
+    },
+    "LineBoxNode": {
+      "name": "Rectangle",
+      "description": "An element to draw a rectangle (filled or empty).",
+      "descriptionShort": "drawing element"
+    },
+    "miniOTOFuse": {
+      "name": "Melting Fuse",
+      "description": "A fuse from the automotive sector. Ideal for voltages up to 32V. Only buy from specialized dealers, as many cheap copies on marketplaces do not function properly. WLED calculator (www.wled-calculator.github.io) can be used for dimensioning.",
+      "descriptionShort": "selectable 4-30A"
+    },
+    "FUSE_Board": {
+      "name": "Fuse board",
+      "description": "For power distribution and fusing.",
+      "descriptionShort": "4 channels"
+    },
+    "PIR_HCSR501": {
+      "name": "HC-SR501 PIR Sensor",
+      "description": "PIR motion sensor of type HCSR501. Can be used with WLED.",
+      "descriptionShort": "motion detector"
+    },
+    "PLUG_LNPE": {
+      "name": "Power Plug",
+      "description": "Plug for 230V power outlets. Warning: Risk of death! Only use if you have appropriate knowledge.",
+      "descriptionShort": "for 230V AC"
+    },
+    "PSU_HP": {
+      "name": "Power supply",
+      "description": "Power supply with selectable voltage/current (power). These are typically high-performance supplies used for larger setups. Power plug must be connected separately.",
+      "descriptionShort": "selectable V/I"
+    },
+    "PSU_USB": {
+      "name": "USB Power Supply",
+      "description": "USB power supply with 5V output voltage and selectable current up to 5A.",
+      "descriptionShort": "5V, selectable I"
+    },
+    "PSU_USB_WIRES": {
+      "name": "USB Power Supply",
+      "description": "USB power supply with 5V output voltage, selectable current up to 5A, and separate +/- wires.",
+      "descriptionShort": "5V, separate +/- wires"
+    },
+    "Resistor": {
+      "name": "Resistor",
+      "description": "Electrical resistor of selectable value.",
+      "descriptionShort": "selectable value"
+    },
+    "SN74AHCT125N": {
+      "name": "Level Shifter",
+      "description": "A level shifter type recommended for WLED. A level shifter is necessary to convert the microcontroller's control signal (3.3V) to the LED data input (5V) level for addressable LEDs. Without a level shifter, flickering often occurs (almost always with 12V and 24V LEDs).",
+      "descriptionShort": "SN74AHCT125N"
+    },
+    "SolderJoint": {
+      "name": "Solder Joint",
+      "description": "Representation of a solder joint, e.g., to connect wires together.",
+      "descriptionShort": "for wires etc."
+    },
+    "WAGO_2X": {
+      "name": "WAGO Connector 2x",
+      "description": "Widely used spring clamp connector, two-way.",
+      "descriptionShort": "spring clamp"
+    },
+    "WAGO_3X": {
+      "name": "WAGO Connector 3x",
+      "description": "Widely used spring clamp connector, three-way.",
+      "descriptionShort": "spring clamp"
+    },
+    "WireInfoNode": {
+      "name": "Wire Info",
+      "description": "Information about the wire.",
+      "descriptionShort": " "
+    },
+    "WS2812B_5V_30LPM": {
+      "name": "WS2812B RGB",
+      "description": "WS2812 RGB LED strip, 5V, 30 LEDs per meter, individually addressable LEDs.",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "MHC_V43": {
+      "name": "WLED V43 Controller",
+      "description": "A professional WLED controller for 5V, 12V or 24V addressable LEDs. Includes ESP32 microcontroller, SN74AHCT level shifter, fuse, capacitor, EMI filter. Optional accessories include Ethernet adapter, INMP441 microphone, line-in adapter, and USB adapter.",
+      "descriptionShort": "ESP32 based"
+    },
+	"MHC_V57": {
+      "name": "WLED PRO V57 Controller",
+      "description": "A professional WLED controller for 5V, 12V or 24V addressable LEDs. Includes ESP32 microcontroller (8MB Flash, 2MB PSRAM), SN74AHCT level shifter, fuse, capacitor, EMI filter, iMOSFET. Optional accessories include Ethernet adapter, INMP441 microphone, line-in adapter, and USB adapter.",
+      "descriptionShort": "ESP32 based"
+    },
+    "MHC_SwitchBoard": {
+      "name": "WLED switch board",
+      "description": "A better/modern alternative to relais board for switching LEDs completely off. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
+      "descriptionShort": "universal for 5-24V"
+    },
+    "MHC_PWMBoard": {
+      "name": "WLED PWM board",
+      "description": "The board uses MOSFETs to control analog LED strips with PWM signals. 3 channels, each max. 5A. Overcurrent, overtemperature, short circuit, and reverse polarity protection.",
+      "descriptionShort": "universal for 12-48V"
+    },
+    "MHC_RS485_R": {
+      "name": "RS-485 receiver",
+      "description": "RS-485 receiver for use as a range extender receiver with the RS-485 adapter.",
+      "descriptionShort": "RS-485 receiver"
+    },
+    "MHC_Relay5V": {
+      "name": "5V Relay Board",
+      "description": "A professional relay board for use with 5V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 5V LEDs"
+    },
+    "MHC_Relay12V": {
+      "name": "12V Relay Board",
+      "description": "A professional relay board for use with 12V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 12V LEDs"
+    },
+    "MHC_Relay24V": {
+      "name": "24V Relay Board",
+      "description": "A professional relay board for use with 24V addressable LEDs. Allows turning off the LED strips when not in use via relays, saving energy, extending LED strip life, and increasing safety. Two paths allow two separate controls or, e.g., control of two power inputs.",
+      "descriptionShort": "for 24V LEDs"
+    },
+    "AUDIO_SOURCE": {
+      "name": "Audio Source",
+      "description": "A generic audio signal source.",
+      "descriptionShort": "Line-out"
+    },
+    "LM2596_PCB": {
+      "name": "LM2596 DC/DC",
+      "description": "DC/DC (step-down) converter with adjustable output voltage.",
+      "descriptionShort": "adjustable output"
+    },
+    "IRLZ44N": {
+      "name": "IRLZ44N",
+      "description": "MOSFET. This type is recommended for use with WLED and can be used to control analog LED strips.",
+      "descriptionShort": "N-Ch MOSFET"
+    },
+    "DCDC_mini": {
+      "name": "DC/DC Mini",
+      "description": "DC/DC (step-down) converter with adjustable output voltage.",
+      "descriptionShort": "adjustable output"
+    },
+    "WS2814_24V_60LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED strip, individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2813_5V_60LPM": {
+      "name": "WS2813 RGB",
+      "description": "RGB LED strip with backup-line.",
+      "descriptionShort": "5V, 60 LEDs/m"
+    },
+    "WS2815_12V_30LPM": {
+      "name": "WS2815 RGB",
+      "description": "RGB LED strip with backup-line.",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2814_12V_30LPM": {
+      "name": "WS2814 RGBW",
+      "description": "RGBW LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "WS2818_12V_30LPM": {
+      "name": "WS2818 RGB",
+      "description": "RGB LED strip, individually addressable LEDs in groups of 3 (1 logical LED = 3 physical).",
+      "descriptionShort": "12V, 30 LEDs/m"
+    },
+    "FCOB_12V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
+      "descriptionShort": "12V, 720 LEDs/m"
+    },
+    "FCOB_24V_720LPM": {
+      "name": "FCOB RGB",
+      "description": "FCOB RGB LED strip, 720 LEDs/m (240 LEDs each color per meter, 20 logical LEDs/m)",
+      "descriptionShort": "24V, 720 LEDs/m"
+    },
+    "FCOB_24V_784LPM": {
+      "name": "FCOB RGBW",
+      "description": "FCOB RGBW LED strip, 784 LEDs/m (196 LEDs each color per meter, 14 logical LEDs/m)",
+      "descriptionShort": "24V, 784 LEDs/m"
+    },
+    "APA102_5V_30LPM": {
+      "name": "APA102 RGB",
+      "description": "APA102 LED strip with clock signal, 5V, 30 LEDs/Meter, individually addressable LEDs.",
+      "descriptionShort": "5V, 30 LEDs/m"
+    },
+    "AN_WHITE_24V_240LPM": {
+      "name": "Analogue white",
+      "description": "Analogues LED strip (white 2835 LEDs), 24V, 240 LEDs/m, 2.5 cm segments (6 LEDs)",
+      "descriptionShort": "24V, 240 white LEDs/m"
+    },
+    "AN_RGB_CCT_48V_90LPM": {
+      "name": "Anal. RGB CCT",
+      "description": "Analogues RGB CCT LED strip (5050 LEDs), 48V, 90 LEDs/m, segemnts of 16.65 cm (15 LEDs)",
+      "descriptionShort": "48V, 90 LEDs/m"
+    },
+    "AN_RGB_24V_120LPM": {
+      "name": "Anal. RGB ",
+      "description": "Analogues RGB LED strip (2835 LEDs), 24V, 120 LEDs/m, segments of 5 cm (6 LEDs)",
+      "descriptionShort": "24V, 120 LEDs/m"
+    },
+    "WS2805_24V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "24V, 60 LEDs/m"
+    },
+    "WS2805_12V_60LPM": {
+      "name": "WS2805 RGBW CCT",
+      "description": "RGBW CCT LED strip (digital), individually addressable LEDs in groups of 6 (1 logical LED = 6 physical).",
+      "descriptionShort": "12V, 60 LEDs/m"
+    }
+  }
 }
